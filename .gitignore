@@ -4,3 +4,5 @@ documind_steps_3_to_6.txt
 
 __pycache__/
 *.pyc
+.env
+data/*.pdf

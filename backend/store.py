@@ -29,5 +29,7 @@ if __name__ == "__main__":
 
 
 """
-
+turns each chunk into a list of numbers (an embedding) using MiniLM, 
+then saves them in Qdrant under a collection called documind. Similar meaning gives similar numbers,
+ which is how search works later.
 """
