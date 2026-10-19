@@ -22,13 +22,15 @@ def answer(question):
     llm = ChatGroq(model="openai/gpt-oss-20b", temperature=0)
     reply = llm.invoke(PROMPT.format(context=context, question=question))
     pages = sorted({d.metadata["page_label"] for d in docs}, key=int)
+    if "i don't know" in reply.content.lower():
+        pages = []
     return reply.content, pages
 
 
 if __name__ == "__main__":
     text, pages = answer(sys.argv[1])
     print("\nANSWER:", text)
-    print("SOURCES: pages", ", ".join(pages))
+    print("SOURCES:", ", ".join(pages) if pages else "none")
 
 
 
