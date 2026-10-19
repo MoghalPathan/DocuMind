@@ -1,0 +1,33 @@
+import sys
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_qdrant import QdrantVectorStore
+from ingest import load_pdf, split_docs
+
+COLLECTION = "documind"
+
+def get_embeddings():
+    return HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+
+
+
+def store_chunks(chunks):
+    return QdrantVectorStore.from_documents(
+        chunks, 
+        get_embeddings(),
+        url="http://localhost:6333",
+        collection_name=COLLECTION
+    )
+
+
+
+if __name__ == "__main__":
+    path = sys.argv[1]
+    chunks = split_docs(load_pdf(path))
+    store_chunks(chunks)
+    print("stored chunks:", len(chunks))
+
+
+
+"""
+
+"""
