@@ -1,0 +1,891 @@
+[
+  {
+    "id": "q01",
+    "answerable": true,
+    "type": "single-fact",
+    "question": "What is the course code of the Deep Learning lab manual?",
+    "ground_truth": "R20A6683.",
+    "expected_pages": [
+      13
+    ],
+    "evidence": [
+      "R20A6683"
+    ],
+    "answer": "B. Tech – CSE (AI & ML) R-20",
+    "contexts": [
+      "DEEP LEARNING \nLAB MANUAL \n \n \nB. TECH \n \n(IV YEAR – I SEM) \n(2024-25) \n \n \n \nDEPARTMENT OF COMPUTATIONAL INTELLIGENCE \n(CSE – AIML, AIML, AIDS) \n \n                    MALLA REDDY COLLEGE OF ENGINEERING & TECHNOLOGY \n(Autonomous Institution – UGC, Govt. of India) \n \nRecognized under 2(f) and 12 (B) of UGC ACT 1956 \n(Affiliated to JNTUH, Hyderabad, Approved by AICTE - Accredited by NBA & NAAC – ‘A’ Grade - ISO 9001:2015 Certified)",
+      "ethical codes and guidelines and lifelong learning needed for a successful \nprofessional career. \n \nLab Outcomes: \nUpon successful completion of this course, the students will be able to: \n \n Understand the basic concepts and techniques of Deep Learning and the need of Deep \nLearning techniques in real-world problems. \n \n Understand CNN algorithms and the way to evaluate performance of the CNN architectures. \n \n Apply RNN and LSTM to learn, predict and classify the real-world problems in the",
+      "B. Tech – CSE (AI & ML) R-20 \n \n \nIntroduction about lab \nSystem configurations are as follows: \n Hardware / Software’s installed: Intel® CORE™ i3-3240 CPU@3.40GHZRAM: \n4GB / Anaconda Navigator or Python and Jupyter Notebook or Google Colab. \n Packages required to run the programs: Math, Scipy, Numpy, Matplotlib, \nPandas, Sklearn, Tensorflow, Keras etc. \n Systems are provided for students in the 1:1 ratio. \n Systems are assigned numbers and same system is allotted for students when they \ndo the lab.",
+      "Department of Computer Science & Engineering \n(Artificial Intelligence & Machine Learning) \n \nLab Objectives: \n \n To introduce the basic concepts and techniques of Deep Learning and the need of Deep \nLearning techniques in real-world problems. \n To provide understanding of various Deep Learning algorithms and the way to evaluate \nperformance of the Deep Learning algorithms. \n To apply Deep Learning to learn, predict and classify the real-world problems.",
+      "print(' Model Summary \nmodel.summary() \nprint(\"\") \n \n \n  ') \n \n# Printing the parameters:Deep Feed Forward Neural Network contains more than 100K \n#print(' Weights and Biases \n#for layer in model_d1.layers: \n  ') \n#print(\"Layer: \", layer.name) # print layer name \n#print(\" --Kernels (Weights): \", layer.get_weights()[0]) # kernels (weights) \n#print(\" --Biases: \", layer.get_weights()[1]) # biases \n \nprint(\"\") \nprint('---------- Evaluation on Training Data ----------- ')"
+    ],
+    "retrieved_pages": [
+      4,
+      8,
+      9,
+      25
+    ],
+    "retrieval_hit": false,
+    "refused": false
+  },
+  {
+    "id": "q02",
+    "answerable": true,
+    "type": "multi-part",
+    "question": "Which college publishes this lab manual, and which year, semester and academic year is it for?",
+    "ground_truth": "Malla Reddy College of Engineering & Technology; B.Tech IV Year, I Semester, academic year 2024-25.",
+    "expected_pages": [
+      4
+    ],
+    "evidence": [
+      "MALLA REDDY COLLEGE OF ENGINEERING",
+      "IV YEAR",
+      "2024-25"
+    ],
+    "answer": "Malla Reddy College of Engineering & Technology; 4th‑year, 1st‑semester, academic year 2024‑25.",
+    "contexts": [
+      "allotted to you by the faculty. \n5. Execute your task in the laboratory, and record the results / output in the lab  observation note \nbook, and get certified by the concerned faculty. \n6. All the students should be polite and cooperative with the laboratory staff, must  maintain the \ndiscipline and decency in the laboratory. \n7. Computer labs are established with sophisticated and high -end branded  systems, which  \nshould be utilized properly.",
+      "B. Tech – CSE (AI & ML) R-20 \n \n \nIntroduction about lab \nSystem configurations are as follows: \n Hardware / Software’s installed: Intel® CORE™ i3-3240 CPU@3.40GHZRAM: \n4GB / Anaconda Navigator or Python and Jupyter Notebook or Google Colab. \n Packages required to run the programs: Math, Scipy, Numpy, Matplotlib, \nPandas, Sklearn, Tensorflow, Keras etc. \n Systems are provided for students in the 1:1 ratio. \n Systems are assigned numbers and same system is allotted for students when they \ndo the lab.",
+      "3. Student should enter into the laboratory with: \na. Laboratory observation notes with all the details (Problem statement, Aim, Algorithm, \nProcedure, Program, Expected Output, etc.,) filled in for the lab session. \nb. Laboratory Record updated up to the last session experiments and other utensils (if any) \nneeded in the lab. \nc. Proper Dress code and Identity card. \n4. Sign in the laboratory login register, write the TIME -IN, and occupy the computer  system \nallotted to you by the faculty.",
+      "DEEP LEARNING \nLAB MANUAL \n \n \nB. TECH \n \n(IV YEAR – I SEM) \n(2024-25) \n \n \n \nDEPARTMENT OF COMPUTATIONAL INTELLIGENCE \n(CSE – AIML, AIML, AIDS) \n \n                    MALLA REDDY COLLEGE OF ENGINEERING & TECHNOLOGY \n(Autonomous Institution – UGC, Govt. of India) \n \nRecognized under 2(f) and 12 (B) of UGC ACT 1956 \n(Affiliated to JNTUH, Hyderabad, Approved by AICTE - Accredited by NBA & NAAC – ‘A’ Grade - ISO 9001:2015 Certified)",
+      "do the lab. \n All Systems are configured in LINUX, it is open source and students can use any \ndifferent programming environments through package installation. \n \nGuidelines to students \nA. Standard operating procedure \na) Explanation on today’s experiment by the concerned faculty using PPT covering \nthe following aspects: \n1) Name of the experiment \n2) Aim \n3) Software/Hardware requirements \n4) Writing the python programs by the students \n5) Commands for executing programs"
+    ],
+    "retrieved_pages": [
+      4,
+      9,
+      12
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q03",
+    "answerable": true,
+    "type": "multi-page",
+    "question": "How many programs are listed in the lab index?",
+    "ground_truth": "16 programs (S.No. 1 to 16, matching Week-1 to Week-16).",
+    "expected_pages": [
+      13,
+      14
+    ],
+    "evidence": [
+      "Deep Learning Lab Manual",
+      "Implement Auto encoders for image denoising"
+    ],
+    "answer": "I don't know.",
+    "contexts": [
+      "B. Tech – CSE (AI & ML) R-20 \n \n \nIntroduction about lab \nSystem configurations are as follows: \n Hardware / Software’s installed: Intel® CORE™ i3-3240 CPU@3.40GHZRAM: \n4GB / Anaconda Navigator or Python and Jupyter Notebook or Google Colab. \n Packages required to run the programs: Math, Scipy, Numpy, Matplotlib, \nPandas, Sklearn, Tensorflow, Keras etc. \n Systems are provided for students in the 1:1 ratio. \n Systems are assigned numbers and same system is allotted for students when they \ndo the lab.",
+      "Dress Code 3 Marks \nAllocation of Marks for Lab Internal \nTotal marks for lab internal are 30 Marks as per Autonomous (JNTUH) \nThese 30 Marks are distributed as: \nAverage of day-to-day evaluation marks: 15 \nMarks  Lab Mid exam: 10 Marks \nVIVA & Observation: 5 Marks \n \nAllocation of Marks for Lab External \nTotal marks for lab Internal and External are 70 Marks as per Autonomous / (JNTUH). \nThese 70 External Lab Marks are distributed as: \nProgram Written 30 Marks \nProgram Execution and Result 20 Marks",
+      "B. Tech – CSE (AI & ML) R-20 \n \n \n \n \nB. Guide Lines to Students in Lab \n \nDisciplinary to be maintained by the students in the Lab \n \n Students are required to carry their lab observation book and record book with \ncompleted experiments while entering the lab. \n Students must use the equipment with care. Any damage is caused student is punishable. \n Students are not allowed to use their cell phones/pen drives/ CDs in labs. \n Students need to maintain proper dress code along with ID Card.",
+      "do the lab. \n All Systems are configured in LINUX, it is open source and students can use any \ndifferent programming environments through package installation. \n \nGuidelines to students \nA. Standard operating procedure \na) Explanation on today’s experiment by the concerned faculty using PPT covering \nthe following aspects: \n1) Name of the experiment \n2) Aim \n3) Software/Hardware requirements \n4) Writing the python programs by the students \n5) Commands for executing programs",
+      "allotted to you by the faculty. \n5. Execute your task in the laboratory, and record the results / output in the lab  observation note \nbook, and get certified by the concerned faculty. \n6. All the students should be polite and cooperative with the laboratory staff, must  maintain the \ndiscipline and decency in the laboratory. \n7. Computer labs are established with sophisticated and high -end branded  systems, which  \nshould be utilized properly."
+    ],
+    "retrieved_pages": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "retrieval_hit": false,
+    "refused": true
+  },
+  {
+    "id": "q04",
+    "answerable": true,
+    "type": "multi-part",
+    "question": "What CPU and how much RAM do the lab systems have?",
+    "ground_truth": "Intel Core i3-3240 CPU at 3.40 GHz with 4 GB RAM.",
+    "expected_pages": [
+      9
+    ],
+    "evidence": [
+      "i3-3240",
+      "4GB"
+    ],
+    "answer": "Intel® Core™ i3‑3240 CPU @ 3.40 GHz and 4 GB of RAM.",
+    "contexts": [
+      "B. Tech – CSE (AI & ML) R-20 \n \n \nIntroduction about lab \nSystem configurations are as follows: \n Hardware / Software’s installed: Intel® CORE™ i3-3240 CPU@3.40GHZRAM: \n4GB / Anaconda Navigator or Python and Jupyter Notebook or Google Colab. \n Packages required to run the programs: Math, Scipy, Numpy, Matplotlib, \nPandas, Sklearn, Tensorflow, Keras etc. \n Systems are provided for students in the 1:1 ratio. \n Systems are assigned numbers and same system is allotted for students when they \ndo the lab.",
+      "allotted to you by the faculty. \n5. Execute your task in the laboratory, and record the results / output in the lab  observation note \nbook, and get certified by the concerned faculty. \n6. All the students should be polite and cooperative with the laboratory staff, must  maintain the \ndiscipline and decency in the laboratory. \n7. Computer labs are established with sophisticated and high -end branded  systems, which  \nshould be utilized properly.",
+      "do the lab. \n All Systems are configured in LINUX, it is open source and students can use any \ndifferent programming environments through package installation. \n \nGuidelines to students \nA. Standard operating procedure \na) Explanation on today’s experiment by the concerned faculty using PPT covering \nthe following aspects: \n1) Name of the experiment \n2) Aim \n3) Software/Hardware requirements \n4) Writing the python programs by the students \n5) Commands for executing programs",
+      " Students are supposed to occupy the computers allotted to them and are not supposed \nto talk or make noise in the lab. \n Students, after completion of each experiment they need to be updated in observation \nnotes and same to be updated in the record. \n Lab records need to be submitted after completion of experiment and get it corrected \nwith the concerned lab faculty. \n If a student is absent for any lab, they need to be completed the same experiment in the \nfree time before attending next lab.",
+      "3. Student should enter into the laboratory with: \na. Laboratory observation notes with all the details (Problem statement, Aim, Algorithm, \nProcedure, Program, Expected Output, etc.,) filled in for the lab session. \nb. Laboratory Record updated up to the last session experiments and other utensils (if any) \nneeded in the lab. \nc. Proper Dress code and Identity card. \n4. Sign in the laboratory login register, write the TIME -IN, and occupy the computer  system \nallotted to you by the faculty."
+    ],
+    "retrieved_pages": [
+      9,
+      10,
+      12
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q05",
+    "answerable": true,
+    "type": "multi-part",
+    "question": "How are the 15 marks for day-to-day evaluation distributed?",
+    "ground_truth": "3 marks each for Regularity, Program written, Execution & Result, Viva-Voce and Dress Code.",
+    "expected_pages": [
+      11
+    ],
+    "evidence": [
+      "Regularity",
+      "Execution & Result",
+      "Dress Code"
+    ],
+    "answer": "Regularity – 3 marks  \nProgram written – 3 marks  \nExecution & Result – 3 marks  \nViva‑Voce – 3 marks  \nDress Code – 3 marks",
+    "contexts": [
+      "submitted and get it corrected by the faculty. \n If record is not submitted in time or record is not written properly, the evaluation marks (5M)  \nwill be deducted. \nAwarding the marks for day-to-day evaluation \nTotal marks for day-to-day evaluation is 15 Marks as per Autonomous (JNTUH). These \n15  Marks are distributed as: \nRegularity 3 Marks \nProgram written 3 Marks \nExecution & Result 3 Marks \nViva-Voce 3 Marks \nDress Code 3 Marks \nAllocation of Marks for Lab Internal",
+      "Dress Code 3 Marks \nAllocation of Marks for Lab Internal \nTotal marks for lab internal are 30 Marks as per Autonomous (JNTUH) \nThese 30 Marks are distributed as: \nAverage of day-to-day evaluation marks: 15 \nMarks  Lab Mid exam: 10 Marks \nVIVA & Observation: 5 Marks \n \nAllocation of Marks for Lab External \nTotal marks for lab Internal and External are 70 Marks as per Autonomous / (JNTUH). \nThese 70 External Lab Marks are distributed as: \nProgram Written 30 Marks \nProgram Execution and Result 20 Marks",
+      "Program Execution and Result 20 Marks \nViva-Voce 10 Marks \nRecord 10 Marks \n \n \n11",
+      "B. Tech – CSE (AI & ML) R-20 \n \n \n \n \nInstructions to maintain the record \n Before start of the first lab, they have to buy the record and bring the record to the lab. \n Regularly (Weekly) update the record after completion of the experiment and get it corrected \nwith concerned lab in -charge for continuous evaluation. In case the record is lost inform the  \nsame day to the faculty in charge and get the new record within 2 days the record has to be  \nsubmitted and get it corrected by the faculty.",
+      "#model.fit(X_train, y_train, batch_size=32, epochs=300) \nmodel.fit(X_train, y_train, epochs=5) \nscore = model.evaluate(X_test, y_test) \nprint(score) \n \nOUTPUT:"
+    ],
+    "retrieved_pages": [
+      11,
+      19
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q06",
+    "answerable": true,
+    "type": "multi-part",
+    "question": "How are the 30 internal lab marks distributed?",
+    "ground_truth": "Average of day-to-day evaluation: 15 marks; lab mid exam: 10 marks; viva and observation: 5 marks.",
+    "expected_pages": [
+      11
+    ],
+    "evidence": [
+      "Lab Mid exam: 10",
+      "VIVA & Observation: 5"
+    ],
+    "answer": "The 30 internal lab marks are allocated as follows:  \n- **Day‑to‑day evaluation (average)**: 15 marks  \n- **Lab mid‑exam**: 10 marks  \n- **VIVA & observation**: 5 marks",
+    "contexts": [
+      "Dress Code 3 Marks \nAllocation of Marks for Lab Internal \nTotal marks for lab internal are 30 Marks as per Autonomous (JNTUH) \nThese 30 Marks are distributed as: \nAverage of day-to-day evaluation marks: 15 \nMarks  Lab Mid exam: 10 Marks \nVIVA & Observation: 5 Marks \n \nAllocation of Marks for Lab External \nTotal marks for lab Internal and External are 70 Marks as per Autonomous / (JNTUH). \nThese 70 External Lab Marks are distributed as: \nProgram Written 30 Marks \nProgram Execution and Result 20 Marks",
+      "submitted and get it corrected by the faculty. \n If record is not submitted in time or record is not written properly, the evaluation marks (5M)  \nwill be deducted. \nAwarding the marks for day-to-day evaluation \nTotal marks for day-to-day evaluation is 15 Marks as per Autonomous (JNTUH). These \n15  Marks are distributed as: \nRegularity 3 Marks \nProgram written 3 Marks \nExecution & Result 3 Marks \nViva-Voce 3 Marks \nDress Code 3 Marks \nAllocation of Marks for Lab Internal",
+      "allotted to you by the faculty. \n5. Execute your task in the laboratory, and record the results / output in the lab  observation note \nbook, and get certified by the concerned faculty. \n6. All the students should be polite and cooperative with the laboratory staff, must  maintain the \ndiscipline and decency in the laboratory. \n7. Computer labs are established with sophisticated and high -end branded  systems, which  \nshould be utilized properly.",
+      "B. Tech – CSE (AI & ML) R-20 \n \n \n \n \nB. Guide Lines to Students in Lab \n \nDisciplinary to be maintained by the students in the Lab \n \n Students are required to carry their lab observation book and record book with \ncompleted experiments while entering the lab. \n Students must use the equipment with care. Any damage is caused student is punishable. \n Students are not allowed to use their cell phones/pen drives/ CDs in labs. \n Students need to maintain proper dress code along with ID Card.",
+      " Students are supposed to occupy the computers allotted to them and are not supposed \nto talk or make noise in the lab. \n Students, after completion of each experiment they need to be updated in observation \nnotes and same to be updated in the record. \n Lab records need to be submitted after completion of experiment and get it corrected \nwith the concerned lab faculty. \n If a student is absent for any lab, they need to be completed the same experiment in the \nfree time before attending next lab."
+    ],
+    "retrieved_pages": [
+      10,
+      11,
+      12
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q07",
+    "answerable": true,
+    "type": "multi-part",
+    "question": "How are the 70 external lab marks distributed?",
+    "ground_truth": "Program written 30, program execution and result 20, viva-voce 10, record 10.",
+    "expected_pages": [
+      11
+    ],
+    "evidence": [
+      "Program Written",
+      "Program Execution and Result",
+      "Viva-Voce"
+    ],
+    "answer": "The 70 external lab marks are allocated as follows:  \n- **Program Written:** 30 marks  \n- **Program Execution and Result:** 20 marks",
+    "contexts": [
+      "Dress Code 3 Marks \nAllocation of Marks for Lab Internal \nTotal marks for lab internal are 30 Marks as per Autonomous (JNTUH) \nThese 30 Marks are distributed as: \nAverage of day-to-day evaluation marks: 15 \nMarks  Lab Mid exam: 10 Marks \nVIVA & Observation: 5 Marks \n \nAllocation of Marks for Lab External \nTotal marks for lab Internal and External are 70 Marks as per Autonomous / (JNTUH). \nThese 70 External Lab Marks are distributed as: \nProgram Written 30 Marks \nProgram Execution and Result 20 Marks",
+      "submitted and get it corrected by the faculty. \n If record is not submitted in time or record is not written properly, the evaluation marks (5M)  \nwill be deducted. \nAwarding the marks for day-to-day evaluation \nTotal marks for day-to-day evaluation is 15 Marks as per Autonomous (JNTUH). These \n15  Marks are distributed as: \nRegularity 3 Marks \nProgram written 3 Marks \nExecution & Result 3 Marks \nViva-Voce 3 Marks \nDress Code 3 Marks \nAllocation of Marks for Lab Internal",
+      "allotted to you by the faculty. \n5. Execute your task in the laboratory, and record the results / output in the lab  observation note \nbook, and get certified by the concerned faculty. \n6. All the students should be polite and cooperative with the laboratory staff, must  maintain the \ndiscipline and decency in the laboratory. \n7. Computer labs are established with sophisticated and high -end branded  systems, which  \nshould be utilized properly.",
+      "B. Tech – CSE (AI & ML) R-20 \n \n \n \n \nB. Guide Lines to Students in Lab \n \nDisciplinary to be maintained by the students in the Lab \n \n Students are required to carry their lab observation book and record book with \ncompleted experiments while entering the lab. \n Students must use the equipment with care. Any damage is caused student is punishable. \n Students are not allowed to use their cell phones/pen drives/ CDs in labs. \n Students need to maintain proper dress code along with ID Card.",
+      " Students are supposed to occupy the computers allotted to them and are not supposed \nto talk or make noise in the lab. \n Students, after completion of each experiment they need to be updated in observation \nnotes and same to be updated in the record. \n Lab records need to be submitted after completion of experiment and get it corrected \nwith the concerned lab faculty. \n If a student is absent for any lab, they need to be completed the same experiment in the \nfree time before attending next lab."
+    ],
+    "retrieved_pages": [
+      10,
+      11,
+      12
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q08",
+    "answerable": true,
+    "type": "single-fact",
+    "question": "What happens if the lab record is not submitted on time or is not written properly?",
+    "ground_truth": "The evaluation marks (5M) will be deducted.",
+    "expected_pages": [
+      11
+    ],
+    "evidence": [
+      "marks (5M) will be deducted"
+    ],
+    "answer": "If the lab record is not submitted on time or is not written properly, the evaluation marks (5 M) will be deducted.",
+    "contexts": [
+      " Students are supposed to occupy the computers allotted to them and are not supposed \nto talk or make noise in the lab. \n Students, after completion of each experiment they need to be updated in observation \nnotes and same to be updated in the record. \n Lab records need to be submitted after completion of experiment and get it corrected \nwith the concerned lab faculty. \n If a student is absent for any lab, they need to be completed the same experiment in the \nfree time before attending next lab.",
+      "B. Tech – CSE (AI & ML) R-20 \n \n \n \n \nInstructions to maintain the record \n Before start of the first lab, they have to buy the record and bring the record to the lab. \n Regularly (Weekly) update the record after completion of the experiment and get it corrected \nwith concerned lab in -charge for continuous evaluation. In case the record is lost inform the  \nsame day to the faculty in charge and get the new record within 2 days the record has to be  \nsubmitted and get it corrected by the faculty.",
+      "3. Student should enter into the laboratory with: \na. Laboratory observation notes with all the details (Problem statement, Aim, Algorithm, \nProcedure, Program, Expected Output, etc.,) filled in for the lab session. \nb. Laboratory Record updated up to the last session experiments and other utensils (if any) \nneeded in the lab. \nc. Proper Dress code and Identity card. \n4. Sign in the laboratory login register, write the TIME -IN, and occupy the computer  system \nallotted to you by the faculty.",
+      "submitted and get it corrected by the faculty. \n If record is not submitted in time or record is not written properly, the evaluation marks (5M)  \nwill be deducted. \nAwarding the marks for day-to-day evaluation \nTotal marks for day-to-day evaluation is 15 Marks as per Autonomous (JNTUH). These \n15  Marks are distributed as: \nRegularity 3 Marks \nProgram written 3 Marks \nExecution & Result 3 Marks \nViva-Voce 3 Marks \nDress Code 3 Marks \nAllocation of Marks for Lab Internal",
+      "allotted to you by the faculty. \n5. Execute your task in the laboratory, and record the results / output in the lab  observation note \nbook, and get certified by the concerned faculty. \n6. All the students should be polite and cooperative with the laboratory staff, must  maintain the \ndiscipline and decency in the laboratory. \n7. Computer labs are established with sophisticated and high -end branded  systems, which  \nshould be utilized properly."
+    ],
+    "retrieved_pages": [
+      10,
+      11,
+      12
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q09",
+    "answerable": true,
+    "type": "single-fact",
+    "question": "How early should students arrive at the lab?",
+    "ground_truth": "At least 5 minutes before the starting time; students who come after 5 minutes are not allowed in.",
+    "expected_pages": [
+      12
+    ],
+    "evidence": [
+      "at least 5 minutes before"
+    ],
+    "answer": "At least 5 minutes before the scheduled start time.",
+    "contexts": [
+      "B. Tech – CSE (AI & ML) R-20 \n \n \n \n \nC. General laboratory instructions \n1. Students are advised to come to the laboratory at least 5 minutes before (to the starting \ntime), those who come after 5 minutes will not be allowed into the lab. \n2. Plan your task properly much before to the commencement, come prepared to the lab \nwith the synopsis / program / experiment details. \n3. Student should enter into the laboratory with:",
+      "free time before attending next lab. \nSteps to perform experiments in the lab by the student \n \nStep 1: Students have to write the date, aim and for  that experiment in the observation book. \nStep 2: Students have to listen and understand the experiment explained by the faculty and  \nnote down the important points in the observation book. \nStep 3: Students need to write procedure/algorithm in the observation book. \nStep 4: Analyze and Develop/Implement the logic of the program by the student",
+      "3. Student should enter into the laboratory with: \na. Laboratory observation notes with all the details (Problem statement, Aim, Algorithm, \nProcedure, Program, Expected Output, etc.,) filled in for the lab session. \nb. Laboratory Record updated up to the last session experiments and other utensils (if any) \nneeded in the lab. \nc. Proper Dress code and Identity card. \n4. Sign in the laboratory login register, write the TIME -IN, and occupy the computer  system \nallotted to you by the faculty.",
+      " Students are supposed to occupy the computers allotted to them and are not supposed \nto talk or make noise in the lab. \n Students, after completion of each experiment they need to be updated in observation \nnotes and same to be updated in the record. \n Lab records need to be submitted after completion of experiment and get it corrected \nwith the concerned lab faculty. \n If a student is absent for any lab, they need to be completed the same experiment in the \nfree time before attending next lab.",
+      "allotted to you by the faculty. \n5. Execute your task in the laboratory, and record the results / output in the lab  observation note \nbook, and get certified by the concerned faculty. \n6. All the students should be polite and cooperative with the laboratory staff, must  maintain the \ndiscipline and decency in the laboratory. \n7. Computer labs are established with sophisticated and high -end branded  systems, which  \nshould be utilized properly."
+    ],
+    "retrieved_pages": [
+      10,
+      12
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q10",
+    "answerable": true,
+    "type": "multi-part",
+    "question": "Which sklearn class does Week-1 (a) use for the single-unit perceptron, and which data file does it read?",
+    "ground_truth": "Perceptron() from sklearn.linear_model, reading placement.csv.",
+    "expected_pages": [
+      15
+    ],
+    "evidence": [
+      "from sklearn.linear_model import Perceptron",
+      "placement.csv"
+    ],
+    "answer": "It uses the **`sklearn.linear_model.Perceptron`** class and reads the **`placement.csv`** file.",
+    "contexts": [
+      "R-20 \n \nWeek-1 \n \na. Design a single unit perceptron for classification of a linearly separable binary dataset (placement.csv) \nwithout using pre-defined models. Use the Perceptron() from sklearn. \n \nProgram \n \nOUTPUT: \n# Single unit perceptron \nimport numpy as np \nimport pandas as pd \nimport seaborn as sns \nimport matplotlib.pyplot as plt \nfrom sklearn.linear_model import Perceptron \n \ndf=pd.read_csv('/content/gdrive/My Drive/ML_lab/placement.csv') \nX = df.iloc[:,0:2] \ny = df.iloc[:,-1] \np = Perceptron()",
+      "R-20 \n \n \nOUTPUT: \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \nExercise \nIdentify the problem with single unit Perceptron. Classify using Not- and XNOR-ed data and analyze the result.",
+      "B. Tech – CSE (AI & ML) R-20 \n \n \n \nINDEX \n \n \nDeep Learning Lab Manual \n(R20A6683) \nS. No. Name of the Program Page No. \n \n1 \na. Design a single unit perceptron for classification of a linearly separable  \nbinary dataset without using pre-defined models. Use the Perceptron() from \nsklearn. \nb. Identify the problem with single unit Perceptron. Classify using Or-, And- \nand Xor-ed data and analyze the result. \n \n \n2 \nBuild an Artificial Neural Network by implementing the Backpropagation",
+      "R-20 \n \nb. Identify the problem with single unit Perceptron. Classify using Or-, And- and Xor-ed data and analysis the \nresult. \n \nProgram \n# Perceptron on Or-, And- and Xor-ed data \nimport numpy as np \nimport pandas as pd \nimport matplotlib.pyplot as plt \nimport seaborn as sns \nor_data = pd.DataFrame() \nand_data = pd.DataFrame() \nxor_data = pd.DataFrame() \n \nor_data['input1']=[1,1,0,0] \nor_data['input2']=[1,0,1,0] \nor_data['ouput']=[1,1,1,0] \n \nand_data['input1']=[1,1,0,0] \nand_data['input2']=[1,0,1,0]",
+      "suitable dataset. \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n14"
+    ],
+    "retrieved_pages": [
+      13,
+      14,
+      15,
+      17,
+      18
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q11",
+    "answerable": true,
+    "type": "multi-page",
+    "question": "Which logic functions are classified with the perceptron in Week-1 (b), and which two are left for the exercise?",
+    "ground_truth": "OR, AND and XOR data are classified in the program; the exercise asks for NOT and XNOR data.",
+    "expected_pages": [
+      17,
+      18
+    ],
+    "evidence": [
+      "Or-, And- and Xor-ed",
+      "Not- and XNOR-ed"
+    ],
+    "answer": "In Week‑1 (b) the perceptron was used to classify the **OR**, **AND** and **XOR** logic functions.  \nThe two logic functions that are left for the exercise are **NOT** and **XNOR**.",
+    "contexts": [
+      "R-20 \n \n \nOUTPUT: \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \nExercise \nIdentify the problem with single unit Perceptron. Classify using Not- and XNOR-ed data and analyze the result.",
+      "R-20 \n \nb. Identify the problem with single unit Perceptron. Classify using Or-, And- and Xor-ed data and analysis the \nresult. \n \nProgram \n# Perceptron on Or-, And- and Xor-ed data \nimport numpy as np \nimport pandas as pd \nimport matplotlib.pyplot as plt \nimport seaborn as sns \nor_data = pd.DataFrame() \nand_data = pd.DataFrame() \nxor_data = pd.DataFrame() \n \nor_data['input1']=[1,1,0,0] \nor_data['input2']=[1,0,1,0] \nor_data['ouput']=[1,1,1,0] \n \nand_data['input1']=[1,1,0,0] \nand_data['input2']=[1,0,1,0]",
+      "B. Tech – CSE (AI & ML) R-20 \n \n \n \nINDEX \n \n \nDeep Learning Lab Manual \n(R20A6683) \nS. No. Name of the Program Page No. \n \n1 \na. Design a single unit perceptron for classification of a linearly separable  \nbinary dataset without using pre-defined models. Use the Perceptron() from \nsklearn. \nb. Identify the problem with single unit Perceptron. Classify using Or-, And- \nand Xor-ed data and analyze the result. \n \n \n2 \nBuild an Artificial Neural Network by implementing the Backpropagation",
+      "R-20 \n \nWeek-1 \n \na. Design a single unit perceptron for classification of a linearly separable binary dataset (placement.csv) \nwithout using pre-defined models. Use the Perceptron() from sklearn. \n \nProgram \n \nOUTPUT: \n# Single unit perceptron \nimport numpy as np \nimport pandas as pd \nimport seaborn as sns \nimport matplotlib.pyplot as plt \nfrom sklearn.linear_model import Perceptron \n \ndf=pd.read_csv('/content/gdrive/My Drive/ML_lab/placement.csv') \nX = df.iloc[:,0:2] \ny = df.iloc[:,-1] \np = Perceptron()",
+      "R-20 \n \nExercise: \n \nDesign a single unit perceptron for classification of a linearly separable binary dataset without using pre-defined \nmodels. Use the Perceptron() from sklearn. \n \n[hint-use make_classification() to generate binary dataset from sklearn \nEg: \nfrom sklearn.datasets import make_classification \nX, y = make_classification(n_samples=100, n_features=2, \nn_informative=1,n_redundant=0,n_classes=2, n_clusters_per_class=1, \nrandom_state=41,hypercube=False,class_sep=10) \n]"
+    ],
+    "retrieved_pages": [
+      13,
+      15,
+      16,
+      17,
+      18
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q12",
+    "answerable": true,
+    "type": "multi-part",
+    "question": "Which dataset and test split does the Week-2 backpropagation ANN use?",
+    "ground_truth": "The Iris dataset with test_size=0.40.",
+    "expected_pages": [
+      19
+    ],
+    "evidence": [
+      "load_iris",
+      "test_size=0.40"
+    ],
+    "answer": "The Week‑2 back‑propagation ANN is built on the **Iris** dataset (loaded with `datasets.load_iris()`).  \nThe code imports `train_test_split` from scikit‑learn, so the data is split into training and test sets using that function (the exact split ratio isn’t shown in the snippet, so it would use the default parameters unless otherwise specified).",
+    "contexts": [
+      "R-20 \n \nWeek-3 \n \nBuild a Deep Feed Forward ANN by implementing the Backpropagation algorithm and test the same \nusing appropriate data sets. Use the number of hidden layers >=4. \n \nProgram: \nfrom keras.models import Sequential \nfrom keras.layers import Dense, Activation \nimport numpy as np \nimport pandas as pd \nfrom sklearn import datasets \niris = datasets.load_iris() \nX, y = datasets.load_iris(return_X_y = True) \nfrom sklearn.model_selection import train_test_split",
+      "R-20 \n \n \nWeek-2 \n \nBuild an Artificial Neural Network by implementing the Backpropagation algorithm and test the same \nusing appropriate data sets. Vary the activation functions used and compare the results. \n \nProgram: \nfrom keras.models import Sequential \nfrom keras.layers import Dense, Activation \nimport numpy as np \nimport pandas as pd \nfrom sklearn import datasets \niris = datasets.load_iris() \nX, y = datasets.load_iris( return_X_y = True) \nfrom sklearn.model_selection import train_test_split",
+      "algorithm and test the same using appropriate data sets. Vary the activation \nfunctions used and compare the results. \n   \n3 Build a Deep Feed Forward ANN by implementing the Backpropagation algorithm and test the same using appropriate data sets. Use the number of hidden layers >=4.  \n \n4 \nDesign and implement an Image classification model to classify a dataset of images \nusing Deep Feed Forward NN. Record the accuracy corresponding to the number of \nepochs. Use the MNIST, CIFAR-10 datasets. \n \n \n5",
+      "R-20 \n \nWeek-8 \n \nDesign and implement a CNN model (with 4+ layers of convolutions) to classify multi category image datasets. Use \nthe concept of regularization and dropout while designing the CNN model. Use the Fashion MNIST datasets. \nRecord the Training accuracy and Test accuracy corresponding to the following architectures: \na. Base Model \nb. Model with L1 Regularization \nc. Model with L2 Regularization \nd. Model with Dropout \ne. Model with both L2 (or L1) and Dropout \n \nProgram",
+      "B. Tech – CSE (AI & ML) R-20 \n \n \n \nINDEX \n \n \nDeep Learning Lab Manual \n(R20A6683) \nS. No. Name of the Program Page No. \n \n1 \na. Design a single unit perceptron for classification of a linearly separable  \nbinary dataset without using pre-defined models. Use the Perceptron() from \nsklearn. \nb. Identify the problem with single unit Perceptron. Classify using Or-, And- \nand Xor-ed data and analyze the result. \n \n \n2 \nBuild an Artificial Neural Network by implementing the Backpropagation"
+    ],
+    "retrieved_pages": [
+      13,
+      19,
+      22,
+      36
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q13",
+    "answerable": true,
+    "type": "single-fact",
+    "question": "What is the minimum number of hidden layers required in the Week-3 deep feed forward ANN?",
+    "ground_truth": "At least 4 hidden layers (>=4).",
+    "expected_pages": [
+      22
+    ],
+    "evidence": [
+      "hidden layers >=4"
+    ],
+    "answer": "4",
+    "contexts": [
+      "R-20 \n \nWeek-3 \n \nBuild a Deep Feed Forward ANN by implementing the Backpropagation algorithm and test the same \nusing appropriate data sets. Use the number of hidden layers >=4. \n \nProgram: \nfrom keras.models import Sequential \nfrom keras.layers import Dense, Activation \nimport numpy as np \nimport pandas as pd \nfrom sklearn import datasets \niris = datasets.load_iris() \nX, y = datasets.load_iris(return_X_y = True) \nfrom sklearn.model_selection import train_test_split",
+      "R-20 \n \nExercise: \nModify the above NN model to run on Ionosphere dataset with number of hidden layers >=4. Take training data \npercentage 30%, test data percentage 70%. No. of epochs=100, activation function ReLu, optimizer ADAM.",
+      "R-20 \n \nWeek-4 \nDesign and implement an Image classification model to classify a dataset of images using Deep Feed Forward \nNN. Record the accuracy corresponding to the number of epochs. Use the MNIST datasets. \n \nProgram \n#load required packages \nimport tensorflow as tf \nfrom tensorflow import keras \nfrom keras.models import Sequential \nfrom keras import Input \nfrom keras.layers import Dense \nimport pandas as pd \nimport numpy as np \nimport sklearn \nfrom sklearn.metrics import classification_report",
+      "algorithm and test the same using appropriate data sets. Vary the activation \nfunctions used and compare the results. \n   \n3 Build a Deep Feed Forward ANN by implementing the Backpropagation algorithm and test the same using appropriate data sets. Use the number of hidden layers >=4.  \n \n4 \nDesign and implement an Image classification model to classify a dataset of images \nusing Deep Feed Forward NN. Record the accuracy corresponding to the number of \nepochs. Use the MNIST, CIFAR-10 datasets. \n \n \n5",
+      "R-20 \n \nWeek-8 \n \nDesign and implement a CNN model (with 4+ layers of convolutions) to classify multi category image datasets. Use \nthe concept of regularization and dropout while designing the CNN model. Use the Fashion MNIST datasets. \nRecord the Training accuracy and Test accuracy corresponding to the following architectures: \na. Base Model \nb. Model with L1 Regularization \nc. Model with L2 Regularization \nd. Model with Dropout \ne. Model with both L2 (or L1) and Dropout \n \nProgram"
+    ],
+    "retrieved_pages": [
+      13,
+      22,
+      23,
+      24,
+      36
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q14",
+    "answerable": true,
+    "type": "multi-part",
+    "question": "What hidden layer sizes and output layer does the Week-4 MNIST deep feed forward network use?",
+    "ground_truth": "Three hidden layers with 128, 64 and 32 neurons (ReLU activation), and a 10-unit softmax output layer.",
+    "expected_pages": [
+      25
+    ],
+    "evidence": [
+      "Dense(128",
+      "Dense(64",
+      "Dense(32",
+      "Dense(10, activation='softmax'"
+    ],
+    "answer": "I don't know.",
+    "contexts": [
+      "R-20 \n \nWeek-3 \n \nBuild a Deep Feed Forward ANN by implementing the Backpropagation algorithm and test the same \nusing appropriate data sets. Use the number of hidden layers >=4. \n \nProgram: \nfrom keras.models import Sequential \nfrom keras.layers import Dense, Activation \nimport numpy as np \nimport pandas as pd \nfrom sklearn import datasets \niris = datasets.load_iris() \nX, y = datasets.load_iris(return_X_y = True) \nfrom sklearn.model_selection import train_test_split",
+      "print(' Model Summary \nmodel.summary() \nprint(\"\") \n \n \n  ') \n \n# Printing the parameters:Deep Feed Forward Neural Network contains more than 100K \n#print(' Weights and Biases \n#for layer in model_d1.layers: \n  ') \n#print(\"Layer: \", layer.name) # print layer name \n#print(\" --Kernels (Weights): \", layer.get_weights()[0]) # kernels (weights) \n#print(\" --Biases: \", layer.get_weights()[1]) # biases \n \nprint(\"\") \nprint('---------- Evaluation on Training Data ----------- ')",
+      "R-20 \n \nWeek-4 \nDesign and implement an Image classification model to classify a dataset of images using Deep Feed Forward \nNN. Record the accuracy corresponding to the number of epochs. Use the MNIST datasets. \n \nProgram \n#load required packages \nimport tensorflow as tf \nfrom tensorflow import keras \nfrom keras.models import Sequential \nfrom keras import Input \nfrom keras.layers import Dense \nimport pandas as pd \nimport numpy as np \nimport sklearn \nfrom sklearn.metrics import classification_report",
+      "MNIST/MNIST/CIFAR10 datasets. \n \n \n \n \n8 \nDesign and implement a CNN model (with 4+ layers of convolutions) to classify  \nmulti category image datasets. Use the concept of regularization and dropout while \ndesigning the CNN model. Use the Fashion MNIST datasets. Record the Training  \naccuracy and Test accuracy corresponding to the following architectures: \na. Base Model \nb. Model with L1 Regularization \nc. Model with L2 Regularization \nd. Model with Dropout \ne. Model with both L2 (or L1) and Dropout",
+      "algorithm and test the same using appropriate data sets. Vary the activation \nfunctions used and compare the results. \n   \n3 Build a Deep Feed Forward ANN by implementing the Backpropagation algorithm and test the same using appropriate data sets. Use the number of hidden layers >=4.  \n \n4 \nDesign and implement an Image classification model to classify a dataset of images \nusing Deep Feed Forward NN. Record the accuracy corresponding to the number of \nepochs. Use the MNIST, CIFAR-10 datasets. \n \n \n5"
+    ],
+    "retrieved_pages": [
+      13,
+      22,
+      24,
+      25
+    ],
+    "retrieval_hit": true,
+    "refused": true
+  },
+  {
+    "id": "q15",
+    "answerable": true,
+    "type": "multi-part",
+    "question": "How many convolution layers and filters does the Week-5 CNN use, and for how many epochs is it trained?",
+    "ground_truth": "Two Conv2D layers with 64 filters each (3x3 kernel), each followed by ReLU and 2x2 max pooling; trained for 10 epochs with batch size 64.",
+    "expected_pages": [
+      28
+    ],
+    "evidence": [
+      "Conv2D(64, (3,3)",
+      "epochs=10",
+      "batch_size=64"
+    ],
+    "answer": "I don't know.",
+    "contexts": [
+      "R-20 \n \nWeek-10 \n \nDesign and implement a CNN model to classify CIFAR10 image dataset. Use the concept of Data Augmentation \nwhile designing the CNN model. Record the accuracy corresponding to the number of epochs. \n \n# data augmentation with flow function \n \nfrom future import print_function \n \nimport tensorflow as tf \nfrom tensorflow import keras \nfrom tensorflow.keras.datasets import cifar10 \nfrom tensorflow.keras.preprocessing.image import ImageDataGenerator",
+      "R-20 \n \nWeek-7 \n \nDesign and implement a CNN model (with 2+ layers of convolutions) to classify multi category image datasets. \nUse the concept of padding and Batch Normalization while designing the CNN model. Record the accuracy  \ncorresponding to the number of epochs. Use the Fashion MNIST datasets. \n \nProgram \n# Batch-Normalization and padding \n \nimport keras \nfrom keras.datasets import fashion_mnist \nfrom keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D, \nBatchNormalization",
+      "R-20 \n \nWeek-6 \nDesign and implement a CNN model (with 4+ layers of convolutions) to classify multi category image datasets.  \nRecord the accuracy corresponding to the number of epochs. Use the Fashion MNIST datasets. Record the time \nrequired to run the program, using CPU as well as using GPU in Colab. \n \n \nProgram- \nimport keras \nfrom keras.datasets import fashion_mnist \nfrom keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D \nfrom keras.models import Sequential",
+      "R-20 \n \nWeek-5 \n \nDesign and implement a CNN model (with 2 layers of convolutions) to classify multi category image datasets. \nRecord the accuracy corresponding to the number of epochs. Use the MNIST, CIFAR-10 datasets. \n \nProgram \n \nimport keras \nfrom keras.datasets import mnist \nfrom keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D \nfrom keras.models import Sequential \nfrom keras.utils import to_categorical \nimport numpy as np \nimport matplotlib.pyplot as plt",
+      "R-20 \n \nWeek-4 \nDesign and implement an Image classification model to classify a dataset of images using Deep Feed Forward \nNN. Record the accuracy corresponding to the number of epochs. Use the MNIST datasets. \n \nProgram \n#load required packages \nimport tensorflow as tf \nfrom tensorflow import keras \nfrom keras.models import Sequential \nfrom keras import Input \nfrom keras.layers import Dense \nimport pandas as pd \nimport numpy as np \nimport sklearn \nfrom sklearn.metrics import classification_report"
+    ],
+    "retrieved_pages": [
+      24,
+      28,
+      30,
+      33,
+      46
+    ],
+    "retrieval_hit": true,
+    "refused": true
+  },
+  {
+    "id": "q16",
+    "answerable": true,
+    "type": "multi-page",
+    "question": "What must be recorded when running the Week-6 CNN program on Fashion MNIST?",
+    "ground_truth": "The accuracy for the number of epochs, and the time required to run the program on CPU as well as on GPU in Colab.",
+    "expected_pages": [
+      30,
+      32
+    ],
+    "evidence": [
+      "Record the time",
+      "CPU as well as using GPU"
+    ],
+    "answer": "Record the accuracy at each epoch and the total run‑time of the program – once on a CPU and once on a GPU (e.g., in Colab).",
+    "contexts": [
+      "R-20 \n \nWeek-6 \nDesign and implement a CNN model (with 4+ layers of convolutions) to classify multi category image datasets.  \nRecord the accuracy corresponding to the number of epochs. Use the Fashion MNIST datasets. Record the time \nrequired to run the program, using CPU as well as using GPU in Colab. \n \n \nProgram- \nimport keras \nfrom keras.datasets import fashion_mnist \nfrom keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D \nfrom keras.models import Sequential",
+      "R-20 \n \nExercise: \n \nImplement the standard LeNet CNN architecture model to classify multi category image dataset (Fashion  \nMNIST) and check the accuracy. Below note down only the changes made and the accuracies obtained for epochs \n5, 50, 250.",
+      "R-20 \n \nWeek-7 \n \nDesign and implement a CNN model (with 2+ layers of convolutions) to classify multi category image datasets. \nUse the concept of padding and Batch Normalization while designing the CNN model. Record the accuracy  \ncorresponding to the number of epochs. Use the Fashion MNIST datasets. \n \nProgram \n# Batch-Normalization and padding \n \nimport keras \nfrom keras.datasets import fashion_mnist \nfrom keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D, \nBatchNormalization",
+      "MNIST/MNIST/CIFAR10 datasets. \n \n \n \n \n8 \nDesign and implement a CNN model (with 4+ layers of convolutions) to classify  \nmulti category image datasets. Use the concept of regularization and dropout while \ndesigning the CNN model. Use the Fashion MNIST datasets. Record the Training  \naccuracy and Test accuracy corresponding to the following architectures: \na. Base Model \nb. Model with L1 Regularization \nc. Model with L2 Regularization \nd. Model with Dropout \ne. Model with both L2 (or L1) and Dropout",
+      "R-20 \n \nWeek-8 \n \nDesign and implement a CNN model (with 4+ layers of convolutions) to classify multi category image datasets. Use \nthe concept of regularization and dropout while designing the CNN model. Use the Fashion MNIST datasets. \nRecord the Training accuracy and Test accuracy corresponding to the following architectures: \na. Base Model \nb. Model with L1 Regularization \nc. Model with L2 Regularization \nd. Model with Dropout \ne. Model with both L2 (or L1) and Dropout \n \nProgram"
+    ],
+    "retrieved_pages": [
+      13,
+      30,
+      33,
+      36,
+      50
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q17",
+    "answerable": true,
+    "type": "single-fact",
+    "question": "Which epoch values are required in the Week-7 exercise on padding and Batch Normalization?",
+    "ground_truth": "5, 25 and 225 epochs.",
+    "expected_pages": [
+      35
+    ],
+    "evidence": [
+      "5, 25, 225"
+    ],
+    "answer": "The Week‑7 exercise requires you to record accuracy at **5, 25, and 225 epochs**.",
+    "contexts": [
+      "whenever required. Record the accuracy corresponding to the number of epochs. \nRecord the time required to run the program, using CPU as well as using GPU in \nColab. \n \n \n7 \nDesign and implement a CNN model (with 2+ layers of convolutions) to  \nclassify multi category image datasets. Use the concept of padding and Batch \nNormalization while designing the CNN model. Record the accuracy  \ncorresponding to the number of epochs. Use the Fashion  \nMNIST/MNIST/CIFAR10 datasets. \n \n \n \n \n8",
+      "R-20 \n \nWeek-7 \n \nDesign and implement a CNN model (with 2+ layers of convolutions) to classify multi category image datasets. \nUse the concept of padding and Batch Normalization while designing the CNN model. Record the accuracy  \ncorresponding to the number of epochs. Use the Fashion MNIST datasets. \n \nProgram \n# Batch-Normalization and padding \n \nimport keras \nfrom keras.datasets import fashion_mnist \nfrom keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D, \nBatchNormalization",
+      "R-20 \n \nWeek-10 \n \nDesign and implement a CNN model to classify CIFAR10 image dataset. Use the concept of Data Augmentation \nwhile designing the CNN model. Record the accuracy corresponding to the number of epochs. \n \n# data augmentation with flow function \n \nfrom future import print_function \n \nimport tensorflow as tf \nfrom tensorflow import keras \nfrom tensorflow.keras.datasets import cifar10 \nfrom tensorflow.keras.preprocessing.image import ImageDataGenerator",
+      "R-20 \n \nExercise: \n \nDesign and implement a CNN model (with 2+ layers of convolutions) to classify multi category image datasets. \nUse the concept of Batch-Normalization and padding while designing the CNN model. Record the accuracy  \ncorresponding to the number of epochs 5, 25, 225. Make the necessary changes whenever required. Use the  \nMNIST/CIFAR-10 datasets. Below note down only the changes made and the accuracies obtained.",
+      "R-20 \n \nWeek-4 \nDesign and implement an Image classification model to classify a dataset of images using Deep Feed Forward \nNN. Record the accuracy corresponding to the number of epochs. Use the MNIST datasets. \n \nProgram \n#load required packages \nimport tensorflow as tf \nfrom tensorflow import keras \nfrom keras.models import Sequential \nfrom keras import Input \nfrom keras.layers import Dense \nimport pandas as pd \nimport numpy as np \nimport sklearn \nfrom sklearn.metrics import classification_report"
+    ],
+    "retrieved_pages": [
+      13,
+      24,
+      33,
+      35,
+      46
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q18",
+    "answerable": true,
+    "type": "multi-page",
+    "question": "Which five architectures are compared in Week-8, and what L1 regularization strength does the program use?",
+    "ground_truth": "Base model; model with L1 regularization; model with L2 regularization; model with Dropout; model with both L2 (or L1) and Dropout. The L1 program uses kernel_regularizer=l1(0.01).",
+    "expected_pages": [
+      36,
+      37
+    ],
+    "evidence": [
+      "Base Model",
+      "Model with L1 Regularization",
+      "Model with Dropout",
+      "l1(0.01)"
+    ],
+    "answer": "The five architectures compared in Week‑8 are:\n\n1. **Base Model**  \n2. **Model with L1 Regularization**  \n3. **Model with L2 Regularization**  \n4. **Model with Dropout**  \n5. **Model with both L2 (or L1) Regularization and Dropout**\n\nThe program uses an **L1 regularization strength of 0.01** (`l1(0.01)`).\n",
+    "contexts": [
+      "R-20 \n \nWeek-8 \n \nDesign and implement a CNN model (with 4+ layers of convolutions) to classify multi category image datasets. Use \nthe concept of regularization and dropout while designing the CNN model. Use the Fashion MNIST datasets. \nRecord the Training accuracy and Test accuracy corresponding to the following architectures: \na. Base Model \nb. Model with L1 Regularization \nc. Model with L2 Regularization \nd. Model with Dropout \ne. Model with both L2 (or L1) and Dropout \n \nProgram",
+      "e. Model with both L2 (or L1) and Dropout \n \n9 Use the concept of Data Augmentation to increase the data size from a single image.  \n \n10 \nDesign and implement a CNN model to classify CIFAR10 image dataset. \nUse the concept of Data Augmentation while designing the CNN model.  \nRecord the accuracy corresponding to the number of epochs. \n \n11 Implement the standard LeNet-5 CNN architecture model to classify multi -category image dataset (MNIST, Fashion MNIST) and check the accuracy.  \n13",
+      "R-20 \n \nOUTPUT:  \na. Base Model: \n \n \n \n \n \n \n \n \n \n \n \nb. Model with L1 Regularization: \n \n \n \n \n \n \n \n \n \n \n \nc. Model with L2 Regularization: \n \n \n \n \n \n \n \n \n \n \n \nd. Model with Dropout: \n \n \n \n \n \n \n \n \n \n \ne. Model with both L2 (or L1) and Dropout:",
+      "MNIST/MNIST/CIFAR10 datasets. \n \n \n \n \n8 \nDesign and implement a CNN model (with 4+ layers of convolutions) to classify  \nmulti category image datasets. Use the concept of regularization and dropout while \ndesigning the CNN model. Use the Fashion MNIST datasets. Record the Training  \naccuracy and Test accuracy corresponding to the following architectures: \na. Base Model \nb. Model with L1 Regularization \nc. Model with L2 Regularization \nd. Model with Dropout \ne. Model with both L2 (or L1) and Dropout",
+      "e. Model with both L2 (or L1) and Dropout \n \nProgram \n \na. Base Model: Modify the b. experiment program commenting on kernel_regularizer=l1(0.01) function. See the below \nprogram for reference. \n \nb. \n# L1 Regularizer \nimport keras \nfrom keras.datasets import fashion_mnist \nfrom keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D \nfrom keras.models import Sequential \nfrom keras.regularizers import l1 \nfrom keras.utils import to_categorical \nimport numpy as np"
+    ],
+    "retrieved_pages": [
+      13,
+      36,
+      42
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q19",
+    "answerable": true,
+    "type": "multi-part",
+    "question": "Which Keras class does Week-9 use to create new images from a single image, and what shift setting does it use?",
+    "ground_truth": "ImageDataGenerator with width_shift_range=[-100,100]; it generates 9 augmented samples.",
+    "expected_pages": [
+      44
+    ],
+    "evidence": [
+      "ImageDataGenerator(width_shift_range=[-100,100])",
+      "range(9)"
+    ],
+    "answer": "I don't know.",
+    "contexts": [
+      "R-20 \n \nWeek-4 \nDesign and implement an Image classification model to classify a dataset of images using Deep Feed Forward \nNN. Record the accuracy corresponding to the number of epochs. Use the MNIST datasets. \n \nProgram \n#load required packages \nimport tensorflow as tf \nfrom tensorflow import keras \nfrom keras.models import Sequential \nfrom keras import Input \nfrom keras.layers import Dense \nimport pandas as pd \nimport numpy as np \nimport sklearn \nfrom sklearn.metrics import classification_report",
+      "R-20 \n \nWeek-10 \n \nDesign and implement a CNN model to classify CIFAR10 image dataset. Use the concept of Data Augmentation \nwhile designing the CNN model. Record the accuracy corresponding to the number of epochs. \n \n# data augmentation with flow function \n \nfrom future import print_function \n \nimport tensorflow as tf \nfrom tensorflow import keras \nfrom tensorflow.keras.datasets import cifar10 \nfrom tensorflow.keras.preprocessing.image import ImageDataGenerator",
+      "R-20 \n \nWeek-6 \nDesign and implement a CNN model (with 4+ layers of convolutions) to classify multi category image datasets.  \nRecord the accuracy corresponding to the number of epochs. Use the Fashion MNIST datasets. Record the time \nrequired to run the program, using CPU as well as using GPU in Colab. \n \n \nProgram- \nimport keras \nfrom keras.datasets import fashion_mnist \nfrom keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D \nfrom keras.models import Sequential",
+      "R-20 \n \nWeek-15 \nImplement Generative Adversarial Networks to generate realistic Images. Use MNIST dataset. \n \nProgram- \n# loading the mnist dataset \nfrom tensorflow.keras.datasets.mnist import load_data \n \n# load the images into memory \n(trainX, trainy), (testX, testy) = load_data() \n \n# summarize the shape of the dataset \nprint('Train', trainX.shape, trainy.shape) \nprint('Test', testX.shape, testy.shape) \n \n#plot of 25 images from the MNIST training dataset, arranged in a 5×5 square.",
+      "R-20 \n \nWeek-7 \n \nDesign and implement a CNN model (with 2+ layers of convolutions) to classify multi category image datasets. \nUse the concept of padding and Batch Normalization while designing the CNN model. Record the accuracy  \ncorresponding to the number of epochs. Use the Fashion MNIST datasets. \n \nProgram \n# Batch-Normalization and padding \n \nimport keras \nfrom keras.datasets import fashion_mnist \nfrom keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D, \nBatchNormalization"
+    ],
+    "retrieved_pages": [
+      24,
+      30,
+      33,
+      46,
+      58
+    ],
+    "retrieval_hit": false,
+    "refused": true
+  },
+  {
+    "id": "q20",
+    "answerable": true,
+    "type": "single-fact",
+    "question": "Which optimizer and learning rate does the Week-10 CIFAR-10 program use?",
+    "ground_truth": "RMSprop (tf.keras.optimizers.legacy.RMSprop) with learning rate 0.0005 and decay 1e-6.",
+    "expected_pages": [
+      47
+    ],
+    "evidence": [
+      "RMSprop(lr=0.0005, decay=1e-6)"
+    ],
+    "answer": "I don't know.",
+    "contexts": [
+      "R-20 \n \nWeek-10 \n \nDesign and implement a CNN model to classify CIFAR10 image dataset. Use the concept of Data Augmentation \nwhile designing the CNN model. Record the accuracy corresponding to the number of epochs. \n \n# data augmentation with flow function \n \nfrom future import print_function \n \nimport tensorflow as tf \nfrom tensorflow import keras \nfrom tensorflow.keras.datasets import cifar10 \nfrom tensorflow.keras.preprocessing.image import ImageDataGenerator",
+      "B. Tech – CSE (AI & ML) R-20 \n \n \nIntroduction about lab \nSystem configurations are as follows: \n Hardware / Software’s installed: Intel® CORE™ i3-3240 CPU@3.40GHZRAM: \n4GB / Anaconda Navigator or Python and Jupyter Notebook or Google Colab. \n Packages required to run the programs: Math, Scipy, Numpy, Matplotlib, \nPandas, Sklearn, Tensorflow, Keras etc. \n Systems are provided for students in the 1:1 ratio. \n Systems are assigned numbers and same system is allotted for students when they \ndo the lab.",
+      "Program Execution and Result 20 Marks \nViva-Voce 10 Marks \nRecord 10 Marks \n \n \n11",
+      "R-20 \n \nExercise: \nNote down the accuracies for the following set of experiments on the given NN and compare the results \nDo the required modifications needed. Take training data percentage 30%, test data percentage 70%. \n \nb) NN model with 2 hidden layers \n(1) Iris dataset \n(a) No. of epochs=100, \n(i) check accuracy using activation functions Sigmoid, ReLu, Tanh \n(ii) check accuracy using optimizer sgd, ADAM \n(iii) check accuracy by varying learning rate in sgd as 0.0001, 0.0005, 5.",
+      "whenever required. Record the accuracy corresponding to the number of epochs. \nRecord the time required to run the program, using CPU as well as using GPU in \nColab. \n \n \n7 \nDesign and implement a CNN model (with 2+ layers of convolutions) to  \nclassify multi category image datasets. Use the concept of padding and Batch \nNormalization while designing the CNN model. Record the accuracy  \ncorresponding to the number of epochs. Use the Fashion  \nMNIST/MNIST/CIFAR10 datasets. \n \n \n \n \n8"
+    ],
+    "retrieved_pages": [
+      9,
+      11,
+      13,
+      20,
+      46
+    ],
+    "retrieval_hit": false,
+    "refused": true
+  },
+  {
+    "id": "q21",
+    "answerable": true,
+    "type": "multi-part",
+    "question": "Which activation function and layer sizes does the LeNet-5 program in Week-11 use?",
+    "ground_truth": "tanh activation; Conv2D layers with 6, 16 and 120 filters (kernel size 5) with average pooling, then Dense 84 (tanh) and a 10-unit softmax output.",
+    "expected_pages": [
+      49
+    ],
+    "evidence": [
+      "Conv2D(6, kernel_size=5",
+      "Conv2D(16",
+      "Conv2D(120",
+      "Dense(84, activation='tanh')"
+    ],
+    "answer": "**LeNet‑5 (Week‑11)**  \n\n| Layer | Size / Parameters | Activation |\n|-------|-------------------|------------|\n| Conv2D | 6 filters, each 5 × 5 (stride = 1, padding = valid) | *linear* (no explicit activation) |\n| Flatten | – | – |\n| Dense (hidden) | 84 units | **tanh** |\n| Dense (output) | 10 units | **softmax** |\n\nSo the network uses a tanh activation for the 84‑unit hidden layer and a softmax activation for the 10‑class output layer. The convolutional layer has 6 filters of size 5 × 5, followed by a flattening step, then the 84‑unit dense layer, and finally the 10‑unit output dense layer.",
+    "contexts": [
+      "padding='valid'), #C5 \nkeras.layers.Flatten(), #Flatten \nkeras.layers.Dense(84, activation='tanh'), #F6 \nkeras.layers.Dense(10, activation='softmax') #Output layer \n]) \n \nlenet_5_model.compile(optimizer='adam', \nloss=keras.losses.sparse_categorical_crossentropy, metrics=['accuracy']) \nlenet_5_model.fit(train_x, train_y, epochs=5, validation_data=(val_x, val_y)) \nlenet_5_model.evaluate(test_x, test_y) \n \nOUTPUT:",
+      "from sklearn.model_selection import train_test_split \nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.40) \n# Define the network model and its arguments. \n# Set the number of neurons/nodes for each layer: \nmodel = Sequential() \nmodel.add(Dense(2, input_shape=(4,))) \nmodel.add(Activation('sigmoid')) \nmodel.add(Dense(1)) \nmodel.add(Activation('sigmoid')) \nmodel.add(Dense(2, input_shape=(4,))) \nmodel.add(Activation('sigmoid')) \nmodel.add(Dense(1)) \nmodel.add(Activation('sigmoid'))",
+      "e. Model with both L2 (or L1) and Dropout \n \n9 Use the concept of Data Augmentation to increase the data size from a single image.  \n \n10 \nDesign and implement a CNN model to classify CIFAR10 image dataset. \nUse the concept of Data Augmentation while designing the CNN model.  \nRecord the accuracy corresponding to the number of epochs. \n \n11 Implement the standard LeNet-5 CNN architecture model to classify multi -category image dataset (MNIST, Fashion MNIST) and check the accuracy.  \n13",
+      "R-20 \n \nWeek-10 \n \nDesign and implement a CNN model to classify CIFAR10 image dataset. Use the concept of Data Augmentation \nwhile designing the CNN model. Record the accuracy corresponding to the number of epochs. \n \n# data augmentation with flow function \n \nfrom future import print_function \n \nimport tensorflow as tf \nfrom tensorflow import keras \nfrom tensorflow.keras.datasets import cifar10 \nfrom tensorflow.keras.preprocessing.image import ImageDataGenerator",
+      "print(' Model Summary \nmodel.summary() \nprint(\"\") \n \n \n  ') \n \n# Printing the parameters:Deep Feed Forward Neural Network contains more than 100K \n#print(' Weights and Biases \n#for layer in model_d1.layers: \n  ') \n#print(\"Layer: \", layer.name) # print layer name \n#print(\" --Kernels (Weights): \", layer.get_weights()[0]) # kernels (weights) \n#print(\" --Biases: \", layer.get_weights()[1]) # biases \n \nprint(\"\") \nprint('---------- Evaluation on Training Data ----------- ')"
+    ],
+    "retrieved_pages": [
+      13,
+      22,
+      25,
+      46,
+      49
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q22",
+    "answerable": true,
+    "type": "multi-part",
+    "question": "What input image size and final layers does the Week-12 VGG16 program use?",
+    "ground_truth": "Input size 224x224x3; two Dense(4096, relu) layers followed by Dense(2, softmax) for cat vs dog.",
+    "expected_pages": [
+      51
+    ],
+    "evidence": [
+      "input_shape=(224,224,3)",
+      "units=4096",
+      "units=2"
+    ],
+    "answer": "I don't know.",
+    "contexts": [
+      "R-20 \n \nWeek-12 \nImplement the standard VGG 16 CNN architecture model to classify cat and dog image  dataset and check the \naccuracy. \n \nProgram- \n# VGG16 \n \nimport keras,os \nfrom keras.models import Sequential \nfrom keras.layers import Dense, Conv2D, MaxPool2D, Flatten \nfrom keras.preprocessing.image import ImageDataGenerator \nimport numpy as np \ntrdata = ImageDataGenerator() \ntraindata = trdata.flow_from_directory(directory=\"/content/gdrive/My \nDrive/training_set\",target_size=(224,224))",
+      "e. Model with both L2 (or L1) and Dropout \n \n9 Use the concept of Data Augmentation to increase the data size from a single image.  \n \n10 \nDesign and implement a CNN model to classify CIFAR10 image dataset. \nUse the concept of Data Augmentation while designing the CNN model.  \nRecord the accuracy corresponding to the number of epochs. \n \n11 Implement the standard LeNet-5 CNN architecture model to classify multi -category image dataset (MNIST, Fashion MNIST) and check the accuracy.  \n13",
+      "R-20 \n \nWeek-10 \n \nDesign and implement a CNN model to classify CIFAR10 image dataset. Use the concept of Data Augmentation \nwhile designing the CNN model. Record the accuracy corresponding to the number of epochs. \n \n# data augmentation with flow function \n \nfrom future import print_function \n \nimport tensorflow as tf \nfrom tensorflow import keras \nfrom tensorflow.keras.datasets import cifar10 \nfrom tensorflow.keras.preprocessing.image import ImageDataGenerator",
+      "R-20 \n \nWeek-4 \nDesign and implement an Image classification model to classify a dataset of images using Deep Feed Forward \nNN. Record the accuracy corresponding to the number of epochs. Use the MNIST datasets. \n \nProgram \n#load required packages \nimport tensorflow as tf \nfrom tensorflow import keras \nfrom keras.models import Sequential \nfrom keras import Input \nfrom keras.layers import Dense \nimport pandas as pd \nimport numpy as np \nimport sklearn \nfrom sklearn.metrics import classification_report",
+      "R-20 \n \nWeek-9 \n \nUse the concept of data augmentation to increase the data size from a single image. \n \nProgram- \n \nOUTPUT: \n#data augmentation on a single image \n \nfrom numpy import expand_dims \nfrom tensorflow.keras.preprocessing import image \n#from keras.preprocessing.image import img_to_array \nfrom keras.preprocessing.image import ImageDataGenerator \nfrom matplotlib import pyplot \n# load the image \nimg = image.load_img('/content/gdrive/My Drive/data/train/cat.png') \n# convert to numpy array"
+    ],
+    "retrieved_pages": [
+      13,
+      24,
+      44,
+      46,
+      51
+    ],
+    "retrieval_hit": true,
+    "refused": true
+  },
+  {
+    "id": "q23",
+    "answerable": true,
+    "type": "multi-part",
+    "question": "Which callbacks does the Week-12 VGG16 program use?",
+    "ground_truth": "ModelCheckpoint (saving vgg16_1.h5, best model only) and EarlyStopping (patience=20).",
+    "expected_pages": [
+      52
+    ],
+    "evidence": [
+      "ModelCheckpoint",
+      "EarlyStopping",
+      "patience=20",
+      "vgg16_1.h5"
+    ],
+    "answer": "The Week‑12 VGG16 program uses two callbacks: **ModelCheckpoint** and **EarlyStopping**.",
+    "contexts": [
+      "R-20 \n \nmodel.summary() \n \nfrom keras.callbacks import ModelCheckpoint, EarlyStopping checkpoint = \nModelCheckpoint(\"vgg16_1.h5\", monitor='val_acc', verbose=1, save_best_only=True, \nsave_weights_only=False, mode='auto', period=1) \nearly = EarlyStopping(monitor='val_acc', min_delta=0, patience=20, verbose=1, \nmode='auto') \nhist = model.fit_generator(steps_per_epoch=100,generator=traindata, validation_data= \ntestdata, validation_steps=10,epochs=5,callbacks=[checkpoint,early])",
+      "5) Commands for executing programs \nWriting of the experiment in the Observation Book \nThe students will write the today’s experiment in the Observation book as per the \nfollowing format: \na) Name of the experiment \nb) Aim \nc) Writing the program \nd) Viva-Voce Questions and Answers \ne) Errors observed (if any) during compilation/execution \n \n \nSignature of the Faculty \n9",
+      "Program Execution and Result 20 Marks \nViva-Voce 10 Marks \nRecord 10 Marks \n \n \n11",
+      "whenever required. Record the accuracy corresponding to the number of epochs. \nRecord the time required to run the program, using CPU as well as using GPU in \nColab. \n \n \n7 \nDesign and implement a CNN model (with 2+ layers of convolutions) to  \nclassify multi category image datasets. Use the concept of padding and Batch \nNormalization while designing the CNN model. Record the accuracy  \ncorresponding to the number of epochs. Use the Fashion  \nMNIST/MNIST/CIFAR10 datasets. \n \n \n \n \n8",
+      "submitted and get it corrected by the faculty. \n If record is not submitted in time or record is not written properly, the evaluation marks (5M)  \nwill be deducted. \nAwarding the marks for day-to-day evaluation \nTotal marks for day-to-day evaluation is 15 Marks as per Autonomous (JNTUH). These \n15  Marks are distributed as: \nRegularity 3 Marks \nProgram written 3 Marks \nExecution & Result 3 Marks \nViva-Voce 3 Marks \nDress Code 3 Marks \nAllocation of Marks for Lab Internal"
+    ],
+    "retrieved_pages": [
+      9,
+      11,
+      13,
+      52
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q24",
+    "answerable": true,
+    "type": "multi-page",
+    "question": "What is the size of the noise vector for the Week-15 GAN generator, and what activation does the generator's last layer use?",
+    "ground_truth": "The noise vector has size 100; the last layer (Conv2DTranspose) uses tanh and outputs a 28x28x1 image.",
+    "expected_pages": [
+      59,
+      60
+    ],
+    "evidence": [
+      "input_shape=(100,)",
+      "activation='tanh'",
+      "noise_dim = 100"
+    ],
+    "answer": "The generator in the Week‑15 GAN takes a noise vector of **size 100**.  \nIts final layer uses a **tanh** activation function.",
+    "contexts": [
+      "R-20 \n \nWeek-15 \nImplement Generative Adversarial Networks to generate realistic Images. Use MNIST dataset. \n \nProgram- \n# loading the mnist dataset \nfrom tensorflow.keras.datasets.mnist import load_data \n \n# load the images into memory \n(trainX, trainy), (testX, testy) = load_data() \n \n# summarize the shape of the dataset \nprint('Train', trainX.shape, trainy.shape) \nprint('Test', testX.shape, testy.shape) \n \n#plot of 25 images from the MNIST training dataset, arranged in a 5×5 square.",
+      "R-20 \n \ndef train_step(images): \nnoise = tf.random.normal([BATCH_SIZE, noise_dim]) \n \nwith tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape: \ngenerated_images = generator(noise, training=True) \n \nreal_output = discriminator(images, training=True) \nfake_output = discriminator(generated_images, training=True) \n \ngen_loss = generator_loss(fake_output) \ndisc_loss = discriminator_loss(real_output, fake_output) \n \ngradients_of_generator = gen_tape.gradient(gen_loss, \ngenerator.trainable_variables)",
+      "paradigms of Deep Learning. \n Understand, learn and design GANs for the selected problems. \n \n Understand the concept of Auto-encoders and enhancing GANs using auto-encoders.",
+      "R-20 \n \nWeek-10 \n \nDesign and implement a CNN model to classify CIFAR10 image dataset. Use the concept of Data Augmentation \nwhile designing the CNN model. Record the accuracy corresponding to the number of epochs. \n \n# data augmentation with flow function \n \nfrom future import print_function \n \nimport tensorflow as tf \nfrom tensorflow import keras \nfrom tensorflow.keras.datasets import cifar10 \nfrom tensorflow.keras.preprocessing.image import ImageDataGenerator",
+      "R-20 \n \ntrain_dataset = \ntf.data.Dataset.from_tensor_slices(train_images).shuffle(BUFFER_SIZE).batch(BATCH_SIZ \nE) \n# input 7*7*256 (low resolution version of the output image) \n# outputs a single 28×28 grayscale image \n# this generator takes a vector of size 100 and first reshape that into (7, 7, 128) \nvector then applied transpose \n# convolution in combination with batch normalization. \n \n \ndef make_generator_model(): \nmodel = tf.keras.Sequential()"
+    ],
+    "retrieved_pages": [
+      8,
+      46,
+      58,
+      59,
+      61
+    ],
+    "retrieval_hit": true,
+    "refused": false
+  },
+  {
+    "id": "q25",
+    "answerable": true,
+    "type": "single-fact",
+    "question": "What noise factor is used to create the noisy images in the Week-16 denoising autoencoder?",
+    "ground_truth": "factor = 0.39 (Gaussian noise is added to the images, then clipped to the range 0 to 1).",
+    "expected_pages": [
+      64
+    ],
+    "evidence": [
+      "factor = 0.39",
+      "np.clip"
+    ],
+    "answer": "I don't know.",
+    "contexts": [
+      "R-20 \n \nWeek-16 \nImplement Auto encoders for image denoising on MNIST dataset. \n \n \nProgram- \n \n#Implement Auto encoders for image denoising on MNIST dataset. \n \nimport numpy as np \nimport matplotlib.pyplot as plt \nimport seaborn as sns \nimport tensorflow as tf \nimport keras \nfrom keras.models import Sequential \nfrom keras.layers import Conv2D,MaxPool2D, UpSampling2D,Dropout \nfrom keras.datasets import mnist \n(x_train,y_train),(x_test,y_test) = mnist.load_data() \n# to get the shape of the data",
+      "R-20 \n \nExercise: \n \nImplement Auto encoders for image denoising on Fashion MNIST dataset or on any suitable dataset of \nyour choice.",
+      "R-20 \n \nval_noisy_images = np.clip(val_noisy_images,0.,1.) \ntest_noisy_images = np.clip(test_noisy_images,0.,1.) \nplt.figure(figsize = (8,8)) \n \nfor i in range(25): \nplt.subplot(5,5,i+1) \nplt.title(str(y_train[i]),fontsize = 16, color = 'black', pad = 2) \nplt.imshow(train_noisy_images[i].reshape(1,28,28)[0], cmap = plt.cm.binary ) \nplt.xticks([]) \nplt.yticks([]) \n \nplt.show() \nmodel = Sequential() \n# encoder network \nmodel.add(Conv2D(filters = 128, kernel_size = (2,2), activation = 'relu', padding =",
+      "1.0,size = train_images.shape) \nval_noisy_images = val_images + factor * np.random.normal(loc = 0.0,scale = 1.0,size \n= val_images.shape) \ntest_noisy_images = test_images + factor * np.random.normal(loc = 0.0,scale = \n1.0,size = test_images.shape) \n \n# here maximum pixel value for our images may exceed 1 so we have to clip the images \ntrain_noisy_images = np.clip(train_noisy_images,0.,1.)",
+      "B. Tech – CSE (AI & ML) R-20 \n \n12 Implement the standard VGG-16 & 19 CNN architecture model to classify multi category image dataset and check the accuracy.  \n13 Implement RNN for sentiment analysis on movie reviews.  \n14 Implement Bidirectional LSTM for sentiment analysis on movie reviews.  \n \n15 \nImplement Generative Adversarial Networks to generate realistic Images. Use \nMNIST, Fashion MNIST or any human face datasets. \n \n \n16 \nImplement Auto encoders for image denoising on MNIST, Fashion MNIST or any"
+    ],
+    "retrieved_pages": [
+      14,
+      64,
+      65,
+      68
+    ],
+    "retrieval_hit": true,
+    "refused": true
+  },
+  {
+    "id": "u01",
+    "answerable": false,
+    "type": "unanswerable",
+    "question": "What test accuracy did the Week-5 MNIST CNN achieve?",
+    "ground_truth": "I don't know.",
+    "expected_pages": [],
+    "note": "Trap: the manual only prints 'Test accuracy' in code. Every OUTPUT section is blank, so no accuracy value exists.",
+    "answer": "I don't know.",
+    "contexts": [
+      "R-20 \n \nWeek-11 \n \nImplement the standard LeNet CNN architecture model to classify multi category image dataset (MNIST) and \ncheck the accuracy. \n \nProgram- \n# LeNet \n \nimport tensorflow as tf \nfrom tensorflow import keras \nimport numpy as np \n(train_x, train_y), (test_x, test_y) = keras.datasets.mnist.load_data() \ntrain_x = train_x / 255.0 \ntest_x = test_x / 255.0 \ntrain_x = tf.expand_dims(train_x, 3) \ntest_x = tf.expand_dims(test_x, 3) \n \nval_x = train_x[:5000] \nval_y = train_y[:5000]",
+      "R-20 \n \nExercise: \n \nImplement the standard LeNet CNN architecture model to classify multi category image dataset (Fashion  \nMNIST) and check the accuracy. Below note down only the changes made and the accuracies obtained for epochs \n5, 50, 250.",
+      "MNIST/MNIST/CIFAR10 datasets. \n \n \n \n \n8 \nDesign and implement a CNN model (with 4+ layers of convolutions) to classify  \nmulti category image datasets. Use the concept of regularization and dropout while \ndesigning the CNN model. Use the Fashion MNIST datasets. Record the Training  \naccuracy and Test accuracy corresponding to the following architectures: \na. Base Model \nb. Model with L1 Regularization \nc. Model with L2 Regularization \nd. Model with Dropout \ne. Model with both L2 (or L1) and Dropout",
+      "R-20 \n \nWeek-8 \n \nDesign and implement a CNN model (with 4+ layers of convolutions) to classify multi category image datasets. Use \nthe concept of regularization and dropout while designing the CNN model. Use the Fashion MNIST datasets. \nRecord the Training accuracy and Test accuracy corresponding to the following architectures: \na. Base Model \nb. Model with L1 Regularization \nc. Model with L2 Regularization \nd. Model with Dropout \ne. Model with both L2 (or L1) and Dropout \n \nProgram",
+      "R-20 \n \nExercise: \n \nDesign and implement a CNN model (with 2+ layers of convolutions) to classify multi category image datasets. \nUse the concept of Batch-Normalization and padding while designing the CNN model. Record the accuracy  \ncorresponding to the number of epochs 5, 25, 225. Make the necessary changes whenever required. Use the  \nMNIST/CIFAR-10 datasets. Below note down only the changes made and the accuracies obtained."
+    ],
+    "retrieved_pages": [
+      13,
+      35,
+      36,
+      49,
+      50
+    ],
+    "retrieval_hit": false,
+    "refused": true
+  },
+  {
+    "id": "u02",
+    "answerable": false,
+    "type": "unanswerable",
+    "question": "What is the name of the Head of the Department who signs this lab manual?",
+    "ground_truth": "I don't know.",
+    "expected_pages": [],
+    "note": "The manual only has the titles 'Head of the Department' and 'Principal' with no names.",
+    "answer": "I don't know.",
+    "contexts": [
+      "allotted to you by the faculty. \n5. Execute your task in the laboratory, and record the results / output in the lab  observation note \nbook, and get certified by the concerned faculty. \n6. All the students should be polite and cooperative with the laboratory staff, must  maintain the \ndiscipline and decency in the laboratory. \n7. Computer labs are established with sophisticated and high -end branded  systems, which  \nshould be utilized properly.",
+      "3. Student should enter into the laboratory with: \na. Laboratory observation notes with all the details (Problem statement, Aim, Algorithm, \nProcedure, Program, Expected Output, etc.,) filled in for the lab session. \nb. Laboratory Record updated up to the last session experiments and other utensils (if any) \nneeded in the lab. \nc. Proper Dress code and Identity card. \n4. Sign in the laboratory login register, write the TIME -IN, and occupy the computer  system \nallotted to you by the faculty.",
+      "B. Tech – CSE (AI & ML) R-20 \n \n \n \n \nB. Guide Lines to Students in Lab \n \nDisciplinary to be maintained by the students in the Lab \n \n Students are required to carry their lab observation book and record book with \ncompleted experiments while entering the lab. \n Students must use the equipment with care. Any damage is caused student is punishable. \n Students are not allowed to use their cell phones/pen drives/ CDs in labs. \n Students need to maintain proper dress code along with ID Card.",
+      " Students are supposed to occupy the computers allotted to them and are not supposed \nto talk or make noise in the lab. \n Students, after completion of each experiment they need to be updated in observation \nnotes and same to be updated in the record. \n Lab records need to be submitted after completion of experiment and get it corrected \nwith the concerned lab faculty. \n If a student is absent for any lab, they need to be completed the same experiment in the \nfree time before attending next lab.",
+      "B. Tech – CSE (AI & ML) R-20 \n \n \nIntroduction about lab \nSystem configurations are as follows: \n Hardware / Software’s installed: Intel® CORE™ i3-3240 CPU@3.40GHZRAM: \n4GB / Anaconda Navigator or Python and Jupyter Notebook or Google Colab. \n Packages required to run the programs: Math, Scipy, Numpy, Matplotlib, \nPandas, Sklearn, Tensorflow, Keras etc. \n Systems are provided for students in the 1:1 ratio. \n Systems are assigned numbers and same system is allotted for students when they \ndo the lab."
+    ],
+    "retrieved_pages": [
+      9,
+      10,
+      12
+    ],
+    "retrieval_hit": false,
+    "refused": true
+  },
+  {
+    "id": "u03",
+    "answerable": false,
+    "type": "unanswerable",
+    "question": "Which GPU model does Google Colab assign for the Week-6 timing experiment?",
+    "ground_truth": "I don't know.",
+    "expected_pages": [],
+    "note": "The manual says to record CPU and GPU time in Colab but never names a GPU model.",
+    "answer": "I don't know.",
+    "contexts": [
+      "whenever required. Record the accuracy corresponding to the number of epochs. \nRecord the time required to run the program, using CPU as well as using GPU in \nColab. \n \n \n7 \nDesign and implement a CNN model (with 2+ layers of convolutions) to  \nclassify multi category image datasets. Use the concept of padding and Batch \nNormalization while designing the CNN model. Record the accuracy  \ncorresponding to the number of epochs. Use the Fashion  \nMNIST/MNIST/CIFAR10 datasets. \n \n \n \n \n8",
+      "B. Tech – CSE (AI & ML) R-20 \n \n \nIntroduction about lab \nSystem configurations are as follows: \n Hardware / Software’s installed: Intel® CORE™ i3-3240 CPU@3.40GHZRAM: \n4GB / Anaconda Navigator or Python and Jupyter Notebook or Google Colab. \n Packages required to run the programs: Math, Scipy, Numpy, Matplotlib, \nPandas, Sklearn, Tensorflow, Keras etc. \n Systems are provided for students in the 1:1 ratio. \n Systems are assigned numbers and same system is allotted for students when they \ndo the lab.",
+      "R-20 \n \nExercise: \n \nDesign and implement a CNN model (with 4+ layers of convolutions) to classify multi category image datasets.  \nUse the MNIST/ CIFAR-10 datasets. Set the No. of Epoch as 5, 10 and 20. Make the necessary changes whenever \nrequired. Record the accuracy corresponding to the number of epochs. Record the time required to run the  \nprogram, using CPU as well as using GPU in Colab. Below note down only the chang es made and the accuracies \nobtained.",
+      "R-20 \n \nWeek-6 \nDesign and implement a CNN model (with 4+ layers of convolutions) to classify multi category image datasets.  \nRecord the accuracy corresponding to the number of epochs. Use the Fashion MNIST datasets. Record the time \nrequired to run the program, using CPU as well as using GPU in Colab. \n \n \nProgram- \nimport keras \nfrom keras.datasets import fashion_mnist \nfrom keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D \nfrom keras.models import Sequential",
+      "R-20 \n \nWeek-10 \n \nDesign and implement a CNN model to classify CIFAR10 image dataset. Use the concept of Data Augmentation \nwhile designing the CNN model. Record the accuracy corresponding to the number of epochs. \n \n# data augmentation with flow function \n \nfrom future import print_function \n \nimport tensorflow as tf \nfrom tensorflow import keras \nfrom tensorflow.keras.datasets import cifar10 \nfrom tensorflow.keras.preprocessing.image import ImageDataGenerator"
+    ],
+    "retrieved_pages": [
+      9,
+      13,
+      30,
+      32,
+      46
+    ],
+    "retrieval_hit": false,
+    "refused": true
+  },
+  {
+    "id": "u04",
+    "answerable": false,
+    "type": "unanswerable",
+    "question": "Which BERT or transformer model does the manual use for sentiment analysis?",
+    "ground_truth": "I don't know.",
+    "expected_pages": [],
+    "note": "The manual uses SimpleRNN and Bidirectional LSTM only; it never mentions BERT or transformers.",
+    "answer": "I don't know.",
+    "contexts": [
+      "R-20 \n \nWeek-14 \nImplement Bi-directional LSTM for sentiment analysis on movie reviews. \n \nProgram- \n# Bi directional LSTM \n \nimport numpy as np \nfrom keras.preprocessing import sequence \nfrom keras.utils import pad_sequences \nfrom keras.models import Sequential \nfrom keras.layers import Dense, Dropout, Embedding, LSTM, Bidirectional \nfrom keras.datasets import imdb \n \nn_unique_words = 10000 # cut texts after this number of words \nmaxlen = 200 \nbatch_size = 128",
+      "R-20 \n \nWeek-13 \n \nImplement RNN for sentiment analysis on movie reviews. \nProgram- \n# RNN sentiment analysis on movie reviews \n \nfrom keras.datasets import imdb \nfrom keras.preprocessing.text import Tokenizer \nfrom keras.utils import pad_sequences \nfrom keras import Sequential \nfrom keras.layers import \nDense,SimpleRNN,Embedding,Flatten(X_train,y_train),(X_test\n,y_test) = imdb.load_data() X_train = \npad_sequences(X_train,padding='post',maxlen=50) X_test = \npad_sequences(X_test,padding='post',maxlen=50)",
+      "B. Tech – CSE (AI & ML) R-20 \n \n12 Implement the standard VGG-16 & 19 CNN architecture model to classify multi category image dataset and check the accuracy.  \n13 Implement RNN for sentiment analysis on movie reviews.  \n14 Implement Bidirectional LSTM for sentiment analysis on movie reviews.  \n \n15 \nImplement Generative Adversarial Networks to generate realistic Images. Use \nMNIST, Fashion MNIST or any human face datasets. \n \n \n16 \nImplement Auto encoders for image denoising on MNIST, Fashion MNIST or any",
+      "print('Test loss', test_loss) \nprint('Test accuracy', test_acc) \n \nOUTPUT: \n \n \n \n \n \n \n \nExercise: \nImplement RNN for sentiment analysis on movie reviews. Use the concept of Embedding layer.",
+      "maxlen = 200 \nbatch_size = 128 \n(x_train, y_train),(x_test, y_test) = imdb.load_data(num_words=n_unique_words) \nx_train = pad_sequences(x_train, maxlen=maxlen) \nx_test = pad_sequences(x_test, maxlen=maxlen) \ny_train = np.array(y_train) \ny_test = np.array(y_test) \n \nmodel = Sequential() \nmodel.add(Embedding(n_unique_words, 128, input_length=maxlen)) \nmodel.add(Bidirectional(LSTM(64))) \nmodel.add(Dropout(0.5)) \nmodel.add(Dense(1, activation='sigmoid'))"
+    ],
+    "retrieved_pages": [
+      14,
+      54,
+      56
+    ],
+    "retrieval_hit": false,
+    "refused": true
+  },
+  {
+    "id": "u05",
+    "answerable": false,
+    "type": "unanswerable",
+    "question": "Who won the 2018 FIFA World Cup?",
+    "ground_truth": "I don't know.",
+    "expected_pages": [],
+    "note": "Out-of-domain question; nothing about football in the manual.",
+    "answer": "I don't know.",
+    "contexts": [
+      "Program Execution and Result 20 Marks \nViva-Voce 10 Marks \nRecord 10 Marks \n \n \n11",
+      "(iv) check accuracy using loss mean squared error, categorical cross entropy. \n(b) No. of epochs =300 \n(i) Repeat the same above variations \n(2) Ionosphere data \n(a) Repeat the same settings as Iris",
+      "submitted and get it corrected by the faculty. \n If record is not submitted in time or record is not written properly, the evaluation marks (5M)  \nwill be deducted. \nAwarding the marks for day-to-day evaluation \nTotal marks for day-to-day evaluation is 15 Marks as per Autonomous (JNTUH). These \n15  Marks are distributed as: \nRegularity 3 Marks \nProgram written 3 Marks \nExecution & Result 3 Marks \nViva-Voce 3 Marks \nDress Code 3 Marks \nAllocation of Marks for Lab Internal",
+      "R-20",
+      "R-20"
+    ],
+    "retrieved_pages": [
+      11,
+      20,
+      21,
+      55
+    ],
+    "retrieval_hit": false,
+    "refused": true
+  }
+]

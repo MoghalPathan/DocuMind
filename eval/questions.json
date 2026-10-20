@@ -1,0 +1,415 @@
+{
+  "document": "Lab_Manual_R20A6683_Deep_Learning_Year-IV_Semester-I.pdf",
+  "page_numbers": "Physical PDF page numbers (same as the page_label PyPDFLoader returns for this file).",
+  "how_to_score": "q01-q25: score with RAGAS using ground_truth. u01-u05: pass only if the answer says I don't know and sources are empty.",
+  "questions": [
+    {
+      "id": "q01",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "What is the course code of the Deep Learning lab manual?",
+      "ground_truth": "R20A6683.",
+      "expected_pages": [
+        13
+      ],
+      "evidence": [
+        "R20A6683"
+      ]
+    },
+    {
+      "id": "q02",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "Which college publishes this lab manual, and which year, semester and academic year is it for?",
+      "ground_truth": "Malla Reddy College of Engineering & Technology; B.Tech IV Year, I Semester, academic year 2024-25.",
+      "expected_pages": [
+        4
+      ],
+      "evidence": [
+        "MALLA REDDY COLLEGE OF ENGINEERING",
+        "IV YEAR",
+        "2024-25"
+      ]
+    },
+    {
+      "id": "q03",
+      "answerable": true,
+      "type": "multi-page",
+      "question": "How many programs are listed in the lab index?",
+      "ground_truth": "16 programs (S.No. 1 to 16, matching Week-1 to Week-16).",
+      "expected_pages": [
+        13,
+        14
+      ],
+      "evidence": [
+        "Deep Learning Lab Manual",
+        "Implement Auto encoders for image denoising"
+      ]
+    },
+    {
+      "id": "q04",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "What CPU and how much RAM do the lab systems have?",
+      "ground_truth": "Intel Core i3-3240 CPU at 3.40 GHz with 4 GB RAM.",
+      "expected_pages": [
+        9
+      ],
+      "evidence": [
+        "i3-3240",
+        "4GB"
+      ]
+    },
+    {
+      "id": "q05",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "How are the 15 marks for day-to-day evaluation distributed?",
+      "ground_truth": "3 marks each for Regularity, Program written, Execution & Result, Viva-Voce and Dress Code.",
+      "expected_pages": [
+        11
+      ],
+      "evidence": [
+        "Regularity",
+        "Execution & Result",
+        "Dress Code"
+      ]
+    },
+    {
+      "id": "q06",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "How are the 30 internal lab marks distributed?",
+      "ground_truth": "Average of day-to-day evaluation: 15 marks; lab mid exam: 10 marks; viva and observation: 5 marks.",
+      "expected_pages": [
+        11
+      ],
+      "evidence": [
+        "Lab Mid exam: 10",
+        "VIVA & Observation: 5"
+      ]
+    },
+    {
+      "id": "q07",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "How are the 70 external lab marks distributed?",
+      "ground_truth": "Program written 30, program execution and result 20, viva-voce 10, record 10.",
+      "expected_pages": [
+        11
+      ],
+      "evidence": [
+        "Program Written",
+        "Program Execution and Result",
+        "Viva-Voce"
+      ]
+    },
+    {
+      "id": "q08",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "What happens if the lab record is not submitted on time or is not written properly?",
+      "ground_truth": "The evaluation marks (5M) will be deducted.",
+      "expected_pages": [
+        11
+      ],
+      "evidence": [
+        "marks (5M) will be deducted"
+      ]
+    },
+    {
+      "id": "q09",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "How early should students arrive at the lab?",
+      "ground_truth": "At least 5 minutes before the starting time; students who come after 5 minutes are not allowed in.",
+      "expected_pages": [
+        12
+      ],
+      "evidence": [
+        "at least 5 minutes before"
+      ]
+    },
+    {
+      "id": "q10",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "Which sklearn class does Week-1 (a) use for the single-unit perceptron, and which data file does it read?",
+      "ground_truth": "Perceptron() from sklearn.linear_model, reading placement.csv.",
+      "expected_pages": [
+        15
+      ],
+      "evidence": [
+        "from sklearn.linear_model import Perceptron",
+        "placement.csv"
+      ]
+    },
+    {
+      "id": "q11",
+      "answerable": true,
+      "type": "multi-page",
+      "question": "Which logic functions are classified with the perceptron in Week-1 (b), and which two are left for the exercise?",
+      "ground_truth": "OR, AND and XOR data are classified in the program; the exercise asks for NOT and XNOR data.",
+      "expected_pages": [
+        17,
+        18
+      ],
+      "evidence": [
+        "Or-, And- and Xor-ed",
+        "Not- and XNOR-ed"
+      ]
+    },
+    {
+      "id": "q12",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "Which dataset and test split does the Week-2 backpropagation ANN use?",
+      "ground_truth": "The Iris dataset with test_size=0.40.",
+      "expected_pages": [
+        19
+      ],
+      "evidence": [
+        "load_iris",
+        "test_size=0.40"
+      ]
+    },
+    {
+      "id": "q13",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "What is the minimum number of hidden layers required in the Week-3 deep feed forward ANN?",
+      "ground_truth": "At least 4 hidden layers (>=4).",
+      "expected_pages": [
+        22
+      ],
+      "evidence": [
+        "hidden layers >=4"
+      ]
+    },
+    {
+      "id": "q14",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "What hidden layer sizes and output layer does the Week-4 MNIST deep feed forward network use?",
+      "ground_truth": "Three hidden layers with 128, 64 and 32 neurons (ReLU activation), and a 10-unit softmax output layer.",
+      "expected_pages": [
+        25
+      ],
+      "evidence": [
+        "Dense(128",
+        "Dense(64",
+        "Dense(32",
+        "Dense(10, activation='softmax'"
+      ]
+    },
+    {
+      "id": "q15",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "How many convolution layers and filters does the Week-5 CNN use, and for how many epochs is it trained?",
+      "ground_truth": "Two Conv2D layers with 64 filters each (3x3 kernel), each followed by ReLU and 2x2 max pooling; trained for 10 epochs with batch size 64.",
+      "expected_pages": [
+        28
+      ],
+      "evidence": [
+        "Conv2D(64, (3,3)",
+        "epochs=10",
+        "batch_size=64"
+      ]
+    },
+    {
+      "id": "q16",
+      "answerable": true,
+      "type": "multi-page",
+      "question": "What must be recorded when running the Week-6 CNN program on Fashion MNIST?",
+      "ground_truth": "The accuracy for the number of epochs, and the time required to run the program on CPU as well as on GPU in Colab.",
+      "expected_pages": [
+        30,
+        32
+      ],
+      "evidence": [
+        "Record the time",
+        "CPU as well as using GPU"
+      ]
+    },
+    {
+      "id": "q17",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "Which epoch values are required in the Week-7 exercise on padding and Batch Normalization?",
+      "ground_truth": "5, 25 and 225 epochs.",
+      "expected_pages": [
+        35
+      ],
+      "evidence": [
+        "5, 25, 225"
+      ]
+    },
+    {
+      "id": "q18",
+      "answerable": true,
+      "type": "multi-page",
+      "question": "Which five architectures are compared in Week-8, and what L1 regularization strength does the program use?",
+      "ground_truth": "Base model; model with L1 regularization; model with L2 regularization; model with Dropout; model with both L2 (or L1) and Dropout. The L1 program uses kernel_regularizer=l1(0.01).",
+      "expected_pages": [
+        36,
+        37
+      ],
+      "evidence": [
+        "Base Model",
+        "Model with L1 Regularization",
+        "Model with Dropout",
+        "l1(0.01)"
+      ]
+    },
+    {
+      "id": "q19",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "Which Keras class does Week-9 use to create new images from a single image, and what shift setting does it use?",
+      "ground_truth": "ImageDataGenerator with width_shift_range=[-100,100]; it generates 9 augmented samples.",
+      "expected_pages": [
+        44
+      ],
+      "evidence": [
+        "ImageDataGenerator(width_shift_range=[-100,100])",
+        "range(9)"
+      ]
+    },
+    {
+      "id": "q20",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "Which optimizer and learning rate does the Week-10 CIFAR-10 program use?",
+      "ground_truth": "RMSprop (tf.keras.optimizers.legacy.RMSprop) with learning rate 0.0005 and decay 1e-6.",
+      "expected_pages": [
+        47
+      ],
+      "evidence": [
+        "RMSprop(lr=0.0005, decay=1e-6)"
+      ]
+    },
+    {
+      "id": "q21",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "Which activation function and layer sizes does the LeNet-5 program in Week-11 use?",
+      "ground_truth": "tanh activation; Conv2D layers with 6, 16 and 120 filters (kernel size 5) with average pooling, then Dense 84 (tanh) and a 10-unit softmax output.",
+      "expected_pages": [
+        49
+      ],
+      "evidence": [
+        "Conv2D(6, kernel_size=5",
+        "Conv2D(16",
+        "Conv2D(120",
+        "Dense(84, activation='tanh')"
+      ]
+    },
+    {
+      "id": "q22",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "What input image size and final layers does the Week-12 VGG16 program use?",
+      "ground_truth": "Input size 224x224x3; two Dense(4096, relu) layers followed by Dense(2, softmax) for cat vs dog.",
+      "expected_pages": [
+        51
+      ],
+      "evidence": [
+        "input_shape=(224,224,3)",
+        "units=4096",
+        "units=2"
+      ]
+    },
+    {
+      "id": "q23",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "Which callbacks does the Week-12 VGG16 program use?",
+      "ground_truth": "ModelCheckpoint (saving vgg16_1.h5, best model only) and EarlyStopping (patience=20).",
+      "expected_pages": [
+        52
+      ],
+      "evidence": [
+        "ModelCheckpoint",
+        "EarlyStopping",
+        "patience=20",
+        "vgg16_1.h5"
+      ]
+    },
+    {
+      "id": "q24",
+      "answerable": true,
+      "type": "multi-page",
+      "question": "What is the size of the noise vector for the Week-15 GAN generator, and what activation does the generator's last layer use?",
+      "ground_truth": "The noise vector has size 100; the last layer (Conv2DTranspose) uses tanh and outputs a 28x28x1 image.",
+      "expected_pages": [
+        59,
+        60
+      ],
+      "evidence": [
+        "input_shape=(100,)",
+        "activation='tanh'",
+        "noise_dim = 100"
+      ]
+    },
+    {
+      "id": "q25",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "What noise factor is used to create the noisy images in the Week-16 denoising autoencoder?",
+      "ground_truth": "factor = 0.39 (Gaussian noise is added to the images, then clipped to the range 0 to 1).",
+      "expected_pages": [
+        64
+      ],
+      "evidence": [
+        "factor = 0.39",
+        "np.clip"
+      ]
+    },
+    {
+      "id": "u01",
+      "answerable": false,
+      "type": "unanswerable",
+      "question": "What test accuracy did the Week-5 MNIST CNN achieve?",
+      "ground_truth": "I don't know.",
+      "expected_pages": [],
+      "note": "Trap: the manual only prints 'Test accuracy' in code. Every OUTPUT section is blank, so no accuracy value exists."
+    },
+    {
+      "id": "u02",
+      "answerable": false,
+      "type": "unanswerable",
+      "question": "What is the name of the Head of the Department who signs this lab manual?",
+      "ground_truth": "I don't know.",
+      "expected_pages": [],
+      "note": "The manual only has the titles 'Head of the Department' and 'Principal' with no names."
+    },
+    {
+      "id": "u03",
+      "answerable": false,
+      "type": "unanswerable",
+      "question": "Which GPU model does Google Colab assign for the Week-6 timing experiment?",
+      "ground_truth": "I don't know.",
+      "expected_pages": [],
+      "note": "The manual says to record CPU and GPU time in Colab but never names a GPU model."
+    },
+    {
+      "id": "u04",
+      "answerable": false,
+      "type": "unanswerable",
+      "question": "Which BERT or transformer model does the manual use for sentiment analysis?",
+      "ground_truth": "I don't know.",
+      "expected_pages": [],
+      "note": "The manual uses SimpleRNN and Bidirectional LSTM only; it never mentions BERT or transformers."
+    },
+    {
+      "id": "u05",
+      "answerable": false,
+      "type": "unanswerable",
+      "question": "Who won the 2018 FIFA World Cup?",
+      "ground_truth": "I don't know.",
+      "expected_pages": [],
+      "note": "Out-of-domain question; nothing about football in the manual."
+    }
+  ]
+}
