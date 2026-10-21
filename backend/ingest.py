@@ -1,3 +1,4 @@
+import os
 import sys
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -7,7 +8,9 @@ def load_pdf(path):
     return PyPDFLoader(path).load()
 
 
-def split_docs(docs, chunk_size=512, chunk_overlap=64):
+def split_docs(docs, chunk_size=None, chunk_overlap=None):
+    chunk_size = chunk_size or int(os.getenv("CHUNK_SIZE", 512))
+    chunk_overlap = chunk_overlap or int(os.getenv("CHUNK_OVERLAP", 64))
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size, chunk_overlap=chunk_overlap
     )
