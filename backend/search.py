@@ -1,3 +1,4 @@
+import os
 import re
 import sys
 from functools import lru_cache
@@ -10,7 +11,7 @@ from sentence_transformers import CrossEncoder
 
 from store import get_embeddings, COLLECTION
 
-URL = "http://localhost:6333"
+URL = os.getenv("QDRANT_URL", "http://localhost:6333")
 
 
 def tokenize(text):

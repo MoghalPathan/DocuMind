@@ -1,0 +1,37 @@
+services:
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+
+  api:
+    build: .
+    image: documind
+    ports:
+      - "8000:8000"
+    env_file: .env
+    environment:
+      QDRANT_URL: http://qdrant:6333
+    depends_on:
+      - qdrant 
+    volumes:
+      - hf_cache:/root/.cache/huggingface
+      - ./data:/app/data
+
+  frontend:
+    image: documind
+    command: streamlit run frontend/app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    environment:
+      API_URL: http://api:8000
+    depends_on:
+      - api
+
+
+volumes:
+  qdrant_data:
+  hf_cache:      

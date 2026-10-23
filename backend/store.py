@@ -1,3 +1,4 @@
+import os
 import sys
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_qdrant import QdrantVectorStore
@@ -14,7 +15,7 @@ def store_chunks(chunks):
     return QdrantVectorStore.from_documents(
         chunks, 
         get_embeddings(),
-        url="http://localhost:6333",
+        url=os.getenv("QDRANT_URL", "http://localhost:6333"),
         collection_name=COLLECTION
     )
 

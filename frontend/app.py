@@ -1,7 +1,8 @@
+import os
 import requests
 import streamlit as st
 
-API = "http://127.0.0.1:8000"
+API = os.getenv("API_URL", "http://localhost:8000")
 
 st.title("Documind")
 st.caption("Ask question about your PDF. Answers come with sources.")

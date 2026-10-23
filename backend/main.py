@@ -8,7 +8,7 @@ from ingest import load_pdf, split_docs
 from store import store_chunks, COLLECTION
 
 app = FastAPI(title="DocuMind")
-client = QdrantClient(url="http://localhost:6333")
+client = QdrantClient(url=os.getenv("QDRANT_URL", "http://localhost:6333"))
 
 
 
