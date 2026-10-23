@@ -9,7 +9,7 @@ def load_pdf(path):
 
 
 def split_docs(docs, chunk_size=None, chunk_overlap=None):
-    chunk_size = chunk_size or int(os.getenv("CHUNK_SIZE", 512))
+    chunk_size = chunk_size or int(os.getenv("CHUNK_SIZE", 1000))
     chunk_overlap = chunk_overlap or int(os.getenv("CHUNK_OVERLAP", 64))
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size, chunk_overlap=chunk_overlap

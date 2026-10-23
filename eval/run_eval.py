@@ -37,7 +37,7 @@ for item in data["questions"]:
         "contexts": contexts,
         "retrieved_pages": retrieved,
         "retrieval_hit": any(p in retrieved for p in item["expected_pages"]),
-        "evidence_hit": any(norm(e) in joined for e in item.get("evidence", [])),
+        "evidence_hit": all(norm(e) in joined for e in item.get("evidence", [])),
         "refused": "i don't know" in text.lower(),
     })  
     print("done", item["id"])
