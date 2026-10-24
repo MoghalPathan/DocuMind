@@ -10,16 +10,28 @@ const EXAMPLES = [
 export default function App() {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  function send(text) {
+  async function send(text) {
     const q = (text ?? input).trim()
-    if (!q) return
-    setMessages((m) => [
-      ...m,
-      { role: 'user', text: q },
-      { role: 'bot', text: 'Backend not connected yet (demo answer).', sources: [6, 8] },
-    ])
+    if (!q || loading) return
+    setMessages((m) => [...m, { role: 'user', text: q }])
     setInput('')
+    setLoading(true)
+    try {
+      const r = await fetch('/query', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({ question: q }),
+      })
+      if (!r.ok) throw new Error('Server error ' + r.status)
+      const data = await r.json() 
+      setMessages((m) => [...m, { role: 'bot', text: data.answer, sources: data.sources }]) 
+    } catch (e) {
+      setMessages((m) => [...m, {role: 'bot', text: 'Something went wrong: ' + e.message }])
+    } finally {
+      setLoading(false)
+    }
   }
 
   function onKeyDown(e) {
@@ -87,6 +99,13 @@ export default function App() {
                 </div>
               ))
             )}
+
+            {loading && (
+              <div className="msg">
+                <div className="avatar bot">AI</div>
+                <div className="bubble">Thinking…</div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -99,7 +118,7 @@ export default function App() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeyDown}
             />
-            <button className="send" disabled={!input.trim()} onClick={() => send()}>↑</button>
+            <button className="send" disabled={!input.trim() || loading} onClick={() => send()}>↑</button>
           </div>
           <div className="hint">Enter to send · Shift+Enter for a new line</div>
         </div>
