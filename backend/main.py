@@ -1,5 +1,6 @@
 import os 
 import shutil
+from collections import Counter
 from fastapi import FastAPI, File, UploadFile
 from pydantic import BaseModel
 from qdrant_client import QdrantClient, models
@@ -55,5 +56,25 @@ def ingest(file: UploadFile = File(...)):
 def query(body: Question):
     text, pages = answer(body.question)
     return {"answer": text, "sources": pages}
+
+
+@app.get("/documents")
+def documents():
+    client =QdrantClient(url=os.getenv("QDRANT_URL", "http://localhost:6333"))
+    if not client.collection_exists(COLLECTION):
+        return []
+    counts = Counter()
+    offset = None
+    while True:
+        points, offset = client.scroll(
+            COLLECTION, limit=500, offset=offset, with_payload=True, with_vectors=False
+        )
+        for p in points:
+            src = (p.payload or {}).get("metadata", {}).get("source", "unknown")
+            counts[src.replace("\\", "/").split("/")[-1]] += 1
+        if offset is None:
+            break
+    return [{"name": n, "chunks": c} for n, c in counts.items() ]    
+
 
     

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
 const EXAMPLES = [
@@ -13,7 +13,14 @@ export default function App() {
   const [loading, setLoading] = useState(false)
   const [docs, setDocs] = useState([])
   const [uploading, setUploading] = useState(false)
-  const fileRef = useRef(null)  
+  const fileRef = useRef(null)
+  useEffect(() => {
+    fetch('/documents')
+      .then((r) => (r.ok ? r.json() : []))
+      .then(setDocs)
+      .catch(() => {})
+    }, [])
+
   
 
   async function send(text) {
