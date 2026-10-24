@@ -1,9 +1,15 @@
 venv/
+documind_how_it_works.txt
 documind_steps_1_2.txt
 documind_steps_3_to_6.txt
-documind_how_it_works.txt
 documind_steps_7_to_10.txt
+documind_steps_11_to_13.txt
+documind_steps_14_to_19.txt
+documind_diagrams_14_to_19.txt
+documind_diagrams.txt
 documind_progress.xlsx
+documind_rerank_results.xlsx
+documind_hybrid_results.xlsx
 
 __pycache__/
 *.pyc
