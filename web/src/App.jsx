@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import './App.css'
 
 const EXAMPLES = [
@@ -11,6 +11,10 @@ export default function App() {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
+  const [docs, setDocs] = useState([])
+  const [uploading, setUploading] = useState(false)
+  const fileRef = useRef(null)  
+  
 
   async function send(text) {
     const q = (text ?? input).trim()
@@ -34,6 +38,25 @@ export default function App() {
     }
   }
 
+  async function upload(e) {
+    const file = e.target.files[0]
+    if (!file) return
+    setUploading(true)
+    try {
+      const form = new FormData()
+      form.append('file', file)
+      const r = await fetch('/ingest', { method: 'POST', body: form })
+      if (!r.ok) throw new Error('Server error ' + r.status)
+      const data = await r.json()
+      setDocs((d) => [...d.filter((x) => x.name !== data.file), { name: data.file, chunks: data.chunks }])  
+    } catch (err) {
+      alert('Upload failed: ' + err.message)
+    } finally {
+      setUploading(false)
+      e.target.value = ''
+    }
+  }
+
   function onKeyDown(e) {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
@@ -45,11 +68,17 @@ export default function App() {
     <div className="app">
       <aside className="sidebar">
         <div className="brand"><div className="logo">D</div>DocuMind</div>
-        <button className="upload-btn">+ Upload PDF</button>
+        <input ref={fileRef} type="file" accept="application/pdf" hidden onChange={upload} />
+        <button className="upload-btn" onClick={() => fileRef.current.click()} disabled={uploading}>
+          {uploading ? 'Processing…' : '+ Upload PDF'}
+        </button>
 
         <div>
           <div className="section-title">Documents</div>
-          <div className="item">Lab Manual.pdf<small>114 chunks</small></div>
+          {docs.length === 0 && <div className="recent">No documents yet</div>}
+          {docs.map((d) => (
+            <div className="item" key={d.name}>{d.name}<small>{d.chunks} chunks</small></div>
+          ))}
         </div>
 
         <div>
