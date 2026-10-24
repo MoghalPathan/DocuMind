@@ -1,0 +1,16 @@
+venv
+web/node_modules
+web/dist
+.git
+data
+.env
+
+
+documind_how_it_works.txt
+documind_steps_1_2.txt
+documind_steps_3_to_6.txt
+documind_steps_7_to_10.txt
+documind_steps_11_to_13.txt
+documind_progress.xlsx
+documind_rerank_results.xlsx
+documind_hybrid_results.xlsx

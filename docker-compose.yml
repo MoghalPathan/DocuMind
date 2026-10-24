@@ -20,18 +20,7 @@ services:
     volumes:
       - hf_cache:/root/.cache/huggingface
       - ./data:/app/data
-
-  frontend:
-    image: documind
-    command: streamlit run frontend/app.py --server.port 8501 --server.address 0.0.0.0
-    ports:
-      - "8501:8501"
-    environment:
-      API_URL: http://api:8000
-    depends_on:
-      - api
-
-
 volumes:
   qdrant_data:
-  hf_cache:      
+  hf_cache:
+    

@@ -8,6 +8,10 @@ from answer import answer
 from ingest import load_pdf, split_docs
 from store import store_chunks, COLLECTION
 
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+
 app = FastAPI(title="DocuMind")
 client = QdrantClient(url=os.getenv("QDRANT_URL", "http://localhost:6333"))
 
@@ -77,4 +81,12 @@ def documents():
     return [{"name": n, "chunks": c} for n, c in counts.items() ]    
 
 
+DIST = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "web", "dist")
+
+if os.path.isdir(DIST):
+    app.mount("/assets", StaticFiles(directory=os.path.join(DIST, "assets")), name="assets")
+
+    @app.get("/")
+    def index():
+        return FileResponse(os.path.join(DIST, "index.html"))
     
