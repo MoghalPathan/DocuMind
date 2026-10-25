@@ -75,6 +75,22 @@ def next_chunks(docs, seen):
     for d in docs:
         src = d.metadata.get("source")
         cid = d.metadata.get("chunk_id")
+        if cid is None:
+            continue
+        points, _ = client.scroll(
+            COLLECTION, limit=1, with_payload=True, with_vectors=False,
+            scroll_filter=models.Filter(must=[
+                models.FieldCondition(key="metadata.source", match=models.MatchValue(value=src)),
+                models.FieldCondition(key="metadata.chunk_id", match=models.MatchValue(value=cid + 1)),
+            ]),
+        )
+        for p in points:
+            text = p.payload["page_content"]
+            if text not in seen:
+                seen.add(text)
+                extra.append(Document(page_content=text, metadata=p.payload["metadata"]))
+    return extra
+
 
 
 def search_wide(question):
@@ -85,7 +101,7 @@ def search_wide(question):
         if d.page_content not in seen:
             seen.add(d.page_content)
             docs.append(d)
-    return docs + next_chunks(reranked[:3, seen])        
+    return docs + next_chunks(reranked[:3], seen)        
 
 
 if __name__ == "__main__":
