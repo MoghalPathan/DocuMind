@@ -5,7 +5,7 @@ from functools import lru_cache
 
 from langchain_core.documents import Document
 from langchain_qdrant import QdrantVectorStore
-from qdrant_client import QdrantClient
+from qdrant_client import QdrantClient, models
 from rank_bm25 import BM25Okapi
 from sentence_transformers import CrossEncoder
 
@@ -69,6 +69,14 @@ def search(question, k=8, fetch_k=50, rerank=True, hybrid=False):
     return [d for _, d in ranked[:k]]
 
 
+def next_chunks(docs, seen):
+    client = QdrantClient(url=os.getenv("QDRANT_URL", "http://localhost:6333"))
+    extra = []
+    for d in docs:
+        src = d.metadata.get("source")
+        cid = d.metadata.get("chunk_id")
+
+
 def search_wide(question):
     reranked = search(question, k=12, fetch_k=50, rerank=True)
     vector = search(question, k=6, fetch_k=6, rerank=False)
@@ -77,7 +85,7 @@ def search_wide(question):
         if d.page_content not in seen:
             seen.add(d.page_content)
             docs.append(d)
-    return docs        
+    return docs + next_chunks(reranked[:3, seen])        
 
 
 if __name__ == "__main__":

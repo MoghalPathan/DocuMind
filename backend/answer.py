@@ -8,9 +8,8 @@ from groq import RateLimitError
 
 load_dotenv()
 
-PROMPT = """Ypou answer questions ONLY  the context below.
+PROMPT = """You answer questions ONLY  the context below.
 
-Rules:
 Rules:
 - If the context fully or partly answers the question, answer with what the context says. If only part is covered, say what the context does tell and what is missing.
 - Only if the context has nothing relevant, reply exactly: I don't know.
@@ -46,8 +45,7 @@ def page_key(p):
 def answer(question):
     docs = search_wide(question)
     context ="\n\n".join(d.page_content for d in docs)
-    llm = ChatGroq(model="openai/gpt-oss-20b", temperature=0)
-    reply = llm.invoke(PROMPT.format(context=context, question=question))
+    reply = ask_llm(PROMPT.format(context=context, question=question))
     text = reply.content.strip()
     pages = sorted({page_of(d) for d in docs[:4]}, key=page_key)
     if text.lower().replace("\u2019", "'").startswith("i don't know"):

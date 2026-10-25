@@ -14,7 +14,10 @@ def split_docs(docs, chunk_size=None, chunk_overlap=None):
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size, chunk_overlap=chunk_overlap
     )
-    return splitter.split_documents(docs)
+    chunks = splitter.split_documents(docs)
+    for i, c in enumerate(chunks):
+        c.metadata["chunk_id"] = i
+    return chunks    
 
 if __name__ == "__main__":
     path = sys.argv[1]

@@ -1,6 +1,6 @@
 import json, re, sys
 sys.path.insert(0, "backend")
-from search import search
+from search import search_wide
 
 def norm(s):
     return re.sub(r"\s+", "", s).lower()
