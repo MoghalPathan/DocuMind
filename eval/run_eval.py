@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT/ "backend"))
 
 from answer import answer  #noqa: E402
-from search import search  #noqa: E402
+from search import search_wide  #noqa: E402
 
 def norm(s):
     return re.sub(r"\s+", "", s).lower()
@@ -27,7 +27,7 @@ for item in data["questions"]:
         except Exception as e:
             print("retry", item["id"], ascii(e)[:100])
             time.sleep(10)
-    docs = search(q, k=5)
+    docs = search_wide(q)
     contexts = [d.page_content for d in docs]
     retrieved = sorted({int(d.metadata["page_label"]) for d in docs})
     joined = norm("".join(contexts))

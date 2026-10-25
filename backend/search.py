@@ -41,7 +41,7 @@ def get_bm25():
     return BM25Okapi([tokenize(d.page_content) for d in docs]), docs
 
 
-def search(question, k=5, fetch_k=20, rerank=True, hybrid=False):
+def search(question, k=8, fetch_k=50, rerank=True, hybrid=False):
     vec_docs = get_store().similarity_search(question, k=fetch_k)
 
     if hybrid:
@@ -69,7 +69,19 @@ def search(question, k=5, fetch_k=20, rerank=True, hybrid=False):
     return [d for _, d in ranked[:k]]
 
 
+def search_wide(question):
+    reranked = search(question, k=12, fetch_k=50, rerank=True)
+    vector = search(question, k=6, fetch_k=6, rerank=False)
+    seen, docs = set(), []
+    for d in reranked + vector:
+        if d.page_content not in seen:
+            seen.add(d.page_content)
+            docs.append(d)
+    return docs        
+
+
 if __name__ == "__main__":
+
     q = " ".join(sys.argv[1:])
     for d in search(q):
         print(f"[page {d.metadata.get('page_label')}] {d.page_content[:200]!r}\n")
