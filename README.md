@@ -2,18 +2,24 @@
 
 Ask questions about a PDF and get answers with the exact source pages. If the answer is not in the document, it says "I don't know" instead of guessing.
 
-> Demo video: _coming soon_ · Live demo: _coming soon_
+> Demo video: _coming soon_ · Deployed on AWS EC2 (the live link is only up while I am demoing it, to save cost)
 
-<!-- screenshot: docs/screenshot-chat.png -->
+![DocuMind home](docs/home.png)
+
+![Answer with source pages](docs/answer.png)
+
+![Says "I don't know" when the answer is not in the document](docs/idk.png)
 
 ## Features
 
-- Upload a PDF and chat with it (Streamlit UI)
+- Upload a PDF and chat with it (React UI)
+- Remembers uploaded documents after a page reload
 - Answers come only from the document, with source page numbers
 - Re-ranking: a cross-encoder re-orders search results for better accuracy
 - Re-uploading the same file replaces its old chunks (no duplicates)
 - Measured with a 30-question test set, not guessed
-- One command runs everything with Docker
+- One command runs everything with Docker (FastAPI serves the React page and the API on one port)
+- Deployed on AWS EC2
 
 ## How it works
 
@@ -31,7 +37,7 @@ flowchart LR
 
 ## Tech stack
 
-FastAPI · LangChain · Qdrant · sentence-transformers (all-MiniLM-L6-v2, ms-marco cross-encoder) · Groq (`openai/gpt-oss-20b`) · Streamlit · Docker Compose
+FastAPI · LangChain · Qdrant · sentence-transformers (all-MiniLM-L6-v2, ms-marco cross-encoder) · Groq (`openai/gpt-oss-20b`) · React (Vite) · Docker Compose · AWS EC2
 
 ## Evaluation
 
@@ -63,19 +69,22 @@ python eval/run_eval.py my_run
 You need Docker and a free [Groq API key](https://console.groq.com).
 
 ```bash
-git clone https://github.com/MoghalPathan/Documind.git
-cd Documind
+git clone https://github.com/MoghalPathan/DocuMind.git
+cd DocuMind
 echo GROQ_API_KEY=your_key_here > .env
 docker compose up --build
 ```
 
-Open http://localhost:8501, upload a PDF, click Ingest, and ask a question. The first start downloads the embedding models, so it takes a few minutes.
+Open http://localhost:8000, click **Upload PDF**, and ask a question. The first start downloads the embedding models, so it takes a few minutes.
+
+Developing the UI: keep the backend running (`docker compose up -d qdrant api`), then `cd web && npm install && npm run dev` and open http://localhost:5173.
 
 ## Project structure
 
 ```
-backend/    FastAPI app: ingest.py, store.py, search.py, answer.py, main.py
-frontend/   Streamlit chat page
+backend/    FastAPI app: ingest.py, store.py, search.py, answer.py, main.py (also serves the React build)
+web/        React (Vite) chat page, built into static files by Docker and served by FastAPI
+docs/       screenshots
 eval/       30 test questions, evaluation script, saved results
 Dockerfile, docker-compose.yml
 ```
@@ -85,6 +94,7 @@ Dockerfile, docker-compose.yml
 - Rewrite vague questions before searching
 - Streaming answers
 - Automated tests and CI
+- Multiple documents with per-document filtering, and login
 - RAGAS scores (faithfulness, context precision)
 
 ## Author
