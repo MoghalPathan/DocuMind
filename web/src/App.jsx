@@ -434,7 +434,16 @@ export default function App() {
       const form = new FormData();
       form.append("file", file);
       const r = await fetch("/ingest", { method: "POST", body: form });
-      if (!r.ok) throw new Error(`Server said ${r.status}`);
+      if (!r.ok) {
+        let msg = `Server said ${r.status}`;
+        try {
+          const j = await r.json();
+          if (typeof j.detail === "string") msg = j.detail;
+        } catch {
+          /* keep the default message */
+        }
+        throw new Error(msg);
+      }
       const data = await r.json();
       setDocs((d) => [
         ...d.filter((x) => x.name !== data.file),

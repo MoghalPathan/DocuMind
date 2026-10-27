@@ -65,14 +65,32 @@ def health():
 
 @app.post("/ingest")
 def ingest(file: UploadFile = File(...)):
+    name = os.path.basename(file.filename or "")
+    if not name.lower().endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Only PDF files are supported.")
     os.makedirs("data", exist_ok=True)
-    path = os.path.join("data", os.path.basename(file.filename))
-    with open(path, "wb") as f:
+    path = os.path.join("data", name)
+    part = path + ".part"  # read from a temporary copy so a bad upload never replaces a good file
+    with open(part, "wb") as f:
         shutil.copyfileobj(file.file, f)
-    chunks = split_docs(load_pdf(path))
+    try:
+        pages = load_pdf(part)
+    except Exception:
+        os.remove(part)
+        raise HTTPException(status_code=400, detail="This file could not be read. Is it a valid PDF?")
+    if sum(len(p.page_content.strip()) for p in pages) < 50:
+        os.remove(part)
+        raise HTTPException(
+            status_code=422,
+            detail="No readable text found. This PDF looks like scanned images. Please upload a PDF with selectable text.",
+        )
+    for p in pages:
+        p.metadata["source"] = path
+    os.replace(part, path)
+    chunks = split_docs(pages)
     remove_old(path)
     store_chunks(chunks)
-    return {"file": file.filename, "chunks": len(chunks)}
+    return {"file": name, "chunks": len(chunks)}
 
 
 @app.post("/query")
