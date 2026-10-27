@@ -19,7 +19,7 @@ _WHO = {
 }
 
 REPLIES = {
-    "greet": "Hi! I'm DocuMind. Upload a PDF, then ask me anything about it. I answer only from your documents and show the pages I used.",
+    "greet": "Hi! I'm DocuMind. Ask me anything about your PDFs (use Attach PDF to add one). I answer only from your documents and show the pages I used.",
     "thanks": "You're welcome! Ask another question whenever you like.",
     "bye": "Goodbye! Your documents stay saved for next time.",
     "how": "I'm doing well, thanks! What would you like to know from your documents?",

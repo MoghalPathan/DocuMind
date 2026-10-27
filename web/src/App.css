@@ -251,7 +251,7 @@
   top: 100%;
   z-index: 30;
   min-width: 170px;
-  background: #151821;
+  background: var(--panel-2);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 6px;
@@ -732,7 +732,7 @@
   left: 50%;
   top: 18px;
   transform: translateX(-50%);
-  background: #1b1f2b;
+  background: var(--panel-2);
   border: 1px solid var(--border);
   padding: 10px 16px;
   border-radius: 10px;
@@ -1150,5 +1150,49 @@
   border-color: var(--accent);
 }
 
+/* ---------- v6: top bar icons ---------- */
+.top-more { position: relative; }
+.top-menu { position: absolute; right: 0; top: 40px; min-width: 150px; z-index: 20; }
+.topbar .ghost + .top-more { margin-left: 4px; }
+
 .noanswer { background: rgba(245,158,11,.15); border: 1px solid rgba(245,158,11,.4); color: #b45309; }
 :root[data-theme="dark"] .noanswer { color: #fbbf24; }
+
+/* ---------- v7: mobile ---------- */
+.model-label, .attach-label { white-space: nowrap; }
+
+@media (hover: none) {
+  .chat-row .dots { opacity: 1; }
+}
+
+@media (max-width: 800px) {
+  .attach-label { display: none; }
+  .attach { padding: 0; width: 40px; height: 40px; justify-content: center; }
+  .composer-row { gap: 6px; flex-wrap: nowrap; }
+  .doc-pill { max-width: 120px; }
+  .model-pill { padding: 0 8px; }
+  .mini { min-width: 36px; min-height: 36px; justify-content: center; }
+  .icon-btn { min-width: 40px; min-height: 40px; }
+  .chat-row .dots, .doc-card .dots { width: 38px; height: 38px; }
+  .tip-actions button { padding: 9px 14px; }
+  .topbar .ghost { padding: 8px 10px; }
+}
+
+@media (max-width: 800px) {
+  .attach { flex: none; }
+  .doc-pill { max-width: 96px; }
+  .model-pill { font-size: 12.5px; gap: 4px; flex: none; }
+  .model-pill .dot { display: none; }
+  .model-label { max-width: 78px; overflow: hidden; text-overflow: ellipsis; }
+  .composer-row { gap: 4px; }
+}
+
+@media (max-width: 800px) {
+  .doc-pill { max-width: 118px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+
+@media (max-width: 800px) {
+  .doc-pill { max-width: 100px; }
+  .attach { width: 36px; height: 36px; }
+  .model-label { max-width: 72px; }
+}

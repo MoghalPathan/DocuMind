@@ -162,6 +162,15 @@ const ICONS = {
     </>
   ),
   chevron: <polyline points="9 18 15 12 9 6" />,
+  play: <polygon points="6 4 20 12 6 20 6 4" />,
+  stop: <rect x="6" y="6" width="12" height="12" rx="1.5" />,
+  sun: (
+    <>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+    </>
+  ),
+  moon: <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />,
   info: (
     <>
       <circle cx="12" cy="12" r="10" />
@@ -211,15 +220,17 @@ export default function App() {
   const [activeId, setActiveId] = useState(() => load(STORE_KEY, [])[0]?.id ?? null);
   const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth > 800);
   const [search, setSearch] = useState("");
-  const [collapsed, setCollapsed] = useState(() =>
-    load("documind.collapsed", { docs: false, pinned: false, recent: false, archived: true }),
-  );
   const [theme, setTheme] = useState(() => load("documind.theme", "dark"));
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     save("documind.theme", theme);
   }, [theme]);
+  const [collapsed, setCollapsed] = useState(() =>
+    load("documind.collapsed", { docs: false, pinned: false, recent: false, archived: true }),
+  );
   const [menuId, setMenuId] = useState(null);
+  const [topMenu, setTopMenu] = useState(false);
+  const [speaking, setSpeaking] = useState(null);
   const [renamingId, setRenamingId] = useState(null);
   const [renameText, setRenameText] = useState("");
   const [docs, setDocs] = useState([]);
@@ -426,6 +437,18 @@ export default function App() {
     }
   };
 
+  const speak = (text, idx) => {
+    const synth = window.speechSynthesis;
+    if (!synth) { setToast("Your browser cannot read aloud"); return; }
+    if (speaking === idx) { synth.cancel(); setSpeaking(null); return; }
+    synth.cancel();
+    const u = new SpeechSynthesisUtterance(text.replace(/[*_`#>]/g, ""));
+    u.onend = () => setSpeaking(null);
+    u.onerror = () => setSpeaking(null);
+    setSpeaking(idx);
+    synth.speak(u);
+  };
+
   const shareChat = (chat) => copyText(transcript(chat), "Conversation copied as text");
 
   const deleteDoc = async (name) => {
@@ -585,7 +608,7 @@ export default function App() {
       />
       <div className="composer-row">
         <button className="attach" aria-label="Attach PDF" title="Attach a PDF" onClick={() => fileRef.current?.click()}>
-          <Icon name="clip" /> Attach PDF
+          <Icon name="clip" /> <span className="attach-label">Attach PDF</span>
         </button>
         <div className="model-wrap" onClick={(e) => e.stopPropagation()}>
           <button
@@ -620,7 +643,7 @@ export default function App() {
             title={`${currentModel.label}: ${currentModel.desc}`}
             onClick={() => { setModelOpen((v) => !v); setDocOpen(false); }}
           >
-            <span className="dot" /> {currentModel.label} <Icon name="down" size={14} />
+            <span className="dot" /> <span className="model-label">{currentModel.label}</span> <Icon name="down" size={14} />
           </button>
           {modelOpen && (
             <div className="menu model-menu">
@@ -765,23 +788,35 @@ export default function App() {
             </button>
           )}
           <div className="top-title">{active ? active.title : ""}</div>
-
-          <button className="ghost" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-            {theme === "dark" ? "Light" : "Dark"}
+          <button
+            className="icon-btn"
+            aria-label="Switch theme"
+            title={theme === "dark" ? "Light mode" : "Dark mode"}
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          >
+            <Icon name={theme === "dark" ? "sun" : "moon"} />
           </button>
-          
           {active && !empty && (
             <>
-              <button className="ghost" onClick={clearChat} title="Start fresh without deleting your documents">
-                <Icon name="eraser" size={16} /> Clear chat
-              </button>
               <button
                 className="ghost"
                 onClick={() => shareChat(active)}
-                title="Copies this conversation to your clipboard as plain text. No link is created."
+                title="Copies this conversation as text. No link is created."
               >
-                <Icon name="copy" size={16} /> Copy chat
+                <Icon name="share" size={16} /> Share
               </button>
+              <div className="top-more">
+                <button className="icon-btn" aria-label="More" onClick={() => setTopMenu((v) => !v)}>
+                  <Icon name="more" />
+                </button>
+                {topMenu && (
+                  <div className="menu top-menu">
+                    <button onClick={() => { setTopMenu(false); clearChat(); }}>
+                      <Icon name="eraser" size={15} /> Clear chat
+                    </button>
+                  </div>
+                )}
+              </div>
             </>
           )}
         </header>
@@ -875,8 +910,16 @@ export default function App() {
                       )}
                       {m.role === "ai" && !m.error && (
                         <div className="actions">
-                          <button className="mini" onClick={() => copyText(m.text)}>
-                            <Icon name="copy" size={14} /> Copy
+                          <button className="mini" aria-label="Copy" title="Copy" onClick={() => copyText(m.text)}>
+                            <Icon name="copy" size={15} />
+                          </button>
+                          <button
+                            className={`mini ${speaking === i ? "on" : ""}`}
+                            aria-label="Read aloud"
+                            title={speaking === i ? "Stop" : "Read aloud"}
+                            onClick={() => speak(m.text, i)}
+                          >
+                            <Icon name={speaking === i ? "stop" : "play"} size={15} />
                           </button>
                           {m.kind !== "chat" && (<>
                           <button
