@@ -162,6 +162,12 @@ const ICONS = {
     </>
   ),
   chevron: <polyline points="9 18 15 12 9 6" />,
+  refresh: (
+    <>
+      <path d="M21 12a9 9 0 1 1-3-6.7" />
+      <polyline points="21 3 21 9 15 9" />
+    </>
+  ),
   play: <polygon points="6 4 20 12 6 20 6 4" />,
   stop: <rect x="6" y="6" width="12" height="12" rx="1.5" />,
   sun: (
@@ -230,6 +236,7 @@ export default function App() {
   );
   const [menuId, setMenuId] = useState(null);
   const [topMenu, setTopMenu] = useState(false);
+  const [regenMenu, setRegenMenu] = useState(null);
   const [speaking, setSpeaking] = useState(null);
   const [renamingId, setRenamingId] = useState(null);
   const [renameText, setRenameText] = useState("");
@@ -308,12 +315,76 @@ export default function App() {
     if (window.innerWidth <= 800) setSidebarOpen(false);
   };
 
+  const historyOf = (messages) =>
+    messages
+      .filter((m) => !m.error && m.text)
+      .slice(-6)
+      .map((m) => ({ role: m.role, text: String(m.text).slice(0, 400) }));
+
+  const toReply = (data, q, scope) => {
+    const said = String(data.answer || "").trim();
+    const kind = data.kind || (/^i don['\u2019]?t know/i.test(said) ? "no_answer" : "answer");
+    const idk = kind === "no_answer";
+    return {
+      role: "ai",
+      kind,
+      text: idk ? said.replace(/^i don['\u2019]?t know\.?\s*/i, "") : said,
+      cites:
+        kind === "answer"
+          ? (data.sources || []).map((c) =>
+              typeof c === "string" ? { doc: null, page: c, pdf_page: Number(c) || 1 } : c,
+            )
+          : [],
+      noAnswer: idk,
+      model: currentModel.label,
+      scope: scope || null,
+      question: q,
+      asked: data.asked && data.asked !== q ? data.asked : null,
+    };
+  };
+
+  const regenerate = async (idx, style) => {
+    if (!active || loading) return;
+    const old = active.messages[idx];
+    if (!old || !old.question) return;
+    const id = active.id;
+    const before = active.messages.slice(0, idx - 1);
+    setRegenMenu(null);
+    setLoading(true);
+    setStatus("Writing another answer…");
+    let reply;
+    try {
+      const r = await fetch("/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: old.question,
+          model,
+          doc: old.scope || null,
+          history: historyOf(before),
+          regen: style,
+        }),
+      });
+      if (!r.ok) throw new Error(`Server said ${r.status}`);
+      reply = toReply(await r.json(), old.question, old.scope);
+    } catch (e) {
+      reply = { role: "ai", text: `Something went wrong: ${e.message}`, cites: [], error: true };
+    }
+    setChats((cs) =>
+      cs.map((c) =>
+        c.id === id ? { ...c, messages: c.messages.map((x, i) => (i === idx ? reply : x)) } : c,
+      ),
+    );
+    setLoading(false);
+  };
+
   const send = async (text) => {
     const q = (text ?? input).trim();
     if (!q || loading) return;
     setInput("");
     let id = activeId;
     const userMsg = { role: "user", text: q };
+    const prior = active ? active.messages : [];
     if (!id) {
       id = uid();
       const chat = {
@@ -338,29 +409,10 @@ export default function App() {
       const r = await fetch("/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q, model, doc: activeDoc || null }),
+        body: JSON.stringify({ question: q, model, doc: activeDoc || null, history: historyOf(prior) }),
       });
       if (!r.ok) throw new Error(`Server said ${r.status}`);
-      const data = await r.json();
-      const said = String(data.answer || "").trim();
-      const kind =
-        data.kind || (/^i don['\u2019]?t know/i.test(said) ? "no_answer" : "answer");
-      const idk = kind === "no_answer";
-      reply = {
-        role: "ai",
-        kind,
-        text: idk ? said.replace(/^i don['\u2019]?t know\.?\s*/i, "") : said,
-        cites:
-          kind === "answer"
-            ? (data.sources || []).map((c) =>
-                typeof c === "string" ? { doc: null, page: c, pdf_page: Number(c) || 1 } : c,
-              )
-            : [],
-        noAnswer: idk,
-        model: currentModel.label,
-        scope: activeDoc || null,
-        question: q,
-      };
+      reply = toReply(await r.json(), q, activeDoc);
     } catch (e) {
       reply = { role: "ai", text: `Something went wrong: ${e.message}`, cites: [], error: true };
     }
@@ -906,6 +958,7 @@ export default function App() {
                             ? `Based on ${[...new Set(m.cites.map((c) => shortName(c.doc, 28)).filter(Boolean))].join(", ") || "your PDF"}`
                             : `Searched ${m.scope ? shortName(m.scope, 28) : "all documents"}`}
                           {m.model ? ` · ${m.model}` : ""}
+                          {m.asked && <div className="asked">Searched for: “{m.asked}”</div>}
                         </div>
                       )}
                       {m.role === "ai" && !m.error && (
@@ -921,6 +974,25 @@ export default function App() {
                           >
                             <Icon name={speaking === i ? "stop" : "play"} size={15} />
                           </button>
+                          {m.question && m.kind !== "chat" && (
+                            <div className="regen-wrap">
+                              <button
+                                className="mini"
+                                aria-label="Regenerate"
+                                title="Try again"
+                                onClick={() => setRegenMenu(regenMenu === i ? null : i)}
+                              >
+                                <Icon name="refresh" size={15} />
+                              </button>
+                              {regenMenu === i && (
+                                <div className="menu regen-menu">
+                                  <button onClick={() => regenerate(i, "different")}>Try again</button>
+                                  <button onClick={() => regenerate(i, "detailed")}>More detail</button>
+                                  <button onClick={() => regenerate(i, "shorter")}>Shorter</button>
+                                </div>
+                              )}
+                            </div>
+                          )}
                           {m.kind !== "chat" && (<>
                           <button
                             className={`mini ${m.rating === "up" ? "on" : ""}`}

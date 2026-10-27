@@ -24,6 +24,8 @@ class Question(BaseModel):
     question: str
     model: str | None = None
     doc: str | None = None
+    history: list[dict] | None = None  # earlier messages: {"role", "text"}
+    regen: str | None = None  # "detailed", "shorter" or "different"
 
 
 class Feedback(BaseModel):
@@ -82,9 +84,15 @@ def query(body: Question):
             "pages": [],
             "kind": "chat",
         }
-    text, cites, kind = answer_full(body.question, model=body.model, doc=body.doc)
+    text, cites, kind, asked = answer_full(
+        body.question,
+        model=body.model,
+        doc=body.doc,
+        history=(body.history or [])[-6:],
+        regen=body.regen,
+    )
     pages = sorted({c["page"] for c in cites}, key=page_key)
-    return {"answer": text, "sources": cites, "pages": pages, "kind": kind}
+    return {"answer": text, "sources": cites, "pages": pages, "kind": kind, "asked": asked}
 
 
 @app.post("/feedback")

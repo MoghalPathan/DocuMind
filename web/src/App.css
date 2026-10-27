@@ -1196,3 +1196,8 @@
   .attach { width: 36px; height: 36px; }
   .model-label { max-width: 72px; }
 }
+
+/* ---------- v8: regenerate ---------- */
+.regen-wrap { position: relative; display: inline-flex; }
+.regen-menu { left: 0; right: auto; top: auto; bottom: calc(100% + 6px); min-width: 140px; }
+.asked { margin-top: 4px; font-style: italic; }
