@@ -11,6 +11,8 @@ export default defineConfig({
       '/ingest': 'http://localhost:8000',
       '/health': 'http://localhost:8000',
       '/documents': 'http://localhost:8000',
+      '/files': 'http://localhost:8000',
+      '/feedback': 'http://localhost:8000',
     },
   },
 })
