@@ -14,7 +14,7 @@ from search import search_wide
 load_dotenv()
 
 DEFAULT_MODEL = "openai/gpt-oss-20b"
-ALLOWED_MODELS = {"openai/gpt-oss-20b", "llama-3.3-70b-versatile", "llama-3.1-8b-instant"}
+ALLOWED_MODELS = {DEFAULT_MODEL}
 
 PROMPT = """You answer questions using ONLY the context below.
 
@@ -54,7 +54,6 @@ REGEN_HINTS = {
 }
 
 
-GROQ_CHAIN = ["openai/gpt-oss-20b", "llama-3.3-70b-versatile", "llama-3.1-8b-instant"]
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
 COOLDOWN_SECONDS = 60
 _busy_until = {}  # model -> time when we may try it again
@@ -90,10 +89,12 @@ def _call_gemini(prompt, temperature):
 
 
 def _models_to_try(model):
-    first = model if model in ALLOWED_MODELS else DEFAULT_MODEL
-    order = [first] + [m for m in GROQ_CHAIN if m != first]
-    if os.getenv("GEMINI_API_KEY"):
-        order.append(GEMINI_MODEL)
+    """model is the user's choice: "gemini", or anything else for Groq. The other one is the backup."""
+    gemini_ok = bool(os.getenv("GEMINI_API_KEY"))
+    if model == "gemini" and gemini_ok:
+        order = [GEMINI_MODEL, DEFAULT_MODEL]
+    else:
+        order = [DEFAULT_MODEL] + ([GEMINI_MODEL] if gemini_ok else [])
     now = time.time()
     return [m for m in order if _busy_until.get(m, 0) <= now]
 

@@ -4,24 +4,21 @@ import "./App.css";
 
 const MODELS = [
   {
-    id: "openai/gpt-oss-20b",
-    label: "gpt-oss-20b",
+    id: "groq",
+    label: "Groq",
+    name: "gpt-oss-20b",
     note: "Default",
-    desc: "Open model by OpenAI, run on Groq. Balanced speed and accuracy.",
   },
   {
-    id: "llama-3.3-70b-versatile",
-    label: "Llama 3.3 70B",
-    note: "Stronger",
-    desc: "Larger Meta model. Slower, better on hard or multi-part questions.",
-  },
-  {
-    id: "llama-3.1-8b-instant",
-    label: "Llama 3.1 8B",
-    note: "Fastest",
-    desc: "Small and quick. Best for simple lookups.",
+    id: "gemini",
+    label: "Gemini",
+    name: "gemini-3.5-flash-lite",
+    note: "Google",
   },
 ];
+
+const modelName = (id) =>
+  id ? `${String(id).startsWith("gemini") ? "Gemini" : "Groq"} · ${String(id).split("/").pop()}` : null;
 
 const EXAMPLES = [
   "What CPU and how much RAM do the lab systems have?",
@@ -336,8 +333,7 @@ export default function App() {
             )
           : [],
       noAnswer: idk,
-      model: data.model_used || currentModel.label,
-      backup: Boolean(data.model_used && data.model_used !== model),
+      model: providerOf(data.model_used) || currentModel.label,
       scope: scope || null,
       question: q,
       asked: data.asked && data.asked !== q ? data.asked : null,
@@ -702,19 +698,18 @@ export default function App() {
         <div className="model-wrap" onClick={(e) => e.stopPropagation()}>
           <button
             className="model-pill"
-            title={`${currentModel.label}: ${currentModel.desc}`}
+            title={`${currentModel.label}: ${currentModel.name}`}
             onClick={() => { setModelOpen((v) => !v); setDocOpen(false); }}
           >
             <span className="dot" /> <span className="model-label">{currentModel.label}</span> <Icon name="down" size={14} />
           </button>
           {modelOpen && (
             <div className="menu model-menu">
-              <div className="menu-head">Model (via Groq)</div>
+              <div className="menu-head">Choose AI</div>
               {MODELS.map((m) => (
                 <button key={m.id} onClick={() => { setModel(m.id); setModelOpen(false); }}>
                   <span className="model-line">
-                    <b>{m.label} <em>{m.note}</em></b>
-                    <small>{m.desc}</small>
+                    <b>{m.label} <em>{m.name}</em></b>
                   </span>
                   {m.id === model && <Icon name="check" size={15} />}
                 </button>
@@ -967,7 +962,7 @@ export default function App() {
                           {m.cites && m.cites.length > 0
                             ? `Based on ${[...new Set(m.cites.map((c) => shortName(c.doc, 28)).filter(Boolean))].join(", ") || "your PDF"}`
                             : `Searched ${m.scope ? shortName(m.scope, 28) : "all documents"}`}
-                          {m.model ? ` · ${m.model}` : ""}{m.backup ? " (backup model)" : ""}
+                          {m.model ? ` · ${m.model}` : ""}
                           {m.asked && <div className="asked">Searched for: “{m.asked}”</div>}
                         </div>
                       )}
