@@ -102,7 +102,7 @@ def query(body: Question):
             "pages": [],
             "kind": "chat",
         }
-    text, cites, kind, asked = answer_full(
+    text, cites, kind, asked, used = answer_full(
         body.question,
         model=body.model,
         doc=body.doc,
@@ -110,7 +110,14 @@ def query(body: Question):
         regen=body.regen,
     )
     pages = sorted({c["page"] for c in cites}, key=page_key)
-    return {"answer": text, "sources": cites, "pages": pages, "kind": kind, "asked": asked}
+    return {
+        "answer": text,
+        "sources": cites,
+        "pages": pages,
+        "kind": kind,
+        "asked": asked,
+        "model_used": used,
+    }
 
 
 @app.post("/feedback")

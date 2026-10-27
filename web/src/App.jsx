@@ -336,7 +336,8 @@ export default function App() {
             )
           : [],
       noAnswer: idk,
-      model: currentModel.label,
+      model: data.model_used || currentModel.label,
+      backup: Boolean(data.model_used && data.model_used !== model),
       scope: scope || null,
       question: q,
       asked: data.asked && data.asked !== q ? data.asked : null,
@@ -961,13 +962,18 @@ export default function App() {
                           )}
                         </div>
                       )}
-                      {m.role === "ai" && !m.error && m.kind !== "chat" && (
+                      {m.role === "ai" && !m.error && m.kind !== "chat" && m.kind !== "busy" && (
                         <div className="meta">
                           {m.cites && m.cites.length > 0
                             ? `Based on ${[...new Set(m.cites.map((c) => shortName(c.doc, 28)).filter(Boolean))].join(", ") || "your PDF"}`
                             : `Searched ${m.scope ? shortName(m.scope, 28) : "all documents"}`}
-                          {m.model ? ` · ${m.model}` : ""}
+                          {m.model ? ` · ${m.model}` : ""}{m.backup ? " (backup model)" : ""}
                           {m.asked && <div className="asked">Searched for: “{m.asked}”</div>}
+                        </div>
+                      )}
+                      {m.kind === "busy" && (
+                        <div className="tip-actions">
+                          <button onClick={() => regenerate(i)}>Try again</button>
                         </div>
                       )}
                       {m.role === "ai" && !m.error && (
@@ -983,7 +989,7 @@ export default function App() {
                           >
                             <Icon name={speaking === i ? "stop" : "play"} size={15} />
                           </button>
-                          {m.question && m.kind !== "chat" && (
+                          {m.question && m.kind !== "chat" && m.kind !== "busy" && (
                             <div className="regen-wrap">
                               <button
                                 className="mini"
@@ -1002,7 +1008,7 @@ export default function App() {
                               )}
                             </div>
                           )}
-                          {m.kind !== "chat" && (<>
+                          {m.kind !== "chat" && m.kind !== "busy" && (<>
                           <button
                             className={`mini ${m.rating === "up" ? "on" : ""}`}
                             aria-label="Good answer"
