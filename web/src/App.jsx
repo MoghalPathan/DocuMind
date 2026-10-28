@@ -1,24 +1,24 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import Login from "./Login.jsx";
 import "./App.css";
 
 const MODELS = [
   {
     id: "groq",
     label: "Groq",
-    name: "gpt-oss-20b",
     note: "Default",
+    desc: "gpt-oss-20b running on Groq. Fast and accurate.",
   },
   {
     id: "gemini",
     label: "Gemini",
-    name: "gemini-3.5-flash-lite",
     note: "Google",
+    desc: "Google Gemini. On the free plan, Google may use prompts to improve its products.",
   },
 ];
 
-const modelName = (id) =>
-  id ? `${String(id).startsWith("gemini") ? "Gemini" : "Groq"} · ${String(id).split("/").pop()}` : null;
+const providerOf = (id) => (id ? (String(id).startsWith("gemini") ? "Gemini" : "Groq") : null);
 
 const EXAMPLES = [
   "What CPU and how much RAM do the lab systems have?",
@@ -46,6 +46,31 @@ function save(key, value) {
     /* storage can be blocked; the app still works without it */
   }
 }
+
+// ---- talking to the server with the login token
+let AUTH = null;
+const setAuthToken = (a) => {
+  AUTH = a;
+};
+const apiFetch = (url, opts = {}) =>
+  fetch(url, {
+    ...opts,
+    headers: { ...(opts.headers || {}), Authorization: `Bearer ${AUTH?.token || ""}` },
+  }).then((r) => {
+    if (r.status === 401) window.dispatchEvent(new Event("documind-logout"));
+    return r;
+  });
+const failMessage = async (r) => {
+  try {
+    const j = await r.json();
+    if (typeof j.detail === "string") return j.detail;
+  } catch {
+    /* use the default */
+  }
+  return `Server said ${r.status}`;
+};
+// PDF links open in a new tab, which cannot send headers, so the token goes in the link
+const fileUrl = (name) => `/files/${encodeURIComponent(name)}?token=${encodeURIComponent(AUTH?.token || "")}`;
 
 function shortName(name, max = 26) {
   if (!name) return "";
@@ -218,9 +243,15 @@ function transcript(chat) {
     .join("\n\n");
 }
 
-export default function App() {
-  const [chats, setChats] = useState(() => load(STORE_KEY, []));
-  const [activeId, setActiveId] = useState(() => load(STORE_KEY, [])[0]?.id ?? null);
+export function ChatApp({ auth, onLogout }) {
+  setAuthToken(auth);
+  const storeKey = `${STORE_KEY}.${auth.user.id}`;
+  useEffect(() => {
+    window.addEventListener("documind-logout", onLogout);
+    return () => window.removeEventListener("documind-logout", onLogout);
+  }, [onLogout]);
+  const [chats, setChats] = useState(() => load(storeKey, []));
+  const [activeId, setActiveId] = useState(null); // always start on a new chat
   const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth > 800);
   const [search, setSearch] = useState("");
   const [theme, setTheme] = useState(() => load("documind.theme", "dark"));
@@ -258,15 +289,15 @@ export default function App() {
   const active = chats.find((c) => c.id === activeId) || null;
   const messages = active ? active.messages : [];
 
-  useEffect(() => save(STORE_KEY, chats), [chats]);
+  useEffect(() => save(storeKey, chats), [chats]);
   useEffect(() => save("documind.model", model), [model]);
   useEffect(() => save("documind.doc", selectedDoc), [selectedDoc]);
   useEffect(() => save("documind.collapsed", collapsed), [collapsed]);
 
   useEffect(() => {
-    fetch("/documents")
+    apiFetch("/documents")
       .then((r) => r.json())
-      .then(setDocs)
+      .then((d) => Array.isArray(d) && setDocs(d))
       .catch(() => {});
   }, []);
 
@@ -351,7 +382,7 @@ export default function App() {
     setStatus("Writing another answer…");
     let reply;
     try {
-      const r = await fetch("/query", {
+      const r = await apiFetch("/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -362,7 +393,7 @@ export default function App() {
           regen: style,
         }),
       });
-      if (!r.ok) throw new Error(`Server said ${r.status}`);
+      if (!r.ok) throw new Error(await failMessage(r));
       reply = toReply(await r.json(), old.question, old.scope);
     } catch (e) {
       reply = { role: "ai", text: `Something went wrong: ${e.message}`, cites: [], error: true };
@@ -403,12 +434,12 @@ export default function App() {
     const phase = setTimeout(() => setStatus("Writing the answer…"), 1800);
     let reply;
     try {
-      const r = await fetch("/query", {
+      const r = await apiFetch("/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: q, model, doc: activeDoc || null, history: historyOf(prior) }),
       });
-      if (!r.ok) throw new Error(`Server said ${r.status}`);
+      if (!r.ok) throw new Error(await failMessage(r));
       reply = toReply(await r.json(), q, activeDoc);
     } catch (e) {
       reply = { role: "ai", text: `Something went wrong: ${e.message}`, cites: [], error: true };
@@ -430,7 +461,7 @@ export default function App() {
     try {
       const form = new FormData();
       form.append("file", file);
-      const r = await fetch("/ingest", { method: "POST", body: form });
+      const r = await apiFetch("/ingest", { method: "POST", body: form });
       if (!r.ok) {
         let msg = `Server said ${r.status}`;
         try {
@@ -512,8 +543,8 @@ export default function App() {
   const deleteDoc = async (name) => {
     if (!window.confirm(`Delete "${name}"? Its text is removed from search.`)) return;
     try {
-      const r = await fetch(`/documents/${encodeURIComponent(name)}`, { method: "DELETE" });
-      if (!r.ok) throw new Error(`Server said ${r.status}`);
+      const r = await apiFetch(`/documents/${encodeURIComponent(name)}`, { method: "DELETE" });
+      if (!r.ok) throw new Error(await failMessage(r));
       setDocs((d) => d.filter((x) => x.name !== name));
       if (selectedDoc === name) setSelectedDoc("");
       setToast(`Deleted ${name}`);
@@ -534,7 +565,7 @@ export default function App() {
       ),
     );
     if (next) {
-      fetch("/feedback", {
+      apiFetch("/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -698,7 +729,7 @@ export default function App() {
         <div className="model-wrap" onClick={(e) => e.stopPropagation()}>
           <button
             className="model-pill"
-            title={`${currentModel.label}: ${currentModel.name}`}
+            title={`${currentModel.label}: ${currentModel.desc}`}
             onClick={() => { setModelOpen((v) => !v); setDocOpen(false); }}
           >
             <span className="dot" /> <span className="model-label">{currentModel.label}</span> <Icon name="down" size={14} />
@@ -709,7 +740,8 @@ export default function App() {
               {MODELS.map((m) => (
                 <button key={m.id} onClick={() => { setModel(m.id); setModelOpen(false); }}>
                   <span className="model-line">
-                    <b>{m.label} <em>{m.name}</em></b>
+                    <b>{m.label} <em>{m.note}</em></b>
+                    <small>{m.desc}</small>
                   </span>
                   {m.id === model && <Icon name="check" size={15} />}
                 </button>
@@ -782,7 +814,7 @@ export default function App() {
               <Icon name="file" size={15} />
               <div className="doc-body">
                 <div className="doc-name" title={d.name}>{d.name}</div>
-                <div className="doc-meta"><span className="ok-dot" /> Ready · {d.chunks} chunks</div>
+                <div className="doc-meta"><span className="ok-dot" /> {d.shared ? "Sample" : "Ready"} · {d.chunks} chunks</div>
               </div>
               <button
                 className="icon-btn dots small"
@@ -793,15 +825,17 @@ export default function App() {
               </button>
               {docMenu === d.name && (
                 <div className="menu" onClick={(e) => e.stopPropagation()}>
-                  <button onClick={() => { window.open(`/files/${encodeURIComponent(d.name)}`, "_blank"); setDocMenu(null); }}>
+                  <button onClick={() => { window.open(fileUrl(d.name), "_blank"); setDocMenu(null); }}>
                     <Icon name="external" /> Preview PDF
                   </button>
                   <button onClick={() => { setSelectedDoc(d.name); setDocMenu(null); }}>
                     <Icon name="search" /> Ask only this PDF
                   </button>
-                  <button className="danger" onClick={() => { deleteDoc(d.name); setDocMenu(null); }}>
-                    <Icon name="trash" /> Delete
-                  </button>
+                  {!d.shared && (
+                    <button className="danger" onClick={() => { deleteDoc(d.name); setDocMenu(null); }}>
+                      <Icon name="trash" /> Delete
+                    </button>
+                  )}
                 </div>
               )}
             </div>
@@ -835,6 +869,15 @@ export default function App() {
           )}
         </div>
 
+        <div className="side-user">
+          <div className="who">
+            <span className="avatar-sm">{(auth.user.email || "G")[0].toUpperCase()}</span>
+            <span className="who-name" title={auth.user.email}>
+              {auth.user.guest ? "Guest session" : auth.user.email}
+            </span>
+          </div>
+          <button className="ghost small" onClick={onLogout}>Log out</button>
+        </div>
       </aside>
 
       <main className="main">
@@ -944,7 +987,7 @@ export default function App() {
                               <a
                                 className="cite"
                                 key={`${c.doc}-${c.page}`}
-                                href={`/files/${encodeURIComponent(c.doc)}#page=${c.pdf_page}`}
+                                href={`${fileUrl(c.doc)}#page=${c.pdf_page}`}
                                 target="_blank"
                                 rel="noreferrer"
                                 title={`Open page ${c.page} of ${c.doc}`}
@@ -1053,4 +1096,49 @@ export default function App() {
       {toast && <div className="toast">{toast}</div>}
     </div>
   );
+}
+
+const AUTH_KEY = "documind.auth";
+
+function readAuth() {
+  try {
+    const a = JSON.parse(localStorage.getItem(AUTH_KEY));
+    return a && a.token && a.user && a.user.id ? a : null;
+  } catch {
+    return null;
+  }
+}
+
+// Shows the login page until someone is signed in, then the chat.
+export default function App() {
+  const [auth, setAuth] = useState(readAuth);
+
+  useEffect(() => {
+    // the login page also follows the saved light/dark choice
+    try {
+      document.documentElement.dataset.theme = JSON.parse(localStorage.getItem("documind.theme")) || "dark";
+    } catch {
+      document.documentElement.dataset.theme = "dark";
+    }
+  }, []);
+
+  const onAuth = useCallback((a) => {
+    try {
+      localStorage.setItem(AUTH_KEY, JSON.stringify(a));
+    } catch {
+      /* private window: the login lasts until the tab closes */
+    }
+    setAuth(a);
+  }, []);
+
+  const onLogout = useCallback(() => {
+    try {
+      localStorage.removeItem(AUTH_KEY);
+    } catch {
+      /* ignore */
+    }
+    setAuth(null);
+  }, []);
+
+  return auth ? <ChatApp key={auth.user.id} auth={auth} onLogout={onLogout} /> : <Login onAuth={onAuth} />;
 }

@@ -175,13 +175,13 @@ def rewrite_question(question, history, model=None, fallback=True):
 BUSY_TEXT = "DocuMind is busy right now (the free model limits are used up). Please try again in a minute."
 
 
-def answer_full(question, model=None, doc=None, history=None, regen=None, fallback=True):
+def answer_full(question, model=None, doc=None, history=None, regen=None, fallback=True, owner=None):
     """Returns (text, citations, kind, asked, model_used). kind is "chat", "answer", "no_answer" or "busy"."""
     chat = small_talk(question)
     if chat:
         return chat, [], "chat", question, None
     asked = rewrite_question(question, history or [], model, fallback)
-    docs = search_wide(asked, doc=doc)
+    docs = search_wide(asked, doc=doc, owner=owner)
     context = "\n\n".join(d.page_content for d in docs)
     prompt = PROMPT.format(context=context, question=asked)
     hint = REGEN_HINTS.get(regen or "")

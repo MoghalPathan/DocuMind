@@ -9,6 +9,7 @@ from qdrant_client import QdrantClient, models
 from rank_bm25 import BM25Okapi
 from sentence_transformers import CrossEncoder
 
+from scope import visible_filter
 from store import get_embeddings, COLLECTION
 
 URL = os.getenv("QDRANT_URL", "http://localhost:6333")
@@ -41,18 +42,8 @@ def get_bm25():
     return BM25Okapi([tokenize(d.page_content) for d in docs]), docs
 
 
-def doc_filter(doc):
-    # doc is a file name like "report.pdf"; None means search every document
-    if not doc:
-        return None
-    source = "data/" + os.path.basename(doc)
-    return models.Filter(
-        must=[models.FieldCondition(key="metadata.source", match=models.MatchValue(value=source))]
-    )
-
-
-def search(question, k=8, fetch_k=50, rerank=True, hybrid=False, doc=None):
-    vec_docs = get_store().similarity_search(question, k=fetch_k, filter=doc_filter(doc))
+def search(question, k=8, fetch_k=50, rerank=True, hybrid=False, doc=None, owner=None):
+    vec_docs = get_store().similarity_search(question, k=fetch_k, filter=visible_filter(owner, doc))
 
     if hybrid:
         bm25, all_docs = get_bm25()
@@ -103,9 +94,9 @@ def next_chunks(docs, seen):
 
 
 
-def search_wide(question, doc=None):
-    reranked = search(question, k=12, fetch_k=50, rerank=True, doc=doc)
-    vector = search(question, k=6, fetch_k=6, rerank=False, doc=doc)
+def search_wide(question, doc=None, owner=None):
+    reranked = search(question, k=12, fetch_k=50, rerank=True, doc=doc, owner=owner)
+    vector = search(question, k=6, fetch_k=6, rerank=False, doc=doc, owner=owner)
     seen, docs = set(), []
     for d in reranked + vector:
         if d.page_content not in seen:

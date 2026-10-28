@@ -13,6 +13,7 @@ export default defineConfig({
       '/documents': 'http://localhost:8000',
       '/files': 'http://localhost:8000',
       '/feedback': 'http://localhost:8000',
+      '/auth': 'http://localhost:8000',
     },
   },
 })
