@@ -243,6 +243,38 @@ function transcript(chat) {
     .join("\n\n");
 }
 
+
+const freshIds = new Set();
+
+function Typed({ tid, text, className, onGrow }) {
+  const animate = freshIds.has(tid);
+  const [n, setN] = useState(animate ? 0 : text.length);
+  useEffect(() => {
+    if (!animate) return;
+    const step = Math.max(2, Math.ceil(text.length / 110));
+    const t = setInterval(() => {
+      setN((v) => {
+        if (v + step >= text.length) {
+          clearInterval(t);
+          freshIds.delete(tid);
+          return text.length;
+        }
+        return v + step;
+      });
+      if (onGrow) onGrow();
+    }, 20);
+    return () => clearInterval(t);
+  }, []);
+  return (
+    <div className={className}>
+      <ReactMarkdown>{text.slice(0, n)}</ReactMarkdown>
+    </div>
+  );
+}
+
+
+
+
 export function ChatApp({ auth, onLogout }) {
   setAuthToken(auth);
   const storeKey = `${STORE_KEY}.${auth.user.id}`;
@@ -441,6 +473,10 @@ export function ChatApp({ auth, onLogout }) {
       });
       if (!r.ok) throw new Error(await failMessage(r));
       reply = toReply(await r.json(), q, activeDoc);
+      if (reply.text && !reply.error) {
+        reply.tid = uid();
+        freshIds.add(reply.tid);
+      }
     } catch (e) {
       reply = { role: "ai", text: `Something went wrong: ${e.message}`, cites: [], error: true };
     }
@@ -976,7 +1012,18 @@ export function ChatApp({ auth, onLogout }) {
                         </div>
                       )}
                       {m.role === "ai" && !m.error ? (
-                        m.text ? <div className={`text md ${m.noAnswer ? "soft" : ""}`}><ReactMarkdown>{m.text}</ReactMarkdown></div> : null
+                        m.text ? (
+                          m.tid ? (
+                            <Typed
+                              tid={m.tid}
+                              text={m.text}
+                              className={`text md ${m.noAnswer ? "soft" : ""}`}
+                              onGrow={() => endRef.current?.scrollIntoView({ block: "end" })}
+                            />
+                          ) : (
+                            <div className={`text md ${m.noAnswer ? "soft" : ""}`}><ReactMarkdown>{m.text}</ReactMarkdown></div>
+                          )
+                        ) : null
                       ) : (
                         <div className={`text ${m.error ? "err" : ""}`}>{m.text}</div>
                       )}
