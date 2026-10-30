@@ -791,7 +791,7 @@ export function ChatApp({ auth, onLogout }) {
               </button>
               {docs.map((d) => (
                 <button key={d.name} onClick={() => { setSelectedDoc(d.name); setDocOpen(false); }}>
-                  <span className="model-line"><b>{shortName(d.name, 30)}</b><small>{d.chunks} chunks</small></span>
+                  <span className="model-line"><b>{shortName(d.name, 30)}</b><small>{d.shared ? "Sample" : "Your upload"}</small></span>
                   {activeDoc === d.name && <Icon name="check" size={15} />}
                 </button>
               ))}
@@ -887,7 +887,7 @@ export function ChatApp({ auth, onLogout }) {
               <Icon name="file" size={15} />
               <div className="doc-body">
                 <div className="doc-name" title={d.name}>{d.name}</div>
-                <div className="doc-meta"><span className="ok-dot" /> {d.shared ? "Sample" : "Ready"} · {d.chunks} chunks</div>
+                <div className="doc-meta"><span className="ok-dot" /> {d.shared ? "Sample" : "Ready"} </div>
               </div>
               <button
                 className="icon-btn dots small"
