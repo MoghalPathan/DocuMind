@@ -34,3 +34,20 @@ What it does: reads your PDF page by page, then cuts the text into small chunks 
 Each chunk overlaps the previous one by 64 characters so no idea gets cut in half. The file name and 
 page number are kept with every chunk, which we need later for citations.
 """
+
+
+
+#--text: #e7e9ee;
+
+
+"""
+--bg: #0b0c10;
+  --panel: #111318;
+  --panel-2: #171a21;
+  --hover: #1a1d26;
+  --border: #20242f;
+  --text: #c0c0c0;
+  --muted: #8b90a0;
+  --accent: #6d7cff;
+  --danger: #ff6b6b;
+"""

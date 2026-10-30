@@ -1,17 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap");
+
 :root {
   --bg: #0b0c10;
   --panel: #111318;
   --panel-2: #171a21;
-  --border: #23262e;
-  --text: #e8eaf0;
+  --hover: #1a1d26;
+  --border: #20242f;
+  --text: #e7e9ee;
   --muted: #8b90a0;
   --accent: #6d7cff;
+  --danger: #ff6b6b;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--bg);
+  color-scheme: dark;
 }
-* { box-sizing: border-box; }
-html, body, #root { height: 100%; margin: 0; }
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
-button, textarea { font: inherit; color: inherit; }
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #23273a;
+  border-radius: 10px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+:root[data-theme="light"] {
+  --bg: #e9eaec; --panel: #f4f5f7; --panel-2: #ffffff; --hover: #dfe1e5;
+  --border: #cfd2d8; --text: #000000; --muted: #555555; color-scheme: light;
+}

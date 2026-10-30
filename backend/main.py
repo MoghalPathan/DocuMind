@@ -1,11 +1,17 @@
-import os 
+import json
+import os
 import shutil
+import time
 from collections import Counter
-from fastapi import FastAPI, File, UploadFile
+from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
 from pydantic import BaseModel
 from qdrant_client import QdrantClient, models
-from answer import answer
+import auth
+from answer import answer_full, page_key
+from chitchat import small_talk
+from sections import tag_chunks
 from ingest import load_pdf, split_docs
+from scope import SHARED, visible_filter
 from store import store_chunks, COLLECTION
 
 from fastapi.staticfiles import StaticFiles
@@ -19,6 +25,18 @@ client = QdrantClient(url=os.getenv("QDRANT_URL", "http://localhost:6333"))
 
 class Question(BaseModel):
     question: str
+    model: str | None = None
+    doc: str | None = None
+    history: list[dict] | None = None  # earlier messages: {"role", "text"}
+    regen: str | None = None  # "detailed", "shorter" or "different"
+
+
+class Feedback(BaseModel):
+    question: str
+    answer: str
+    rating: str  # "up" or "down"
+    doc: str | None = None
+    model: str | None = None
 
 
 def remove_old(source):
@@ -39,46 +57,190 @@ def remove_old(source):
         )    
 
 
+def has_chunks(owner):
+    if not client.collection_exists(COLLECTION):
+        return False
+    return client.count(COLLECTION, count_filter=visible_filter(owner), exact=True).count > 0
+
+
+def own_sources(uid):
+    """Distinct file paths this user uploaded (shared sample documents are not included)."""
+    seen, offset = set(), None
+    if not client.collection_exists(COLLECTION):
+        return seen
+    flt = models.Filter(
+        must=[models.FieldCondition(key="metadata.owner", match=models.MatchValue(value=uid))]
+    )
+    while True:
+        points, offset = client.scroll(
+            COLLECTION, limit=500, offset=offset, scroll_filter=flt, with_payload=True, with_vectors=False
+        )
+        for p in points:
+            seen.add((p.payload or {}).get("metadata", {}).get("source"))
+        if offset is None:
+            break
+    return seen
+
+
+@app.post("/auth/signup")
+def signup(body: auth.Credentials, request: Request):
+    return auth.signup(body, request)
+
+
+@app.post("/auth/login")
+def login(body: auth.Credentials, request: Request):
+    return auth.login(body, request)
+
+
+@app.post("/auth/demo")
+def demo(request: Request):
+    return auth.demo(request)
+
+
+@app.get("/auth/me")
+def me(user=Depends(auth.current_user)):
+    return {"id": user["id"], "email": user["email"], "guest": user["guest"], "limits": auth.user_limits(user)}
+
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
 
 @app.post("/ingest")
-def ingest(file: UploadFile = File(...)):
-    os.makedirs("data", exist_ok=True)
-    path = os.path.join("data", os.path.basename(file.filename))
-    with open(path, "wb") as f:
+def ingest(file: UploadFile = File(...), user=Depends(auth.current_user)):
+    uid = user["id"]
+    name = os.path.basename(file.filename or "")
+    if not name.lower().endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Only PDF files are supported.")
+    path = f"data/{uid}/{name}"
+    mine = own_sources(uid)
+    if path not in mine and len(mine) >= auth.user_limits(user)["docs"]:
+        raise HTTPException(
+            status_code=403,
+            detail=f"Document limit reached ({auth.user_limits(user)['docs']}). Delete one first.",
+        )
+    auth.limit_upload(user)
+    os.makedirs(f"data/{uid}", exist_ok=True)
+    part = path + ".part"  # read from a temporary copy so a bad upload never replaces a good file
+    with open(part, "wb") as f:
         shutil.copyfileobj(file.file, f)
-    chunks = split_docs(load_pdf(path))
+    if os.path.getsize(part) > auth.MAX_PDF_MB * 1024 * 1024:
+        os.remove(part)
+        raise HTTPException(status_code=413, detail=f"PDF is too large (max {auth.MAX_PDF_MB} MB).")
+    try:
+        pages = load_pdf(part)
+    except Exception:
+        os.remove(part)
+        raise HTTPException(status_code=400, detail="This file could not be read. Is it a valid PDF?")
+    if len(pages) > auth.MAX_PAGES:
+        os.remove(part)
+        raise HTTPException(status_code=413, detail=f"PDF has too many pages (max {auth.MAX_PAGES}).")
+    if sum(len(p.page_content.strip()) for p in pages) < 50:
+        os.remove(part)
+        raise HTTPException(
+            status_code=422,
+            detail="No readable text found. This PDF looks like scanned images. Please upload a PDF with selectable text.",
+        )
+    for p in pages:
+        p.metadata["source"] = path
+        p.metadata["owner"] = uid
+    os.replace(part, path)
+    chunks = tag_chunks(split_docs(pages))
     remove_old(path)
     store_chunks(chunks)
-    return {"file": file.filename, "chunks": len(chunks)}
+    return {"file": name, "chunks": len(chunks)}
 
 
 @app.post("/query")
-def query(body: Question):
-    text, pages = answer(body.question)
-    return {"answer": text, "sources": pages}
+def query(body: Question, user=Depends(auth.current_user)):
+    uid = user["id"]
+    auth.limit_question(user)
+    if not small_talk(body.question) and not has_chunks(uid):
+        return {
+            "answer": "No documents yet. Use Attach PDF to upload one, then ask your question.",
+            "sources": [],
+            "pages": [],
+            "kind": "chat",
+        }
+    text, cites, kind, asked, used = answer_full(
+        body.question,
+        model=body.model,
+        doc=body.doc,
+        history=(body.history or [])[-6:],
+        regen=body.regen,
+        owner=uid,
+    )
+    pages = sorted({c["page"] for c in cites}, key=page_key)
+    return {
+        "answer": text,
+        "sources": cites,
+        "pages": pages,
+        "kind": kind,
+        "asked": asked,
+        "model_used": used,
+    }
+
+
+@app.post("/feedback")
+def feedback(body: Feedback, user=Depends(auth.current_user)):
+    os.makedirs("data", exist_ok=True)
+    row = body.model_dump()
+    row["user"] = user["id"]
+    row["time"] = time.strftime("%Y-%m-%d %H:%M:%S")
+    with open(os.path.join("data", "feedback.jsonl"), "a", encoding="utf-8") as f:
+        f.write(json.dumps(row, ensure_ascii=False) + "\n")
+    return {"saved": True}
+
+
+@app.get("/files/{name}")
+def get_file(name: str, user=Depends(auth.file_user)):
+    safe = os.path.basename(name)
+    if not safe.lower().endswith(".pdf"):
+        raise HTTPException(status_code=404, detail="File not found")
+    for path in (f"data/{user['id']}/{safe}", f"data/{safe}"):  # own file first, then shared samples
+        if os.path.isfile(path):
+            return FileResponse(path, media_type="application/pdf")
+    raise HTTPException(status_code=404, detail="File not found")
+
+
+@app.delete("/documents/{name}")
+def delete_document(name: str, user=Depends(auth.current_user)):
+    safe = os.path.basename(name)
+    path = f"data/{user['id']}/{safe}"
+    if path not in own_sources(user["id"]):
+        raise HTTPException(status_code=403, detail="Sample documents cannot be deleted.")
+    remove_old(path)
+    if os.path.isfile(path):
+        os.remove(path)
+    return {"deleted": safe}
 
 
 @app.get("/documents")
-def documents():
-    client =QdrantClient(url=os.getenv("QDRANT_URL", "http://localhost:6333"))
+def documents(user=Depends(auth.current_user)):
     if not client.collection_exists(COLLECTION):
         return []
-    counts = Counter()
+    counts, shared = Counter(), {}
     offset = None
     while True:
         points, offset = client.scroll(
-            COLLECTION, limit=500, offset=offset, with_payload=True, with_vectors=False
+            COLLECTION,
+            limit=500,
+            offset=offset,
+            scroll_filter=visible_filter(user["id"]),
+            with_payload=True,
+            with_vectors=False,
         )
         for p in points:
-            src = (p.payload or {}).get("metadata", {}).get("source", "unknown")
-            counts[src.replace("\\", "/").split("/")[-1]] += 1
+            meta = (p.payload or {}).get("metadata", {})
+            n = meta.get("source", "unknown").replace("\\", "/").split("/")[-1]
+            counts[n] += 1
+            shared[n] = meta.get("owner") == SHARED
         if offset is None:
             break
-    return [{"name": n, "chunks": c} for n, c in counts.items() ]    
+    return [
+        {"name": n, "chunks": c, "status": "ready", "shared": shared[n]} for n, c in counts.items()
+    ]
 
 
 DIST = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "web", "dist")
@@ -89,4 +251,3 @@ if os.path.isdir(DIST):
     @app.get("/")
     def index():
         return FileResponse(os.path.join(DIST, "index.html"))
-    

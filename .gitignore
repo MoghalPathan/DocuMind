@@ -11,7 +11,11 @@ documind_progress.xlsx
 documind_rerank_results.xlsx
 documind_hybrid_results.xlsx
 
+feedback.jsonl
+
 __pycache__/
 *.pyc
 .env
 data/*.pdf
+
+data/
