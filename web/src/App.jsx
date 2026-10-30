@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import Login from "./Login.jsx";
+import Shared from "./Shared.jsx";
 import "./App.css";
 
 const MODELS = [
@@ -311,6 +312,7 @@ export function ChatApp({ auth, onLogout }) {
   const [status, setStatus] = useState("Searching documents…");
   const [selectedDoc, setSelectedDoc] = useState(() => load("documind.doc", ""));
   const [docOpen, setDocOpen] = useState(false);
+  const [shareInfo, setShareInfo] = useState(null);
   const [docMenu, setDocMenu] = useState(null);
   const fileRef = useRef(null);
   const endRef = useRef(null);
@@ -575,6 +577,41 @@ export function ChatApp({ auth, onLogout }) {
   };
 
   const shareChat = (chat) => copyText(transcript(chat), "Conversation copied as text");
+
+  const openShare = async (chat) => {
+    setShareInfo({ chat, busy: true });
+    try {
+      const r = await apiFetch("/share", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: chat.shareId || null,
+          title: chat.title,
+          messages: chat.messages.filter((m) => !m.error),
+        }),
+      });
+      if (!r.ok) throw new Error(await failMessage(r));
+      const d = await r.json();
+      patchChat(chat.id, { shareId: d.id });
+      setShareInfo({ chat, id: d.id, url: `${window.location.origin}/s/${d.id}` });
+    } catch (e) {
+      setShareInfo(null);
+      setToast(e.message);
+    }
+  };
+
+  const stopShare = async () => {
+    const s = shareInfo;
+    if (!s || !s.id) return;
+    try {
+      await apiFetch(`/share/${s.id}`, { method: "DELETE" });
+      patchChat(s.chat.id, { shareId: null });
+      setToast("Link removed");
+    } catch {
+      setToast("Could not remove the link");
+    }
+    setShareInfo(null);
+  };
 
   const deleteDoc = async (name) => {
     if (!window.confirm(`Delete "${name}"? Its text is removed from search.`)) return;
@@ -936,8 +973,8 @@ export function ChatApp({ auth, onLogout }) {
             <>
               <button
                 className="ghost"
-                onClick={() => shareChat(active)}
-                title="Copies this conversation as text. No link is created."
+                onClick={() => openShare(active)}
+                title="Create a link to this conversation"
               >
                 <Icon name="share" size={16} /> Share
               </button>
@@ -1140,6 +1177,34 @@ export function ChatApp({ auth, onLogout }) {
         hidden
         onChange={(e) => uploadFile(e.target.files[0])}
       />
+      {shareInfo && (
+        <div className="share-back" onClick={() => setShareInfo(null)}>
+          <div className="share-card" onClick={(e) => e.stopPropagation()}>
+            <h3>Share conversation</h3>
+            {shareInfo.busy ? (
+              <p>Creating link…</p>
+            ) : (
+              <>
+                <p>
+                  Anyone with this link can read the messages up to now. Your PDF files are not shared. Messages you
+                  add later are not included until you share again.
+                </p>
+                <div className="share-row">
+                  <input readOnly value={shareInfo.url} onFocus={(e) => e.target.select()} />
+                  <button className="ghost" onClick={() => copyText(shareInfo.url, "Link copied")}>
+                    <Icon name="copy" size={15} /> Copy link
+                  </button>
+                </div>
+                <div className="share-actions">
+                  <button className="ghost danger" onClick={stopShare}>Stop sharing</button>
+                  <button className="ghost" onClick={() => { shareChat(shareInfo.chat); }}>Copy as text</button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {toast && <div className="toast">{toast}</div>}
     </div>
   );
@@ -1187,5 +1252,7 @@ export default function App() {
     setAuth(null);
   }, []);
 
+  const shared = window.location.pathname.match(/^\/s\/([A-Za-z0-9_-]+)/);
+  if (shared) return <Shared id={shared[1]} />;
   return auth ? <ChatApp key={auth.user.id} auth={auth} onLogout={onLogout} /> : <Login onAuth={onAuth} />;
 }

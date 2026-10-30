@@ -19,3 +19,19 @@ __pycache__/
 data/*.pdf
 
 data/
+
+
+
+
+
+backend/answer[0-9].py
+backend/main[0-9].py
+backend/search[0-9].py
+backend/scope[0-9].py
+backend/chitchat0.py
+web/src/App[0-9]*.jsx
+web/src/App[0-9]*.css
+web/src/Appp.*
+web/src/index[0-9].css
+web/src/indexx.css
+README0.md

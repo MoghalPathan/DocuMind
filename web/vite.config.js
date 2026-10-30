@@ -14,6 +14,7 @@ export default defineConfig({
       '/files': 'http://localhost:8000',
       '/feedback': 'http://localhost:8000',
       '/auth': 'http://localhost:8000',
+      '/share': 'http://localhost:8000',
     },
   },
 })

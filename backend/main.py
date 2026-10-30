@@ -7,6 +7,7 @@ from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
 from pydantic import BaseModel
 from qdrant_client import QdrantClient, models
 import auth
+import shares
 from answer import answer_full, page_key
 from chitchat import small_talk
 from sections import tag_chunks
@@ -30,6 +31,11 @@ class Question(BaseModel):
     history: list[dict] | None = None  # earlier messages: {"role", "text"}
     regen: str | None = None  # "detailed", "shorter" or "different"
 
+
+class ShareBody(BaseModel):
+    id: str | None = None
+    title: str = ""
+    messages: list[dict]
 
 class Feedback(BaseModel):
     question: str
@@ -240,6 +246,23 @@ def feedback(body: Feedback, user=Depends(auth.current_user)):
     return {"saved": True}
 
 
+@app.post("/share")
+def share_create(body: ShareBody, user=Depends(auth.current_user)):
+    return shares.create(user, body.id, body.title, body.messages)
+
+
+@app.get("/share/{sid}")
+def share_get(sid: str, request: Request):
+    auth.hit(("sv", auth.client_ip(request)), 60, 60, "Too many requests. Please wait a minute.")
+    return shares.read(sid)
+
+
+@app.delete("/share/{sid}")
+def share_delete(sid: str, user=Depends(auth.current_user)):
+    return shares.remove(user, sid)
+
+
+
 @app.get("/files/{name}")
 def get_file(name: str, user=Depends(auth.file_user)):
     safe = os.path.basename(name)
@@ -297,4 +320,9 @@ if os.path.isdir(DIST):
 
     @app.get("/")
     def index():
+        return FileResponse(os.path.join(DIST, "index.html"))
+
+    
+    @app.get("/s/{sid}")
+    def shared_page(sid: str):
         return FileResponse(os.path.join(DIST, "index.html"))
