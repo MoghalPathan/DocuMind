@@ -9,6 +9,7 @@ from qdrant_client import QdrantClient, models
 import auth
 from answer import answer_full, page_key
 from chitchat import small_talk
+from sections import tag_chunks
 from ingest import load_pdf, split_docs
 from scope import SHARED, visible_filter
 from store import store_chunks, COLLECTION
@@ -145,7 +146,7 @@ def ingest(file: UploadFile = File(...), user=Depends(auth.current_user)):
         p.metadata["source"] = path
         p.metadata["owner"] = uid
     os.replace(part, path)
-    chunks = split_docs(pages)
+    chunks = tag_chunks(split_docs(pages))
     remove_old(path)
     store_chunks(chunks)
     return {"file": name, "chunks": len(chunks)}

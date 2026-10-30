@@ -6,7 +6,7 @@ from qdrant_client import models
 SHARED = "shared"
 
 
-def visible_filter(owner=None, doc=None):
+def visible_filter(owner=None, doc=None, sections=None):
     must = []
     if owner:
         must.append(
@@ -19,5 +19,9 @@ def visible_filter(owner=None, doc=None):
             sources.append(f"data/{owner}/{base}")
         must.append(
             models.FieldCondition(key="metadata.source", match=models.MatchAny(any=sources))
+        )
+    if sections:
+        must.append(
+            models.FieldCondition(key="metadata.sections", match=models.MatchAny(any=list(sections)))
         )
     return models.Filter(must=must) if must else None

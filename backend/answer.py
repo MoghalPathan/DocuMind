@@ -23,6 +23,7 @@ Rules:
 - Only if the context has nothing relevant, reply exactly: I don't know.
 - Never use outside knowledge. Never guess numbers, names or dates.
 - Different wording can mean the same thing (for example RAM and memory).
+- If asked how many, list the items you can see, then give the count. If the list may continue beyond the context, say the count may be incomplete.
 
 Context:
 {context}
@@ -103,6 +104,15 @@ def ask_llm(prompt, model=DEFAULT_MODEL, temperature=0, fallback=True):
     """Ask the chosen model. With fallback, move to the next model when one is out of allowance."""
     if not fallback:
         # evaluation mode: one fixed model, wait and retry on rate limits
+        if model == "gemini":
+            for wait in (15, 30, 60):
+                try:
+                    return Reply(_call_gemini(prompt, temperature), GEMINI_MODEL)
+                except httpx.HTTPStatusError as e:
+                    if e.response.status_code not in (429, 503):
+                        raise
+                    time.sleep(wait)
+            return Reply(_call_gemini(prompt, temperature), GEMINI_MODEL)
         if model not in ALLOWED_MODELS:
             model = DEFAULT_MODEL
         for wait in (15, 30, 60, 60, 60):
@@ -211,7 +221,8 @@ def answer_full(question, model=None, doc=None, history=None, regen=None, fallba
 
 def answer(question):
     # old shape kept for the evaluation scripts: (text, list of page labels)
-    text, cites, _, _, _ = answer_full(question, fallback=False)
+    # the evaluation scripts use one fixed model: Groq, or Gemini when EVAL_MODEL=gemini
+    text, cites, _, _, _ = answer_full(question, model=os.getenv("EVAL_MODEL") or None, fallback=False)
     pages = sorted({c["page"] for c in cites}, key=page_key)
     return text, pages
 
