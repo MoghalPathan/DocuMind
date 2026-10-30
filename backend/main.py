@@ -152,6 +152,36 @@ def ingest(file: UploadFile = File(...), user=Depends(auth.current_user)):
     return {"file": name, "chunks": len(chunks)}
 
 
+CACHE_FILE = "data/answer_cache.json"
+_cache = None
+
+
+def _load_cache():
+    global _cache
+    if _cache is None:
+        try:
+            with open(CACHE_FILE, encoding="utf-8") as f:
+                _cache = json.load(f)
+        except Exception:
+            _cache = {}
+    return _cache
+
+
+def _save_cache():
+    try:
+        os.makedirs("data", exist_ok=True)
+        with open(CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(_cache, f)
+    except Exception:
+        pass
+
+
+def _cache_key(question, doc):
+    q = " ".join(question.lower().split()).rstrip("?. ")
+    return q + "|" + (os.path.basename(doc) if doc else "")
+
+
+
 @app.post("/query")
 def query(body: Question, user=Depends(auth.current_user)):
     uid = user["id"]
@@ -163,6 +193,19 @@ def query(body: Question, user=Depends(auth.current_user)):
             "pages": [],
             "kind": "chat",
         }
+    # cache only plain questions from users who have no uploads (they only see the shared documents)
+    plain = not body.history and not body.regen and not small_talk(body.question) and not own_sources(uid)
+    key = _cache_key(body.question, body.doc)
+    if plain:
+        saved = _load_cache().get(key)
+        if saved:
+            return {**saved, "cached": True}
+    auth.hit(
+        ("global",),
+        int(os.getenv("DAILY_CAP", "120")),
+        86400,
+        "DocuMind has reached its free daily limit. Please try again tomorrow. The example questions still work.",
+    )
     text, cites, kind, asked, used = answer_full(
         body.question,
         model=body.model,
@@ -172,7 +215,7 @@ def query(body: Question, user=Depends(auth.current_user)):
         owner=uid,
     )
     pages = sorted({c["page"] for c in cites}, key=page_key)
-    return {
+    result = {
         "answer": text,
         "sources": cites,
         "pages": pages,
@@ -180,6 +223,10 @@ def query(body: Question, user=Depends(auth.current_user)):
         "asked": asked,
         "model_used": used,
     }
+    if plain and kind in ("answer", "no_answer") and len(_load_cache()) < 500:
+        _cache[key] = result
+        _save_cache()
+    return result
 
 
 @app.post("/feedback")
