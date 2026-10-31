@@ -25,6 +25,24 @@ export default function Site({ route, go, onAuth }) {
   const [menu, setMenu] = useState(false);
   const [dd, setDd] = useState(false);
   const [stuck, setStuck] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("documind.theme")) || "dark";
+    } catch {
+      return "dark";
+    }
+  });
+
+  const toggleTheme = () => {
+    const t = theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = t;
+    try {
+      localStorage.setItem("documind.theme", JSON.stringify(t));
+    } catch {
+      /* private window: the choice lasts until the tab closes */
+    }
+    setTheme(t);
+  };
 
   useEffect(() => {
     const on = () => setStuck(window.scrollY > 8);
@@ -89,6 +107,13 @@ export default function Site({ route, go, onAuth }) {
           </nav>
 
           <div className="st-actions">
+            <button className="st-icon" aria-label="Switch theme" title={theme === "dark" ? "Light mode" : "Dark mode"} onClick={toggleTheme}>
+              {theme === "dark" ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg>
+              )}
+            </button>
             <a className="st-btn ghost st-gh" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
             <button className="st-btn ghost" onClick={() => go("/login")}>Log in</button>
             <button className="st-btn solid" onClick={demo} disabled={busy}>{busy ? "Opening…" : "Try demo"}</button>

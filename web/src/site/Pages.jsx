@@ -452,11 +452,16 @@ export function Contact() {
     <>
       <PageHead eyebrow="Contact" title={"Let’s talk"} intro="Questions, feedback, or an opportunity? I would love to hear from you." />
       <section className="st-sec">
-        <div className="st-wrap st-grid3">
+        <div className="st-wrap st-grid2">
+          <article className="st-card">
+            <h3>Email</h3>
+            <p>For opportunities, questions or feedback.</p>
+            <a className="st-btn solid" href="mailto:navedmoghalpathan@proton.me">navedmoghalpathan@proton.me</a>
+          </article>
           <article className="st-card">
             <h3>LinkedIn</h3>
-            <p>The best way to reach me, and to see what I am working on next.</p>
-            <a className="st-btn solid" href={LINKEDIN} target="_blank" rel="noreferrer">Message me</a>
+            <p>Connect with me and see what I am working on next.</p>
+            <a className="st-btn ghost" href={LINKEDIN} target="_blank" rel="noreferrer">Message me</a>
           </article>
           <article className="st-card">
             <h3>GitHub</h3>
