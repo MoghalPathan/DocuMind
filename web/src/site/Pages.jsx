@@ -88,36 +88,25 @@ export function Home({ go, demo, busy }) {
 
       <section className="st-sec">
         <div className="st-wrap">
-          <p className="st-eyebrow">Why DocuMind</p>
-          <h2>Built to be trusted, not just fast</h2>
+          <p className="st-eyebrow">Explore</p>
+          <h2>Everything you need to know</h2>
           <div className="st-grid3">
-            <article className="st-card">
-              <h3>Every answer shows its source</h3>
-              <p>Each answer lists the document and page it came from, so you can open the PDF and check it yourself.</p>
-            </article>
-            <article className="st-card">
-              <h3>It admits when it does not know</h3>
-              <p>If the answer is not in your document, DocuMind says so. It does not guess or make things up.</p>
-            </article>
-            <article className="st-card">
-              <h3>Tested, with the numbers shown</h3>
-              <p>30 real questions, graded by hand, with the wrong answers published too. No vague accuracy claims.</p>
-            </article>
+            <A to="/features" go={go} className="st-card st-tile">
+              <h3>Features</h3>
+              <p>Page citations, honest {"\u201C"}I don{"\u2019"}t know{"\u201D"}, follow-up questions and shareable chats.</p>
+              <span className="st-tile-link">See what it can do →</span>
+            </A>
+            <A to="/how-it-works" go={go} className="st-card st-tile">
+              <h3>How it works</h3>
+              <p>The search and answer pipeline behind it, and the tools used to build it.</p>
+              <span className="st-tile-link">See the pipeline →</span>
+            </A>
+            <A to="/results" go={go} className="st-card st-tile">
+              <h3>Results</h3>
+              <p>30 real questions, graded by hand. Every answer is listed, including the wrong ones.</p>
+              <span className="st-tile-link">See every question →</span>
+            </A>
           </div>
-          <p className="st-more"><A to="/features" go={go}>Explore all features →</A></p>
-        </div>
-      </section>
-
-      <section className="st-sec alt">
-        <div className="st-wrap">
-          <p className="st-eyebrow">How it works</p>
-          <h2>Four steps from PDF to cited answer</h2>
-          <ol className="st-steps">
-            {[["Upload", "Add a PDF or use the sample."], ["Index", "Text is split and stored by meaning."], ["Search", "Best passages are found and re-ranked."], ["Answer", "The AI answers only from them, with pages."]].map(([t, d], i) => (
-              <li key={t}><span className="st-num">{i + 1}</span><div><h3>{t}</h3><p>{d}</p></div></li>
-            ))}
-          </ol>
-          <p className="st-more"><A to="/how-it-works" go={go}>See the full pipeline →</A></p>
         </div>
       </section>
 
@@ -229,7 +218,7 @@ export function Features({ go, demo, busy }) {
               ["Works on phones", "A layout designed for small screens."],
               ["Voice input", "Ask with your microphone on a secure connection."],
               ["Scanned PDFs detected", "Image-only PDFs are rejected with a clear message."],
-              ["Fair-use limits", "Per-user limits keep the free demo available to everyone."],
+              ["Example questions", "Click a suggested question to see how it works in one tap."],
               ["Chat history", "Pin, rename, search and archive your chats."],
             ].map(([t, d]) => (
               <article key={t} className="st-card"><h3>{t}</h3><p>{d}</p></article>
@@ -304,17 +293,6 @@ export function HowItWorks({ go, demo, busy }) {
         </div>
       </section>
 
-      <section className="st-sec">
-        <div className="st-wrap">
-          <h2>Guardrails</h2>
-          <div className="st-grid3">
-            <article className="st-card"><h3>Answer only from the text</h3><p>The prompt tells the AI to use the retrieved passages only, and to say {"“"}I don{"’"}t know{"”"} otherwise.</p></article>
-            <article className="st-card"><h3>Per-user separation</h3><p>Search is filtered so you only ever see your own uploads and the shared sample.</p></article>
-            <article className="st-card"><h3>Limits and a daily cap</h3><p>Per-user limits and a site-wide daily cap keep the free demo working for everyone.</p></article>
-          </div>
-        </div>
-      </section>
-      <CtaBand go={go} demo={demo} busy={busy} />
     </>
   );
 }
@@ -384,7 +362,7 @@ export function Results({ go, demo, busy }) {
           <p className="st-more"><a href={GITHUB} target="_blank" rel="noreferrer">Run the evaluation yourself on GitHub →</a></p>
         </div>
       </section>
-      <CtaBand go={go} demo={demo} busy={busy} />
+      
     </>
   );
 }
@@ -424,7 +402,7 @@ export function Pricing({ go, demo, busy }) {
           ))}
         </div>
       </section>
-      <CtaBand go={go} demo={demo} busy={busy} />
+      
     </>
   );
 }
@@ -463,7 +441,7 @@ export function About({ go, demo, busy }) {
           </aside>
         </div>
       </section>
-      <CtaBand go={go} demo={demo} busy={busy} />
+      
     </>
   );
 }

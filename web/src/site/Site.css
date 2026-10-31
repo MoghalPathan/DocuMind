@@ -190,3 +190,7 @@
 
 .login-back { background: none; border: 0; color: var(--muted); font: 500 13.5px Inter, sans-serif; cursor: pointer; padding: 0 0 12px; }
 .login-back:hover { color: var(--text); }
+
+.st-tile { display: block; transition: border-color .15s, transform .15s; }
+.st-tile:hover { border-color: var(--accent); transform: translateY(-2px); }
+.st-tile-link { color: var(--accent); font-weight: 600; font-size: 14px; }
