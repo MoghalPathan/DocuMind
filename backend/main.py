@@ -326,3 +326,10 @@ if os.path.isdir(DIST):
     @app.get("/s/{sid}")
     def shared_page(sid: str):
         return FileResponse(os.path.join(DIST, "index.html"))
+
+    
+    def _spa():
+        return FileResponse(os.path.join(DIST, "index.html"))
+
+    for _p in ("features", "how-it-works", "results", "pricing", "about", "contact", "login"):
+        app.add_api_route("/" + _p, _spa, methods=["GET"], include_in_schema=False)

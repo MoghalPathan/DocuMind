@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import Login from "./Login.jsx";
 import Shared from "./Shared.jsx";
+import Site from "./site/Site.jsx";
 import "./App.css";
 
 const MODELS = [
@@ -1225,6 +1226,20 @@ function readAuth() {
 export default function App() {
   const [auth, setAuth] = useState(readAuth);
 
+  const [route, setRoute] = useState(() => window.location.pathname.replace(/\/+$/, "") || "/");
+
+  useEffect(() => {
+    const on = () => setRoute(window.location.pathname.replace(/\/+$/, "") || "/");
+    window.addEventListener("popstate", on);
+    return () => window.removeEventListener("popstate", on);
+  }, []);
+
+  const go = useCallback((to) => {
+    window.history.pushState({}, "", to);
+    setRoute(to);
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     // the login page also follows the saved light/dark choice
     try {
@@ -1240,6 +1255,8 @@ export default function App() {
     } catch {
       /* private window: the login lasts until the tab closes */
     }
+    window.history.replaceState({}, "", "/");
+    setRoute("/");
     setAuth(a);
   }, []);
 
@@ -1249,10 +1266,14 @@ export default function App() {
     } catch {
       /* ignore */
     }
+    window.history.replaceState({}, "", "/");
+    setRoute("/");
     setAuth(null);
   }, []);
 
   const shared = window.location.pathname.match(/^\/s\/([A-Za-z0-9_-]+)/);
   if (shared) return <Shared id={shared[1]} />;
-  return auth ? <ChatApp key={auth.user.id} auth={auth} onLogout={onLogout} /> : <Login onAuth={onAuth} />;
+  if (auth) return <ChatApp key={auth.user.id} auth={auth} onLogout={onLogout} />;
+  if (route === "/login") return <Login onAuth={onAuth} go={go} />;
+  return <Site route={route} go={go} onAuth={onAuth} />;
 }

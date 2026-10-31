@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Login({ onAuth }) {
+export default function Login({ onAuth, go }) {
   const [mode, setMode] = useState("login"); // "login" or "signup"
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -42,6 +42,11 @@ export default function Login({ onAuth }) {
   return (
     <div className="login-page">
       <div className="login-card">
+        {go && (
+          <button type="button" className="login-back" onClick={() => go("/")}>
+            ← Back to home
+          </button>
+        )}
         <div className="login-brand">
           <div className="logo big">D</div>
           <h1>DocuMind</h1>
