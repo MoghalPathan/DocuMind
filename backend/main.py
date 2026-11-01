@@ -331,5 +331,15 @@ if os.path.isdir(DIST):
     def _spa():
         return FileResponse(os.path.join(DIST, "index.html"))
 
-    for _p in ("features", "how-it-works", "results", "pricing", "about", "contact", "login"):
+    for _p in ("features", "how-it-works", "results", "pricing", "about", "contact", "login", "signup", "privacy", "terms"):
         app.add_api_route("/" + _p, _spa, methods=["GET"], include_in_schema=False)
+
+    for _f in ("favicon.svg", "og.png", "robots.txt", "sitemap.xml"):
+        def _file(_f=_f):
+            return FileResponse(os.path.join(DIST, _f))
+        app.add_api_route("/" + _f, _file, methods=["GET"], include_in_schema=False)  
+
+    def _not_found(full_path: str):
+        return FileResponse(os.path.join(DIST, "index.html"), status_code=404)
+
+    app.add_api_route("/{full_path:path}", _not_found, methods=["GET"], include_in_schema=False)      

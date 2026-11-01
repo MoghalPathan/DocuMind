@@ -1,7 +1,8 @@
 import { useState } from "react";
 
-export default function Login({ onAuth, go }) {
-  const [mode, setMode] = useState("login"); // "login" or "signup"
+export default function Login({ onAuth, go, start }) {
+  const [mode, setMode] = useState(start === "signup" ? "signup" : "login");
+  const [show, setShow] = useState(false); // "login" or "signup"
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -70,7 +71,7 @@ export default function Login({ onAuth, go }) {
             className={mode === "signup" ? "on" : ""}
             onClick={() => { setMode("signup"); setError(""); }}
           >
-            Create account
+            Sign up
           </button>
         </div>
 
@@ -85,17 +86,27 @@ export default function Login({ onAuth, go }) {
             placeholder="you@example.com"
           />
           <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            autoComplete={mode === "login" ? "current-password" : "new-password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder={mode === "signup" ? "At least 8 characters" : "Your password"}
-          />
+          <div className="login-pw">
+            <input
+              id="password"
+              type={show ? "text" : "password"}
+              autoComplete={mode === "login" ? "current-password" : "new-password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={mode === "signup" ? "At least 8 characters" : "Your password"}
+            />
+            <button type="button" className="login-eye" onClick={() => setShow(!show)} aria-label={show ? "Hide password" : "Show password"}>
+              {show ? "Hide" : "Show"}
+            </button>
+          </div>
+          {mode === "login" && (
+            <p className="login-forgot">
+              Forgot your password? Use <b>Try the demo</b> below, or <a href="mailto:navedmoghalpathan@proton.me?subject=DocuMind%20password%20reset">email me</a> and I will reset it.
+            </p>
+          )}
           {error && <div className="login-error" role="alert">{error}</div>}
           <button className="login-primary" type="submit" disabled={busy}>
-            {busy ? "Please wait…" : mode === "login" ? "Log in" : "Create account"}
+            {busy ? "Please wait…" : mode === "login" ? "Log in" : "Sign up"}
           </button>
         </form>
 
@@ -106,6 +117,12 @@ export default function Login({ onAuth, go }) {
         <p className="login-note">
           Demo sessions last 24 hours and have smaller upload limits. You can ask questions about the sample
           document straight away.
+        </p>
+        <p className="login-note">
+          By continuing you agree to the{" "}
+          <a href="/terms" onClick={(e) => { if (go) { e.preventDefault(); go("/terms"); } }}>Terms</a> and{" "}
+          <a href="/privacy" onClick={(e) => { if (go) { e.preventDefault(); go("/privacy"); } }}>Privacy</a>.
+          Please do not upload private documents.
         </p>
       </div>
     </div>

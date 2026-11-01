@@ -1,3 +1,4 @@
+import { WorksBest } from "./Legal.jsx";
 import { useState } from "react";
 import { A, LINKEDIN, GITHUB } from "./shared.jsx";
 import { EVAL_ROWS } from "./evalData.js";
@@ -109,7 +110,8 @@ export function Home({ go, demo, busy }) {
           </div>
         </div>
       </section>
-
+      
+      <WorksBest />
       <CtaBand go={go} demo={demo} busy={busy} />
     </>
   );
@@ -390,7 +392,7 @@ export function Pricing({ go, demo, busy }) {
             <h3>Free account</h3>
             <p className="st-price">Email and password</p>
             <ul><li>30 questions per hour</li><li>Up to 5 documents of your own</li><li>7 uploads per day</li><li>Saved chats and share links</li></ul>
-            <button className="st-btn ghost" onClick={() => go("/login")}>Sign up</button>
+            <button className="st-btn ghost" onClick={() => go("/signup")}>Sign up</button>
           </article>
         </div>
       </section>

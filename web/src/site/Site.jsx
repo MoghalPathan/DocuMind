@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Home, Features, HowItWorks, Results, Pricing, About, Contact } from "./Pages.jsx";
 import { A, GITHUB } from "./shared.jsx";
+import { Privacy, Terms, NotFound } from "./Legal.jsx";
 import "./Site.css";
 
 const ROUTES = {
@@ -11,6 +12,8 @@ const ROUTES = {
   "/pricing": Pricing,
   "/about": About,
   "/contact": Contact,
+  "/privacy": Privacy,
+  "/terms": Terms,
 };
 
 const PRODUCT = [
@@ -54,9 +57,9 @@ export default function Site({ route, go, onAuth }) {
   useEffect(() => {
     setMenu(false);
     setDd(false);
-    const names = { "/": "", "/features": "Features", "/how-it-works": "How it works", "/results": "Results", "/pricing": "Pricing", "/about": "About", "/contact": "Contact" };
+    const names = { "/": "", "/features": "Features", "/how-it-works": "How it works", "/results": "Results", "/pricing": "Pricing", "/about": "About", "/contact": "Contact", "/privacy": "Privacy", "/terms": "Terms" };
     const n = names[route];
-    document.title = n ? `${n} · DocuMind` : "DocuMind: ask your PDF, get cited answers";
+    document.title = route in names ? (n ? `${n} · DocuMind` : "DocuMind: ask your PDF, get cited answers") : "Page not found · DocuMind";
   }, [route]);
 
   const demo = async () => {
@@ -73,7 +76,7 @@ export default function Site({ route, go, onAuth }) {
     setBusy(false);
   };
 
-  const Page = ROUTES[route] || Home;
+  const Page = ROUTES[route] || NotFound;
   const inProduct = PRODUCT.some(([p]) => p === route);
   const cls = (p) => (route === p ? "on" : "");
 
@@ -128,6 +131,8 @@ export default function Site({ route, go, onAuth }) {
               <A key={p} to={p} go={go} className={cls(p)}>{t}</A>
             ))}
             <a href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
+            <A to="/privacy" go={go}>Privacy</A>
+            <A to="/terms" go={go}>Terms</A>
           </div>
         )}
       </header>
@@ -153,6 +158,8 @@ export default function Site({ route, go, onAuth }) {
             <A to="/about" go={go}>About</A>
             <A to="/contact" go={go}>Contact</A>
             <a href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
+            <A to="/privacy" go={go}>Privacy</A>
+            <A to="/terms" go={go}>Terms</A>
           </div>
           <div>
             <h4>Try it</h4>
