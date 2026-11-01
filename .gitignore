@@ -28,10 +28,11 @@ backend/answer[0-9].py
 backend/main[0-9].py
 backend/search[0-9].py
 backend/scope[0-9].py
+web/src/Login[0-9].jsx
 backend/chitchat0.py
 web/src/App[0-9]*.jsx
 web/src/App[0-9]*.css
 web/src/Appp.*
 web/src/index[0-9].css
 web/src/indexx.css
-README0.md
+README0.mdweb/src/site/Legal[0-9].jsx
