@@ -105,8 +105,6 @@ export default function Site({ route, go, onAuth }) {
               )}
             </div>
             <A to="/pricing" go={go} className={cls("/pricing")}>Pricing</A>
-            <A to="/about" go={go} className={cls("/about")}>About</A>
-            <A to="/contact" go={go} className={cls("/contact")}>Contact</A>
           </nav>
 
           <div className="st-actions">
@@ -131,8 +129,6 @@ export default function Site({ route, go, onAuth }) {
               <A key={p} to={p} go={go} className={cls(p)}>{t}</A>
             ))}
             <a href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
-            <A to="/privacy" go={go}>Privacy</A>
-            <A to="/terms" go={go}>Terms</A>
           </div>
         )}
       </header>
@@ -158,17 +154,15 @@ export default function Site({ route, go, onAuth }) {
             <A to="/about" go={go}>About</A>
             <A to="/contact" go={go}>Contact</A>
             <a href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+          <div>
+            <h4>Legal</h4>
             <A to="/privacy" go={go}>Privacy</A>
             <A to="/terms" go={go}>Terms</A>
           </div>
-          <div>
-            <h4>Try it</h4>
-            <button onClick={demo} disabled={busy}>Try the demo</button>
-            <button onClick={() => go("/login")}>Log in or sign up</button>
-          </div>
         </div>
         <div className="st-wrap st-foot-base">
-          <span>&copy; 2026 DocuMind. A portfolio project.</span>
+          <span>&copy; 2026 DocuMind</span>
           <span>Please do not upload private or confidential documents.</span>
         </div>
       </footer>

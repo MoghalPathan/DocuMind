@@ -142,21 +142,13 @@ export function Home({ go, demo, busy }) {
         </div>
       </section>
 
-      <section className="st-sec alt">
-        <div className="st-wrap st-faq">
-          <h2>Quick answers</h2>
-          <details><summary>Is my file private?</summary><p>Only the passages relevant to your question are sent to an AI provider (Groq, or Google Gemini as a backup). See the <A to="/privacy" go={go}>Privacy page</A> for details.</p></details>
-          <details><summary>Can it be wrong?</summary><p>Yes. In my 30-question test, about 80% of answers were fully correct, and it is weakest at counting long lists. Every answer shows its page so you can check it.</p></details>
-          <details><summary>Who built it?</summary><p>Naved Korabu, a computer engineering graduate from Pune. Read more on the <A to="/about" go={go}>About page</A>.</p></details>
-        </div>
-      </section>
 
       <section className="st-sec">
         <div className="st-wrap">
           <article className="st-card hl st-public">
             <div>
               <h3>Built in public</h3>
-              <p>The code, the 30-question test and every result, including the wrong answers, are open for anyone to read.</p>
+              <p>The code, the 30-question test to the test questions.</p>
             </div>
             <div className="st-cta">
               <a className="st-btn solid" href={GITHUB} target="_blank" rel="noreferrer">View on GitHub</a>
@@ -166,7 +158,6 @@ export function Home({ go, demo, busy }) {
         </div>
       </section>
 
-      <CtaBand go={go} demo={demo} busy={busy} />
     </>
   );
 }
