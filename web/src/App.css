@@ -1476,9 +1476,26 @@
 }
 
 
-
 .login-pw { position: relative; }
 .login-pw input { padding-right: 64px; }
 .login-eye { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: 0; color: var(--accent, #6b73ff); font: 600 13px Inter, system-ui, sans-serif; cursor: pointer; padding: 6px 8px; }
 .login-forgot { margin: 8px 0 0; font-size: 13px; line-height: 1.5; color: var(--muted, #8a8f9c); }
 .login-forgot a, .login-note a { color: var(--accent, #6b73ff); }
+
+
+/* compact login so it fits one screen */
+.login-card { padding: 18px 22px 14px; }
+.login-brand h1 { font-size: 27px; }
+.login-brand .logo.big { width: 38px; height: 38px; font-size: 20px; }
+.login-sub { font-size: 13px; margin: 6px 0 12px; }
+.login-tabs { margin-bottom: 6px; }
+.login-tabs button { padding: 7px 8px; }
+.login-card label { margin: 8px 0 4px; }
+.login-card input { padding: 9px 12px; }
+.login-primary { margin-top: 12px; padding: 10px; }
+.login-demo { padding: 10px; }
+.login-or { margin: 12px 0; }
+.login-note { font-size: 12px; margin: 8px 0 0; line-height: 1.45; }
+.login-forgot { font-size: 12.5px; margin: 6px 0 0; }
+.login-back { margin-bottom: 4px; }
+.login-page { padding: 12px 16px; }

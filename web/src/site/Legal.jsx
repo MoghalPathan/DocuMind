@@ -2,9 +2,9 @@ import { A } from "./shared.jsx";
 
 const MAIL = "navedmoghalpathan@proton.me";
 
-function Head({ eyebrow, title, intro }) {
+function Head({ eyebrow, title, intro, legal }) {
   return (
-    <section className="st-pagehead">
+    <section className={"st-pagehead" + (legal ? " st-legal-head" : "")}>
       <div className="st-wrap">
         <p className="st-eyebrow">{eyebrow}</p>
         <h1>{title}</h1>
@@ -14,59 +14,95 @@ function Head({ eyebrow, title, intro }) {
   );
 }
 
+function Sec({ n, title, children }) {
+  return (
+    <section className="st-legal-sec">
+      <h2><span>{n}</span>{title}</h2>
+      {children}
+    </section>
+  );
+}
+
 export function Privacy({ go }) {
   return (
     <>
-      <Head eyebrow="Privacy" title="Privacy, in plain words" intro="DocuMind is a portfolio project run by one person. Here is exactly what happens to your data. Last updated 1 November 2026." />
-      <section className="st-sec">
-        <div className="st-wrap st-prose">
-          <h3>What I store</h3>
-          <ul>
-            <li><b>Account:</b> your email and a hashed password (never the password itself). Demo users get a temporary guest account with no email.</li>
-            <li><b>Your PDFs:</b> the file, and its text split into small pieces so it can be searched.</li>
-            <li><b>Feedback:</b> if you press 👍 or 👎, the question, the answer and your rating are saved.</li>
-            <li><b>Answer cache and share links:</b> answers about the sample document may be reused. A share link stores the chat you chose to share.</li>
-            <li><b>Server logs:</b> your IP address is seen by the server to limit abuse (for example too many questions per hour).</li>
-          </ul>
-          <h3>Who else sees your text</h3>
-          <p>To answer a question, the matching passages from your PDF and your question are sent to an AI provider: <b>Groq</b> first, and <b>Google Gemini</b> as a backup. Their own privacy terms apply to that text. On Google&rsquo;s free tier, content may be used to improve their products.</p>
-          <p><b>So please do not upload private, confidential or sensitive documents.</b> Use public or sample files.</p>
-          <h3>What I do not do</h3>
-          <ul>
-            <li>I do not sell your data or show ads.</li>
-            <li>I do not use advertising trackers or analytics cookies.</li>
-            <li>Your browser keeps a login token and your theme choice. That is all.</li>
-          </ul>
-          <h3>Deleting your data</h3>
-          <p>Inside the app you can delete any document you uploaded. To delete your whole account and everything linked to it, email <a href={"mailto:" + MAIL}>{MAIL}</a> and I will remove it.</p>
-          <p>Questions? <A to="/contact" go={go}>See the Contact page</A>.</p>
+      <Head legal eyebrow="Legal" title="Privacy Policy" intro="Effective 1 November 2026. This explains what DocuMind collects, why, and who can see it." />
+      <section className="st-sec st-legal">
+        <div className="st-wrap st-legal-in">
+          <p className="st-legal-note">DocuMind is a portfolio project operated by Naved Korabu (Pune, India). It is a demonstration, not a commercial service. Please do not upload private, confidential or sensitive documents.</p>
+
+          <Sec n="1" title="Information we collect">
+            <table className="st-legal-table">
+              <thead><tr><th>Data</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td>Email address and password (stored as a salted hash)</td><td>Account sign-in. Demo guests get a temporary account with no email.</td></tr>
+                <tr><td>Uploaded PDF files and the text extracted from them</td><td>Searching the document to answer your questions.</td></tr>
+                <tr><td>Your questions and the answers given</td><td>Producing answers. Saved in your chat history in your browser, and in feedback if you rate an answer.</td></tr>
+                <tr><td>Answer ratings (question, answer, rating)</td><td>Improving answer quality.</td></tr>
+                <tr><td>Shared chats, only when you create a share link</td><td>Showing the chat to anyone who has the link.</td></tr>
+                <tr><td>IP address and request logs</td><td>Rate limiting and abuse prevention.</td></tr>
+              </tbody>
+            </table>
+          </Sec>
+
+          <Sec n="2" title="Third-party AI providers">
+            <p>To answer a question, DocuMind sends your question and the most relevant passages of your document to an AI provider: <b>Groq</b> as the primary provider and <b>Google Gemini</b> as a fallback. Their own terms and privacy policies apply to that content. Under Google&rsquo;s free tier, submitted content may be used to improve Google products.</p>
+          </Sec>
+
+          <Sec n="3" title="Cookies and tracking">
+            <p>DocuMind does not use advertising cookies, analytics or third-party trackers. Your browser stores a sign-in token and your light or dark theme choice, which are needed for the site to work.</p>
+          </Sec>
+
+          <Sec n="4" title="Sharing">
+            <p>We do not sell your data or share it with anyone except the providers in section 2 and our hosting provider (Amazon Web Services). Share links you create are readable by anyone who has the link until you remove them.</p>
+          </Sec>
+
+          <Sec n="5" title="Retention and deletion">
+            <p>You can delete any document you uploaded from inside the app, which removes the file and its searchable text. Demo guest accounts expire after 24 hours. To delete your account and all linked data, email <a href={"mailto:" + MAIL}>{MAIL}</a>.</p>
+          </Sec>
+
+          <Sec n="6" title="Security">
+            <p>Connections use HTTPS and passwords are hashed. No online service can promise perfect security, and this is a small project, so please keep sensitive files out of it.</p>
+          </Sec>
+
+          <Sec n="7" title="Contact and changes">
+            <p>Questions about this policy: <a href={"mailto:" + MAIL}>{MAIL}</a>. If this policy changes, the effective date above will be updated.</p>
+          </Sec>
         </div>
       </section>
     </>
   );
 }
 
-export function Terms() {
+export function Terms({ go }) {
   return (
     <>
-      <Head eyebrow="Terms" title="Terms of use" intro="Short and honest. Last updated 1 November 2026." />
-      <section className="st-sec">
-        <div className="st-wrap st-prose">
-          <h3>What this is</h3>
-          <p>DocuMind is a free portfolio and learning project. It runs on a small server and can be slow, limited or offline at any time.</p>
-          <h3>Answers can be wrong</h3>
-          <p>DocuMind tries to answer only from your document and to say &ldquo;I don&rsquo;t know&rdquo; otherwise, but it is not perfect. My own test shows it still makes mistakes, especially when counting long lists. Always check the cited page before relying on an answer. Do not use it for medical, legal, financial or other important decisions.</p>
-          <h3>Your files</h3>
-          <ul>
-            <li>Only upload files you have the right to use.</li>
-            <li>Do not upload private, confidential or illegal content.</li>
-            <li>You keep ownership of your files. I only process them to answer your questions.</li>
-          </ul>
-          <h3>Fair use</h3>
-          <p>There are limits on questions, uploads and file size. Please do not try to bypass them, attack the service or overload it. I may remove accounts or files that do, and I may change or shut down the service without notice.</p>
-          <h3>No warranty</h3>
-          <p>The service is provided &ldquo;as is&rdquo;, without any promise of accuracy, availability or fitness for a purpose. Use it at your own risk.</p>
-          <p>Questions? Email <a href={"mailto:" + MAIL}>{MAIL}</a>.</p>
+      <Head legal eyebrow="Legal" title="Terms of Use" intro="Effective 1 November 2026. By using DocuMind you agree to these terms." />
+      <section className="st-sec st-legal">
+        <div className="st-wrap st-legal-in">
+          <Sec n="1" title="The service">
+            <p>DocuMind is a free portfolio and learning project that answers questions about PDF files you upload. It runs on limited infrastructure and may be slow, restricted or unavailable at any time. Features, limits and availability may change or end without notice.</p>
+          </Sec>
+
+          <Sec n="2" title="Accuracy of answers">
+            <p>DocuMind answers only from your document and says &ldquo;I don&rsquo;t know&rdquo; when it cannot find an answer, but it can still be wrong. Published test results on the Results page show errors, especially when counting items in long lists. Verify important answers against the cited page. Do not rely on DocuMind for medical, legal, financial or safety decisions.</p>
+          </Sec>
+
+          <Sec n="3" title="Your content">
+            <p>You keep ownership of the files you upload. You confirm that you have the right to upload them and that they are not illegal, confidential or private. You grant DocuMind permission to process them only to provide the service, including sending excerpts to the AI providers described in the Privacy Policy.</p>
+          </Sec>
+
+          <Sec n="4" title="Acceptable use">
+            <p>Do not attempt to bypass usage limits, probe or attack the service, overload it, or use it to process unlawful content. Accounts or files that break these rules may be removed without notice.</p>
+          </Sec>
+
+          <Sec n="5" title="Disclaimer and liability">
+            <p>The service is provided &ldquo;as is&rdquo; without warranties of any kind. To the extent permitted by law, the operator is not liable for any loss arising from use of, or inability to use, the service.</p>
+          </Sec>
+
+          <Sec n="6" title="Contact">
+            <p>Questions: <a href={"mailto:" + MAIL}>{MAIL}</a>. See also the <A to="/privacy" go={go}>Privacy Policy</A>.</p>
+          </Sec>
         </div>
       </section>
     </>

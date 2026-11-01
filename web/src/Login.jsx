@@ -43,11 +43,6 @@ export default function Login({ onAuth, go, start }) {
   return (
     <div className="login-page">
       <div className="login-card">
-        {go && (
-          <button type="button" className="login-back" onClick={() => go("/")}>
-            ← Back to home
-          </button>
-        )}
         <div className="login-brand">
           <div className="logo big">D</div>
           <h1>DocuMind</h1>
@@ -114,15 +109,11 @@ export default function Login({ onAuth, go, start }) {
         <button className="login-demo" type="button" disabled={busy} onClick={() => call("/auth/demo")}>
           Try the demo, no sign-up
         </button>
-        <p className="login-note">
-          Demo sessions last 24 hours and have smaller upload limits. You can ask questions about the sample
-          document straight away.
-        </p>
+        <p className="login-note">Demo accounts last 24 hours and have smaller limits.</p>
         <p className="login-note">
           By continuing you agree to the{" "}
           <a href="/terms" onClick={(e) => { if (go) { e.preventDefault(); go("/terms"); } }}>Terms</a> and{" "}
           <a href="/privacy" onClick={(e) => { if (go) { e.preventDefault(); go("/privacy"); } }}>Privacy</a>.
-          Please do not upload private documents.
         </p>
       </div>
     </div>
