@@ -238,3 +238,11 @@
 .st-legal-head .st-intro { margin-top: 14px; }
 
 
+.st-shot { margin: 0; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,.28); background: var(--panel); }
+.st-shot img { display: block; width: 100%; height: auto; }
+.st-shotcard { margin: 0; }
+.st-shotcard figcaption { margin-top: 12px; color: var(--muted); font-size: 14.5px; line-height: 1.6; }
+.st-shotcard figcaption b { color: var(--text); }
+.st-shots { max-width: none; width: 100%; }
+
+

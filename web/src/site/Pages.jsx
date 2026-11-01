@@ -1,4 +1,7 @@
 import { WorksBest } from "./Legal.jsx";
+import shotAnswer from "./img/answer.webp";
+import shotHome from "./img/home.webp";
+import shotIdk from "./img/idk.webp";
 import { useState } from "react";
 import { A, LINKEDIN, GITHUB } from "./shared.jsx";
 import { EVAL_ROWS } from "./evalData.js";
@@ -69,12 +72,9 @@ export function Home({ go, demo, busy }) {
             </div>
             <p className="st-small">Free. No card. A sample document is ready in one click.</p>
           </div>
-          <div aria-hidden="true">
-            <Chat q="How are the 15 marks for day-to-day evaluation distributed?" chip="sample · p.11">
-              <p>The 15 marks are split equally, 3 marks each:</p>
-              <ul><li>Regularity</li><li>Program written</li><li>Execution &amp; result</li><li>Viva-voce</li><li>Dress code</li></ul>
-            </Chat>
-          </div>
+          <figure className="st-shot">
+            <img src={shotAnswer} width="1920" height="931" alt="DocuMind answering a question about a lab manual, with page citations sample p.9 and p.12" />
+          </figure>
         </div>
       </section>
 
@@ -84,6 +84,23 @@ export function Home({ go, demo, busy }) {
           <Stat n="5 / 5" l="unanswerable questions refused" />
           <Stat n="80%" l="answers fully correct (hand-graded)" />
           <A to="/results" go={go} className="st-strip-link">See every question →</A>
+        </div>
+      </section>
+
+      <section className="st-sec">
+        <div className="st-wrap">
+          <p className="st-eyebrow">In the app</p>
+          <h2>What you will see</h2>
+          <div className="st-grid2 st-shots">
+            <figure className="st-shotcard">
+              <div className="st-shot"><img src={shotIdk} width="1920" height="930" loading="lazy" alt="DocuMind replying that no answer was found in the documents" /></div>
+              <figcaption><b>An honest “I don’t know”.</b> Ask something the document does not contain and it says so, instead of making something up.</figcaption>
+            </figure>
+            <figure className="st-shotcard">
+              <div className="st-shot"><img src={shotHome} width="1920" height="933" loading="lazy" alt="DocuMind home screen with a sample document and suggested questions" /></div>
+              <figcaption><b>Ready in one click.</b> A sample document is loaded, with suggested questions to try first.</figcaption>
+            </figure>
+          </div>
         </div>
       </section>
 
