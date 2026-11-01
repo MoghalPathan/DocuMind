@@ -174,7 +174,6 @@ export default function Site({ route, go, onAuth }) {
         <div className="st-wrap st-foot-base">
           <span>&copy; 2026 DocuMind</span>
           <span>Please do not upload private or confidential documents.</span>
-          <button className="st-top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>Back to top <i aria-hidden="true" /></button>
         </div>
       </footer>
     </div>
