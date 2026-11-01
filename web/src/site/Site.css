@@ -253,4 +253,45 @@
 .st-public p { margin: 0; max-width: 560px; }
 
 
+/* motion and hover states */
+.st-nav > a, .st-nav > .st-dd > button { position: relative; transition: color .2s, background .2s; }
+.st-nav > a::after, .st-nav > .st-dd > button::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 3px; height: 2px; border-radius: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .25s ease; }
+.st-nav > a:hover::after, .st-nav > .st-dd > button:hover::after, .st-nav .on::after { transform: scaleX(1); }
+.st-caret { display: inline-block; width: 6px; height: 6px; margin: 0 0 3px 8px; border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: rotate(45deg); transition: transform .2s; font-size: 0; }
+.st-dd button[aria-expanded="true"] .st-caret { transform: rotate(225deg) translate(-1px, -1px); }
+.st-menu { animation: stIn .16s ease; }
+@keyframes stIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+.st-head-in { transition: height .2s ease; }
+.st-head.stuck .st-head-in { height: 56px; }
+.st-head.stuck { box-shadow: 0 6px 24px rgba(0,0,0,.18); }
+.st-logo { transition: transform .25s ease; }
+.st-brand:hover .st-logo { transform: rotate(-8deg) scale(1.06); }
+.st-btn { transition: transform .18s ease, box-shadow .18s ease, background .18s, filter .18s, border-color .18s; }
+.st-btn:hover { transform: translateY(-2px); }
+.st-btn.solid:hover { box-shadow: 0 8px 22px color-mix(in srgb, var(--accent) 45%, transparent); }
+.st-btn.ghost:hover { border-color: var(--accent); }
+.st-btn:active { transform: translateY(0); }
+.st-icon { transition: background .2s, border-color .2s; }
+.st-icon svg { transition: transform .4s ease; }
+.st-icon:hover svg { transform: rotate(30deg); }
+.st-icon:hover { border-color: var(--accent); }
+.st-tile { transition: transform .2s ease, border-color .2s, box-shadow .2s; }
+.st-tile:hover, .st-tile.rv.in:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 14px 32px rgba(0,0,0,.22); }
+.st-tile-link::after { content: ""; display: inline-block; width: 7px; height: 7px; margin-left: 8px; border-top: 1.8px solid currentColor; border-right: 1.8px solid currentColor; transform: rotate(45deg); transition: transform .2s; }
+.st-tile:hover .st-tile-link::after { transform: translateX(4px) rotate(45deg); }
+.st-flow-item i { display: block; width: 8px; height: 8px; border-top: 2px solid var(--muted); border-right: 2px solid var(--muted); transform: rotate(45deg); flex: none; margin: 0 4px; }
+.st-foot::before { content: ""; display: block; height: 2px; margin-top: -40px; margin-bottom: 38px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: .6; }
+.st-foot-grid a, .st-foot-grid button { transition: color .2s, transform .2s; }
+.st-foot-grid a:hover, .st-foot-grid button:hover { transform: translateX(4px); }
+.st-top { background: none; border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; color: var(--text); font: 500 13px Inter, system-ui, sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: border-color .2s, transform .2s; }
+.st-top:hover { border-color: var(--accent); transform: translateY(-2px); }
+.st-top i { width: 6px; height: 6px; border-top: 1.8px solid currentColor; border-left: 1.8px solid currentColor; transform: rotate(45deg) translate(1px, 1px); }
+.rv { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.rv.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .rv { opacity: 1; transform: none; transition: none; }
+  .st *, .st *::before, .st *::after { animation: none !important; transition: none !important; }
+}
+
+
 

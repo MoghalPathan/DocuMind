@@ -83,7 +83,6 @@ export function Home({ go, demo, busy }) {
           <Stat n="25 / 25" l="right page found in testing" />
           <Stat n="5 / 5" l="unanswerable questions refused" />
           <Stat n="80%" l="answers fully correct (hand-graded)" />
-          <A to="/results" go={go} className="st-strip-link">See every question →</A>
         </div>
       </section>
 
@@ -112,17 +111,17 @@ export function Home({ go, demo, busy }) {
             <A to="/features" go={go} className="st-card st-tile">
               <h3>Features</h3>
               <p>Page citations, honest {"\u201C"}I don{"\u2019"}t know{"\u201D"}, follow-up questions and shareable chats.</p>
-              <span className="st-tile-link">See what it can do →</span>
+              <span className="st-tile-link">See what it can do </span>
             </A>
             <A to="/how-it-works" go={go} className="st-card st-tile">
               <h3>How it works</h3>
               <p>The search and answer pipeline behind it, and the tools used to build it.</p>
-              <span className="st-tile-link">See the pipeline →</span>
+              <span className="st-tile-link">See the pipeline </span>
             </A>
             <A to="/results" go={go} className="st-card st-tile">
               <h3>Results</h3>
               <p>30 real questions, graded by hand. Every answer is listed, including the wrong ones.</p>
-              <span className="st-tile-link">See every question →</span>
+              <span className="st-tile-link">See every question </span>
             </A>
           </div>
         </div>
@@ -152,7 +151,6 @@ export function Home({ go, demo, busy }) {
             </div>
             <div className="st-cta">
               <a className="st-btn solid" href={GITHUB} target="_blank" rel="noreferrer">View on GitHub</a>
-              <A to="/results" go={go} className="st-btn ghost">See the results</A>
             </div>
           </article>
         </div>
@@ -287,7 +285,7 @@ function Flow({ title, steps }) {
         {steps.map(([t, d], i) => (
           <div key={t} className="st-flow-item">
             <div className="st-flow-box"><span>{i + 1}</span><b>{t}</b><small>{d}</small></div>
-            {i < steps.length - 1 && <i aria-hidden="true">→</i>}
+            {i < steps.length - 1 && <i aria-hidden="true" />}
           </div>
         ))}
       </div>
@@ -406,7 +404,7 @@ export function Results({ go, demo, busy }) {
             <article className="st-card"><h3>Exact values inside code</h3><p>Some values, like epoch counts hidden in long code sections, were missed even though the right page was found.</p></article>
             <article className="st-card"><h3>Small test set</h3><p>One document, 30 questions, graded by one person. Good for finding weaknesses, not a formal benchmark.</p></article>
           </div>
-          <p className="st-more"><a href={GITHUB} target="_blank" rel="noreferrer">Run the evaluation yourself on GitHub →</a></p>
+          <p className="st-more"><a href={GITHUB} target="_blank" rel="noreferrer">Run the evaluation yourself on GitHub </a></p>
         </div>
       </section>
       

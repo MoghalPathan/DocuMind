@@ -62,6 +62,17 @@ export default function Site({ route, go, onAuth }) {
     document.title = route in names ? (n ? `${n} · DocuMind` : "DocuMind: ask your PDF, get cited answers") : "Page not found · DocuMind";
   }, [route]);
 
+  useEffect(() => {
+    if (!("IntersectionObserver" in window)) return;
+    const els = document.querySelectorAll(".st main .st-sec .st-wrap > *, .st main .st-frow-in > *, .st main .st-strip-in > *, .st main .st-band-in");
+    const io = new IntersectionObserver(
+      (list) => list.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }),
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+    );
+    els.forEach((el) => { el.classList.add("rv"); io.observe(el); });
+    return () => io.disconnect();
+  }, [route]);
+
   const demo = async () => {
     setBusy(true);
     setError("");
@@ -91,7 +102,7 @@ export default function Site({ route, go, onAuth }) {
           <nav className="st-nav">
             <div className="st-dd" onClick={(e) => e.stopPropagation()}>
               <button className={inProduct ? "on" : ""} onClick={() => setDd((v) => !v)} aria-expanded={dd}>
-                Product <span className="st-caret">▾</span>
+                Product <span className="st-caret" aria-hidden="true" />
               </button>
               {dd && (
                 <div className="st-menu">
@@ -153,7 +164,6 @@ export default function Site({ route, go, onAuth }) {
             <h4>Project</h4>
             <A to="/about" go={go}>About</A>
             <A to="/contact" go={go}>Contact</A>
-            <a href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
           </div>
           <div>
             <h4>Legal</h4>
@@ -164,6 +174,7 @@ export default function Site({ route, go, onAuth }) {
         <div className="st-wrap st-foot-base">
           <span>&copy; 2026 DocuMind</span>
           <span>Please do not upload private or confidential documents.</span>
+          <button className="st-top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>Back to top <i aria-hidden="true" /></button>
         </div>
       </footer>
     </div>
