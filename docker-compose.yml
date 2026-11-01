@@ -1,26 +1,41 @@
 services:
   qdrant:
     image: qdrant/qdrant
-    ports:
-      - "6333:6333"
+    restart: unless-stopped
     volumes:
       - qdrant_data:/qdrant/storage
-
 
   api:
     build: .
     image: documind
+    restart: unless-stopped
     ports:
       - "8000:8000"
     env_file: .env
     environment:
       QDRANT_URL: http://qdrant:6333
+      TRUST_PROXY: "1"   # the API sits behind Caddy, so trust X-Forwarded-For
     depends_on:
-      - qdrant 
+      - qdrant
     volumes:
       - hf_cache:/root/.cache/huggingface
       - ./data:/app/data
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+
 volumes:
   qdrant_data:
   hf_cache:
-    
+  caddy_data:
+  caddy_config:
