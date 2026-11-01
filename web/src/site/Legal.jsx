@@ -165,7 +165,7 @@ export function WorksBest() {
       <div className="st-wrap">
         <p className="st-eyebrow">Before you upload</p>
         <h2>What works best</h2>
-        <div className="st-grid2" style={{ marginTop: 20 }}>
+        <div className="st-grid2" style={{ marginTop: 20, maxWidth: "none" }}>
           <article className="st-card hl">
             <h3>Works well</h3>
             <p>PDFs with real, selectable text: manuals, reports, papers, notes, textbooks. Ask about a specific fact, a definition or a section.</p>

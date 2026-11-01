@@ -147,7 +147,7 @@ export function Home({ go, demo, busy }) {
           <article className="st-card hl st-public">
             <div>
               <h3>Built in public</h3>
-              <p>The code, the 30-question test to the test questions.</p>
+              <p>The code, the test questions and every result, including the wrong answers, are open for anyone to read.</p>
             </div>
             <div className="st-cta">
               <a className="st-btn solid" href={GITHUB} target="_blank" rel="noreferrer">View on GitHub</a>

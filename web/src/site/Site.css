@@ -294,4 +294,17 @@
 }
 
 
+/* spacing, light-theme contrast */
+.st-sec { padding: 56px 0; }
+.st-sec:has(.st-public) { padding-top: 0; }
+:root[data-theme="light"] .st-eyebrow,
+:root[data-theme="light"] .st-tile-link,
+:root[data-theme="light"] .st h1 em,
+:root[data-theme="light"] .st-more a,
+:root[data-theme="light"] .st-legal-sec a,
+:root[data-theme="light"] .st-legal-contact a,
+:root[data-theme="light"] .st-legal-sec h2 span { color: #4338ca !important; }
+:root[data-theme="light"] .st-stat b { color: #4338ca; }
+
+
 
