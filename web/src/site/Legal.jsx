@@ -1,111 +1,161 @@
 import { A } from "./shared.jsx";
 
 const MAIL = "navedmoghalpathan@proton.me";
+const UPDATED = "1 November 2026";
 
-function Head({ eyebrow, title, intro, legal }) {
+function Layout({ title, intro, summary, sections }) {
+  const jump = (e, id) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
   return (
-    <section className={"st-pagehead" + (legal ? " st-legal-head" : "")}>
-      <div className="st-wrap">
-        <p className="st-eyebrow">{eyebrow}</p>
-        <h1>{title}</h1>
-        {intro && <p className="st-intro">{intro}</p>}
-      </div>
-    </section>
-  );
-}
-
-function Sec({ n, title, children }) {
-  return (
-    <section className="st-legal-sec">
-      <h2><span>{n}</span>{title}</h2>
-      {children}
-    </section>
+    <>
+      <section className="st-pagehead st-legal-head">
+        <div className="st-wrap">
+          <p className="st-eyebrow">Legal</p>
+          <h1>{title}</h1>
+          <p className="st-legal-meta">Effective and last updated: {UPDATED}</p>
+          {intro && <p className="st-intro">{intro}</p>}
+        </div>
+      </section>
+      <section className="st-sec st-legal">
+        <div className="st-wrap st-legal-grid">
+          <nav className="st-legal-toc" aria-label="On this page">
+            <b>On this page</b>
+            {sections.map((x, i) => (
+              <a key={x.id} href={"#" + x.id} onClick={(e) => jump(e, x.id)}>{i + 1}. {x.title}</a>
+            ))}
+          </nav>
+          <div className="st-legal-main">
+            {summary && (
+              <div className="st-legal-summary">
+                {summary.map(([h, t]) => (
+                  <div key={h}><b>{h}</b><span>{t}</span></div>
+                ))}
+              </div>
+            )}
+            {sections.map((x, i) => (
+              <section key={x.id} id={x.id} className="st-legal-sec">
+                <h2><span>{i + 1}</span>{x.title}</h2>
+                {x.body}
+              </section>
+            ))}
+            <div className="st-legal-contact">
+              Questions about this page? Email <a href={"mailto:" + MAIL}>{MAIL}</a>.
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
 
 export function Privacy({ go }) {
+  const sections = [
+    {
+      id: "collect",
+      title: "Information we collect",
+      body: (
+        <>
+          <table className="st-legal-table">
+            <thead><tr><th>Data</th><th>Why we use it</th></tr></thead>
+            <tbody>
+              <tr><td>Email and password (stored only as a salted hash)</td><td>To sign you in. Demo guests get a temporary account with no email.</td></tr>
+              <tr><td>PDF files you upload and the text extracted from them</td><td>To search the document and answer your questions.</td></tr>
+              <tr><td>Your questions and the answers</td><td>To produce answers. Your chat history is kept in your own browser.</td></tr>
+              <tr><td>Ratings you give to answers</td><td>To measure and improve answer quality.</td></tr>
+              <tr><td>Chats you choose to share</td><td>To show the chat to anyone who has the link.</td></tr>
+              <tr><td>IP address and server logs</td><td>To apply usage limits and prevent abuse.</td></tr>
+            </tbody>
+          </table>
+        </>
+      ),
+    },
+    {
+      id: "providers",
+      title: "Who processes your data",
+      body: (
+        <>
+          <p>To answer a question, DocuMind sends the question and the most relevant passages from your document to an AI provider. Your full file is not sent.</p>
+          <table className="st-legal-table">
+            <thead><tr><th>Provider</th><th>Role</th></tr></thead>
+            <tbody>
+              <tr><td>Groq</td><td>Primary AI model that writes the answer.</td></tr>
+              <tr><td>Google Gemini</td><td>Backup AI model, used when the primary is unavailable. On Google&rsquo;s free tier, submitted content may be used to improve Google products.</td></tr>
+              <tr><td>Amazon Web Services</td><td>Hosts the server where files and account data are stored.</td></tr>
+            </tbody>
+          </table>
+          <p>Each provider&rsquo;s own terms and privacy policy apply to data they receive. We do not sell your data.</p>
+        </>
+      ),
+    },
+    {
+      id: "cookies",
+      title: "Cookies and tracking",
+      body: <p>DocuMind uses no advertising cookies, analytics or third-party trackers. Your browser stores a sign-in token, your chat history and your light or dark theme choice, only so the site works.</p>,
+    },
+    {
+      id: "sharing",
+      title: "Shared links",
+      body: <p>A share link shows the chat you chose to share to anyone who has the link, until you remove it. You can stop sharing at any time from the share window in the app.</p>,
+    },
+    {
+      id: "retention",
+      title: "Retention and deletion",
+      body: (
+        <>
+          <p>You can delete any document you uploaded from inside the app. This removes the file and its searchable text from the server.</p>
+          <p>Demo sessions end after 24 hours, but files uploaded during a demo stay on the server until they are deleted. Delete them in the app before you leave, or email us and we will remove them.</p>
+          <p>To delete a full account and everything linked to it, email <a href={"mailto:" + MAIL}>{MAIL}</a>.</p>
+        </>
+      ),
+    },
+    {
+      id: "security",
+      title: "Security",
+      body: <p>Connections use HTTPS and passwords are hashed with a salt. No online service is perfectly secure, and DocuMind is a small project, so please do not upload private, confidential or sensitive documents.</p>,
+    },
+    {
+      id: "changes",
+      title: "Changes to this policy",
+      body: <p>If this policy changes, the date at the top of the page will be updated. Using DocuMind after a change means you accept the updated policy.</p>,
+    },
+  ];
   return (
-    <>
-      <Head legal eyebrow="Legal" title="Privacy Policy" intro="Effective 1 November 2026. This explains what DocuMind collects, why, and who can see it." />
-      <section className="st-sec st-legal">
-        <div className="st-wrap st-legal-in">
-          <p className="st-legal-note">DocuMind is a portfolio project operated by Naved Korabu (Pune, India). It is a demonstration, not a commercial service. Please do not upload private, confidential or sensitive documents.</p>
-
-          <Sec n="1" title="Information we collect">
-            <table className="st-legal-table">
-              <thead><tr><th>Data</th><th>Purpose</th></tr></thead>
-              <tbody>
-                <tr><td>Email address and password (stored as a salted hash)</td><td>Account sign-in. Demo guests get a temporary account with no email.</td></tr>
-                <tr><td>Uploaded PDF files and the text extracted from them</td><td>Searching the document to answer your questions.</td></tr>
-                <tr><td>Your questions and the answers given</td><td>Producing answers. Saved in your chat history in your browser, and in feedback if you rate an answer.</td></tr>
-                <tr><td>Answer ratings (question, answer, rating)</td><td>Improving answer quality.</td></tr>
-                <tr><td>Shared chats, only when you create a share link</td><td>Showing the chat to anyone who has the link.</td></tr>
-                <tr><td>IP address and request logs</td><td>Rate limiting and abuse prevention.</td></tr>
-              </tbody>
-            </table>
-          </Sec>
-
-          <Sec n="2" title="Third-party AI providers">
-            <p>To answer a question, DocuMind sends your question and the most relevant passages of your document to an AI provider: <b>Groq</b> as the primary provider and <b>Google Gemini</b> as a fallback. Their own terms and privacy policies apply to that content. Under Google&rsquo;s free tier, submitted content may be used to improve Google products.</p>
-          </Sec>
-
-          <Sec n="3" title="Cookies and tracking">
-            <p>DocuMind does not use advertising cookies, analytics or third-party trackers. Your browser stores a sign-in token and your light or dark theme choice, which are needed for the site to work.</p>
-          </Sec>
-
-          <Sec n="4" title="Sharing">
-            <p>We do not sell your data or share it with anyone except the providers in section 2 and our hosting provider (Amazon Web Services). Share links you create are readable by anyone who has the link until you remove them.</p>
-          </Sec>
-
-          <Sec n="5" title="Retention and deletion">
-            <p>You can delete any document you uploaded from inside the app, which removes the file and its searchable text. Demo guest accounts expire after 24 hours. To delete your account and all linked data, email <a href={"mailto:" + MAIL}>{MAIL}</a>.</p>
-          </Sec>
-
-          <Sec n="6" title="Security">
-            <p>Connections use HTTPS and passwords are hashed. No online service can promise perfect security, and this is a small project, so please keep sensitive files out of it.</p>
-          </Sec>
-
-          <Sec n="7" title="Contact and changes">
-            <p>Questions about this policy: <a href={"mailto:" + MAIL}>{MAIL}</a>. If this policy changes, the effective date above will be updated.</p>
-          </Sec>
-        </div>
-      </section>
-    </>
+    <Layout
+      title="Privacy Policy"
+      intro="What DocuMind collects, why, and who can see it. DocuMind is a portfolio project operated by Naved Korabu in Pune, India."
+      summary={[
+        ["We do not sell your data", "No ads and no third-party trackers."],
+        ["AI providers see excerpts", "Your question and relevant passages go to Groq or Gemini."],
+        ["You can delete", "Remove documents in the app, or email us to delete an account."],
+      ]}
+      sections={sections}
+    />
   );
 }
 
 export function Terms({ go }) {
+  const sections = [
+    { id: "service", title: "The service", body: <p>DocuMind is a free portfolio and learning project that answers questions about PDF files you upload. It runs on limited infrastructure and may be slow, restricted or unavailable at any time. Features, limits and availability can change or end without notice.</p> },
+    { id: "accuracy", title: "Accuracy of answers", body: <p>DocuMind answers only from your document and says &ldquo;I don&rsquo;t know&rdquo; when it cannot find an answer, but it can still be wrong. The published test results show errors, especially when counting items in long lists. Check important answers against the cited page. Do not rely on DocuMind for medical, legal, financial or safety decisions.</p> },
+    { id: "content", title: "Your content", body: <p>You keep ownership of the files you upload. You confirm that you have the right to upload them and that they are not illegal, confidential or private. You allow DocuMind to process them only to provide the service, including sending excerpts to the AI providers named in the <A to="/privacy" go={go}>Privacy Policy</A>.</p> },
+    { id: "use", title: "Acceptable use", body: <p>Do not try to bypass usage limits, probe or attack the service, overload it, or use it for unlawful content. Accounts or files that break these rules may be removed without notice.</p> },
+    { id: "liability", title: "Disclaimer and liability", body: <p>The service is provided &ldquo;as is&rdquo;, without warranties of any kind. To the extent allowed by law, the operator is not liable for any loss that comes from using, or not being able to use, the service.</p> },
+    { id: "changes", title: "Changes", body: <p>These terms may be updated. The date at the top shows the latest version. Continuing to use DocuMind means you accept the current terms.</p> },
+  ];
   return (
-    <>
-      <Head legal eyebrow="Legal" title="Terms of Use" intro="Effective 1 November 2026. By using DocuMind you agree to these terms." />
-      <section className="st-sec st-legal">
-        <div className="st-wrap st-legal-in">
-          <Sec n="1" title="The service">
-            <p>DocuMind is a free portfolio and learning project that answers questions about PDF files you upload. It runs on limited infrastructure and may be slow, restricted or unavailable at any time. Features, limits and availability may change or end without notice.</p>
-          </Sec>
-
-          <Sec n="2" title="Accuracy of answers">
-            <p>DocuMind answers only from your document and says &ldquo;I don&rsquo;t know&rdquo; when it cannot find an answer, but it can still be wrong. Published test results on the Results page show errors, especially when counting items in long lists. Verify important answers against the cited page. Do not rely on DocuMind for medical, legal, financial or safety decisions.</p>
-          </Sec>
-
-          <Sec n="3" title="Your content">
-            <p>You keep ownership of the files you upload. You confirm that you have the right to upload them and that they are not illegal, confidential or private. You grant DocuMind permission to process them only to provide the service, including sending excerpts to the AI providers described in the Privacy Policy.</p>
-          </Sec>
-
-          <Sec n="4" title="Acceptable use">
-            <p>Do not attempt to bypass usage limits, probe or attack the service, overload it, or use it to process unlawful content. Accounts or files that break these rules may be removed without notice.</p>
-          </Sec>
-
-          <Sec n="5" title="Disclaimer and liability">
-            <p>The service is provided &ldquo;as is&rdquo; without warranties of any kind. To the extent permitted by law, the operator is not liable for any loss arising from use of, or inability to use, the service.</p>
-          </Sec>
-
-          <Sec n="6" title="Contact">
-            <p>Questions: <a href={"mailto:" + MAIL}>{MAIL}</a>. See also the <A to="/privacy" go={go}>Privacy Policy</A>.</p>
-          </Sec>
-        </div>
-      </section>
-    </>
+    <Layout
+      title="Terms of Use"
+      intro="The rules for using DocuMind. By using the service you agree to them."
+      summary={[
+        ["Free, as-is", "A portfolio project with no guarantee of uptime."],
+        ["Verify answers", "Always check the cited page for anything important."],
+        ["Your files stay yours", "Only upload files you have the right to use."],
+      ]}
+      sections={sections}
+    />
   );
 }
 
