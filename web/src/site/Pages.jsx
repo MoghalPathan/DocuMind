@@ -129,6 +129,45 @@ export function Home({ go, demo, busy }) {
       </section>
       
       <WorksBest />
+      <section className="st-sec">
+        <div className="st-wrap st-own">
+          <div>
+            <p className="st-eyebrow">Your own document</p>
+            <h2>Try it with your own PDF</h2>
+            <p className="st-own-text">Sign up free, upload a text PDF (up to 15 MB and 300 pages) and ask it anything. Demo users can upload 1 document, signed-up users up to 5.</p>
+          </div>
+          <div className="st-cta">
+            <button className="st-btn solid big" onClick={() => go("/signup")}>Sign up free</button>
+          </div>
+        </div>
+      </section>
+
+      <section className="st-sec alt">
+        <div className="st-wrap st-faq">
+          <h2>Quick answers</h2>
+          <details><summary>Is it free?</summary><p>Yes. DocuMind is a free portfolio project that runs on free tiers of its AI providers, so there are limits on questions and uploads.</p></details>
+          <details><summary>Is my file private?</summary><p>Your question and the matching passages are sent to an AI provider (Groq, or Google Gemini as a backup) to write the answer. Please do not upload confidential files. Details are on the <A to="/privacy" go={go}>Privacy page</A>.</p></details>
+          <details><summary>Which files work?</summary><p>PDFs with selectable text, up to 15 MB and 300 pages. Scanned PDFs and photos of pages are not supported yet.</p></details>
+          <details><summary>Can it be wrong?</summary><p>Yes. In my 30-question test, about 80% of answers were fully correct, and it is weakest at counting long lists. Every answer shows its page so you can check it.</p></details>
+          <details><summary>Who built it?</summary><p>Naved Korabu, a computer engineering graduate from Pune. Read more on the <A to="/about" go={go}>About page</A>.</p></details>
+        </div>
+      </section>
+
+      <section className="st-sec">
+        <div className="st-wrap">
+          <article className="st-card hl st-public">
+            <div>
+              <h3>Built in public</h3>
+              <p>The code, the 30-question test and every result, including the wrong answers, are open for anyone to read.</p>
+            </div>
+            <div className="st-cta">
+              <a className="st-btn solid" href={GITHUB} target="_blank" rel="noreferrer">View on GitHub</a>
+              <A to="/results" go={go} className="st-btn ghost">See the results</A>
+            </div>
+          </article>
+        </div>
+      </section>
+
       <CtaBand go={go} demo={demo} busy={busy} />
     </>
   );

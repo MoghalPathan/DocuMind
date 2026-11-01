@@ -245,4 +245,12 @@
 .st-shotcard figcaption b { color: var(--text); }
 .st-shots { max-width: none; width: 100%; }
 
+.st-own { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.st-own h2 { margin: 0 0 8px; }
+.st-own-text { margin: 0; color: var(--muted); max-width: 620px; line-height: 1.65; }
+.st-public { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.st-public h3 { margin: 0 0 6px; }
+.st-public p { margin: 0; max-width: 560px; }
+
+
 
