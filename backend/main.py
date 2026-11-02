@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from qdrant_client import QdrantClient, models
 import auth
 import shares
+import reset
 from answer import answer_full, page_key
 from chitchat import small_talk
 from sections import tag_chunks
@@ -21,6 +22,7 @@ from fastapi.responses import FileResponse
 
 app = FastAPI(title="DocuMind")
 client = QdrantClient(url=os.getenv("QDRANT_URL", "http://localhost:6333"))
+app.include_router(reset.router)
 
 
 
@@ -331,7 +333,7 @@ if os.path.isdir(DIST):
     def _spa():
         return FileResponse(os.path.join(DIST, "index.html"))
 
-    for _p in ("features", "how-it-works", "results", "pricing", "about", "contact", "login", "signup", "privacy", "terms"):
+    for _p in ("features", "how-it-works", "results", "pricing", "about", "contact", "login", "signup", "reset", "privacy", "terms"):
         app.add_api_route("/" + _p, _spa, methods=["GET"], include_in_schema=False)
 
     for _f in ("favicon.svg", "og.png", "robots.txt", "sitemap.xml"):

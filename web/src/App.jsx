@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import Login from "./Login.jsx";
+import Reset from "./Reset.jsx";
 import Shared from "./Shared.jsx";
 import Site from "./site/Site.jsx";
 import "./App.css";
@@ -1273,6 +1274,7 @@ export default function App() {
 
   const shared = window.location.pathname.match(/^\/s\/([A-Za-z0-9_-]+)/);
   if (shared) return <Shared id={shared[1]} />;
+  if (route === "/reset") return <Reset go={go} />;
   if (auth) return <ChatApp key={auth.user.id} auth={auth} onLogout={onLogout} />;
   if (route === "/login" || route === "/signup") return <Login key={route} start={route === "/signup" ? "signup" : "login"} onAuth={onAuth} go={go} />;
   return <Site route={route} go={go} onAuth={onAuth} />;
