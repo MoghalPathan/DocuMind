@@ -1508,3 +1508,23 @@
 .login-ok { margin-top: 12px; font-size: 13.5px; line-height: 1.5; color: #166534; background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.35); border-radius: 10px; padding: 9px 12px; }
 :root[data-theme="dark"] .login-ok { color: #86efac; }
 
+
+
+.side-delete { display: block; width: 100%; margin-top: 6px; background: none; border: 0; padding: 6px 8px; text-align: left; font: 400 12.5px Inter, system-ui, sans-serif; color: var(--muted); cursor: pointer; border-radius: 8px; }
+.side-delete:hover { color: #dc2626; background: rgba(220, 38, 38, 0.08); }
+.dlg-back { position: fixed; inset: 0; z-index: 100; background: rgba(0, 0, 0, 0.5); display: grid; place-items: center; padding: 16px; }
+.dlg { width: 100%; max-width: 400px; background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 22px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
+.dlg h3 { margin: 0 0 8px; font-size: 18px; }
+.dlg p { margin: 0 0 14px; color: var(--muted); font-size: 14px; line-height: 1.55; }
+.dlg label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 5px; }
+.dlg input { width: 100%; background: var(--panel-2); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 10px 12px; font-size: 16px; font-family: inherit; }
+.dlg input:focus { outline: none; border-color: var(--accent); }
+.dlg-error { margin-top: 12px; font-size: 13.5px; color: #b91c1c; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 10px; padding: 9px 12px; }
+:root[data-theme="dark"] .dlg-error { color: #fca5a5; }
+.dlg-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+.dlg-cancel, .dlg-danger { border-radius: 10px; padding: 9px 16px; font: 600 14px Inter, system-ui, sans-serif; cursor: pointer; }
+.dlg-cancel { background: none; color: var(--text); border: 1px solid var(--border); }
+.dlg-danger { background: #dc2626; color: #fff; border: 1px solid #dc2626; }
+.dlg-danger:hover { background: #b91c1c; }
+.dlg-cancel:disabled, .dlg-danger:disabled { opacity: 0.6; cursor: default; }
+

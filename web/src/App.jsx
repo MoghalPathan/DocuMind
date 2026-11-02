@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import Login from "./Login.jsx";
 import Reset from "./Reset.jsx";
+import DeleteAccount from "./DeleteAccount.jsx";
 import Shared from "./Shared.jsx";
 import Site from "./site/Site.jsx";
 import "./App.css";
@@ -288,6 +289,17 @@ export function ChatApp({ auth, onLogout }) {
   const [chats, setChats] = useState(() => load(storeKey, []));
   const [activeId, setActiveId] = useState(null); // always start on a new chat
   const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth > 800);
+  const [showDelete, setShowDelete] = useState(false);
+
+  const deleteAccount = async (password) => {
+    const r = await apiFetch("/account/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+    if (!r.ok) throw new Error(await failMessage(r));
+    onLogout();
+  };
   const [search, setSearch] = useState("");
   const [theme, setTheme] = useState(() => load("documind.theme", "dark"));
   useEffect(() => {
@@ -953,6 +965,7 @@ export function ChatApp({ auth, onLogout }) {
           </div>
           <button className="ghost small" onClick={onLogout}>Log out</button>
         </div>
+        <button className="side-delete" onClick={() => setShowDelete(true)}>Delete account and data</button>
       </aside>
 
       <main className="main">
@@ -1208,6 +1221,7 @@ export function ChatApp({ auth, onLogout }) {
       )}
 
       {toast && <div className="toast">{toast}</div>}
+      {showDelete && <DeleteAccount guest={auth.user.guest} onConfirm={deleteAccount} onClose={() => setShowDelete(false)} />}
     </div>
   );
 }

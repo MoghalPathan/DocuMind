@@ -9,6 +9,7 @@ from qdrant_client import QdrantClient, models
 import auth
 import shares
 import reset
+import account
 from answer import answer_full, page_key
 from chitchat import small_talk
 from sections import tag_chunks
@@ -23,6 +24,7 @@ from fastapi.responses import FileResponse
 app = FastAPI(title="DocuMind")
 client = QdrantClient(url=os.getenv("QDRANT_URL", "http://localhost:6333"))
 app.include_router(reset.router)
+app.include_router(account.router)
 
 
 
