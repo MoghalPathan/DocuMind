@@ -112,6 +112,40 @@ const readStream = async (r, onText) => {
 // PDF links open in a new tab, which cannot send headers, so the token goes in the link
 const fileUrl = (name) => `/files/${encodeURIComponent(name)}?token=${encodeURIComponent(AUTH?.token || "")}`;
 
+// a page chip; hovering it shows the exact passage the answer used
+function SourceChip({ c }) {
+  const [pos, setPos] = useState(null);
+  const show = (e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    const above = r.top > 230;
+    setPos({
+      left: Math.max(8, Math.min(r.left, window.innerWidth - 360)),
+      ...(above ? { bottom: window.innerHeight - r.top + 8 } : { top: r.bottom + 8 }),
+    });
+  };
+  const hide = () => setPos(null);
+  return (
+    <div className="cite-wrap" onMouseEnter={show} onMouseLeave={hide} onFocus={show} onBlur={hide}>
+      <a
+        className="cite"
+        href={`${fileUrl(c.doc)}#page=${c.pdf_page}`}
+        target="_blank"
+        rel="noreferrer"
+        title={c.text ? undefined : `Open page ${c.page} of ${c.doc}`}
+      >
+        <Icon name="file" size={13} /> {shortName(c.doc, 20)} · p.{c.page}
+      </a>
+      {c.text && pos && (
+        <div className="cite-tip" role="tooltip" style={pos}>
+          <b>Page {c.page}</b>
+          <p>{c.text}</p>
+          <i>Click to open the page</i>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function shortName(name, max = 26) {
   if (!name) return "";
   const base = name.replace(/\.pdf$/i, "");
@@ -1132,16 +1166,7 @@ export function ChatApp({ auth, onLogout }) {
                         <div className="pages">
                           {m.cites.map((c) =>
                             c.doc ? (
-                              <a
-                                className="cite"
-                                key={`${c.doc}-${c.page}`}
-                                href={`${fileUrl(c.doc)}#page=${c.pdf_page}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                title={`Open page ${c.page} of ${c.doc}`}
-                              >
-                                <Icon name="file" size={13} /> {shortName(c.doc, 20)} · p.{c.page}
-                              </a>
+                              <SourceChip key={`${c.doc}-${c.page}`} c={c} />
                             ) : (
                               <span key={c.page}>Page {c.page}</span>
                             ),

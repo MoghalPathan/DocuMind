@@ -156,6 +156,10 @@ def used_chunks(text, docs, limit=4):
     keep = [d for sc, d in scored if sc >= 0.35 and sc >= best * 0.6][:limit]
     return keep or [scored[0][1]]
 
+def snippet(d, n=320):
+    """A short piece of the chunk text, shown when the user hovers a source."""
+    t = " ".join(d.page_content.split())
+    return t if len(t) <= n else t[:n].rsplit(" ", 1)[0] + "..."
 
 def needs_rewrite(question, history):
     # only spend an LLM call when the question looks like a follow-up
@@ -210,7 +214,7 @@ def answer_full(question, model=None, doc=None, history=None, regen=None, fallba
             continue
         seen.add(key)
         cites.append(
-            {"doc": key[0], "page": key[1], "pdf_page": int(d.metadata.get("page", 0)) + 1}
+            {"doc": key[0], "page": key[1], "pdf_page": int(d.metadata.get("page", 0)) + 1, "text": snippet(d)}
         )
     cites.sort(key=lambda c: (c["doc"], page_key(c["page"])))
     kind = "answer"

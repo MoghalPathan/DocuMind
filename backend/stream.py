@@ -70,7 +70,7 @@ def _cites(text, docs):
         if key in seen:
             continue
         seen.add(key)
-        cites.append({"doc": key[0], "page": key[1], "pdf_page": int(d.metadata.get("page", 0)) + 1})
+        cites.append({"doc": key[0], "page": key[1], "pdf_page": int(d.metadata.get("page", 0)) + 1, "text": base.snippet(d)})
     cites.sort(key=lambda c: (c["doc"], base.page_key(c["page"])))
     return cites
 
