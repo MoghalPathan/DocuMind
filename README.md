@@ -2,7 +2,7 @@
 
 Ask questions about your PDFs and get answers with page citations. If the answer is not in the document, DocuMind says "I don't know" instead of guessing.
 
-**Live demo:** _coming soon (link here)_
+**Live demo:** https://documindai.duckdns.org (click "Try demo", no sign-up needed)
 
 ![Home](docs/home.png)
 
@@ -14,6 +14,9 @@ Ask questions about your PDFs and get answers with page citations. If the answer
 - Two LLMs to choose from (Groq or Gemini), with automatic backup if one is busy
 - Light and dark theme, works on mobile, voice input on https
 - Scanned (image-only) PDFs are detected and rejected with a clear message
+- One-click Summarise: a short summary of a whole PDF with page references
+- Sign up, sign in, forgot password by email, and delete my account
+- Demo accounts and their files are cleaned up automatically after 48 hours
 
 ![Answer with citations](docs/answer.png)
 ![I don't know](docs/idk.png)
@@ -54,10 +57,28 @@ GEMINI_API_KEY=your_key
 ## Privacy note
 Questions and retrieved text are sent to the chosen LLM provider. Gemini's free tier may use content to improve Google products, so do not upload private documents when using it.
 
+## Deploy (AWS EC2)
+Runs on one EC2 server with Docker Compose and Caddy (automatic https).
+```
+sudo -i
+cd DocuMind
+git pull
+docker compose up --build -d
+docker compose ps
+```
+Put the same `.env` keys on the server. For password reset emails also add `SMTP_USER` and `SMTP_PASS` (a Gmail app password). If the `Caddyfile` changes, run `docker compose restart caddy`.
+
 ## Known limits
 - Text PDFs only (no OCR for scans)
 - Free-tier LLM limits mean very busy days may show a "busy" message
 - Long lists and counting questions can be incomplete
+
+## Roadmap
+- Real streaming (answers appear word by word)
+- Source text shown on hover
+- Word and text file support
+- Public status page (UptimeRobot)
+- Changelog page
 
 ## Author
 Korabu Naved Arif — [LinkedIn](https://www.linkedin.com/in/naved-korabu-2b8221434/) · [GitHub](https://github.com/MoghalPathan)
