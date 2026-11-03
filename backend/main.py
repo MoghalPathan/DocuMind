@@ -12,6 +12,7 @@ import reset
 import account
 import summary
 from answer import answer_full, page_key
+from stream import answer_stream
 from chitchat import small_talk
 from sections import tag_chunks
 from ingest import load_pdf, split_docs
@@ -19,7 +20,7 @@ from scope import SHARED, visible_filter
 from store import store_chunks, COLLECTION
 
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 
 
 app = FastAPI(title="DocuMind")
@@ -239,6 +240,59 @@ def query(body: Question, user=Depends(auth.current_user)):
         _cache[key] = result
         _save_cache()
     return result
+
+
+@app.post("/query/stream")
+def query_stream(body: Question, user=Depends(auth.current_user)):
+    uid = user["id"]
+    auth.limit_question(user)
+
+    def one(result):
+        return StreamingResponse(iter([json.dumps(result) + "\n"]), media_type="application/x-ndjson")
+
+    if not small_talk(body.question) and not has_chunks(uid):
+        return one({
+            "t": "done",
+            "answer": "No documents yet. Use Attach PDF to upload one, then ask your question.",
+            "sources": [],
+            "pages": [],
+            "kind": "chat",
+        })
+    plain = not body.history and not body.regen and not small_talk(body.question) and not own_sources(uid)
+    key = _cache_key(body.question, body.doc)
+    if plain:
+        saved = _load_cache().get(key)
+        if saved:
+            return one({"t": "done", **saved, "cached": True})
+    auth.hit(
+        ("global",),
+        int(os.getenv("DAILY_CAP", "120")),
+        86400,
+        "DocuMind has reached its free daily limit. Please try again tomorrow. The example questions still work.",
+    )
+
+    def events():
+        try:
+            for ev in answer_stream(
+                body.question,
+                model=body.model,
+                doc=body.doc,
+                history=(body.history or [])[-6:],
+                regen=body.regen,
+                owner=uid,
+            ):
+                if ev["t"] == "done" and plain and ev["kind"] in ("answer", "no_answer") and len(_load_cache()) < 500:
+                    _load_cache()[key] = {k: v for k, v in ev.items() if k != "t"}
+                    _save_cache()
+                yield json.dumps(ev) + "\n"
+        except Exception:
+            yield json.dumps({"t": "error", "text": "Something went wrong. Please try again."}) + "\n"
+
+    return StreamingResponse(
+        events(),
+        media_type="application/x-ndjson",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
 
 
 @app.post("/feedback")

@@ -73,6 +73,42 @@ const failMessage = async (r) => {
   }
   return `Server said ${r.status}`;
 };
+
+// reads the streamed answer (one JSON line per event) and reports the text as it grows
+const readStream = async (r, onText) => {
+  const reader = r.body.getReader();
+  const dec = new TextDecoder();
+  let buf = "";
+  let text = "";
+  let done = null;
+  const take = (line) => {
+    if (!line.trim()) return;
+    const ev = JSON.parse(line);
+    if (ev.t === "delta") {
+      text += ev.text;
+      onText(text);
+    } else if (ev.t === "done") {
+      done = ev;
+    } else if (ev.t === "error") {
+      throw new Error(ev.text);
+    }
+  };
+  for (;;) {
+    const { value, done: end } = await reader.read();
+    if (end) break;
+    buf += dec.decode(value, { stream: true });
+    const lines = buf.split("\n");
+    buf = lines.pop();
+    lines.forEach(take);
+  }
+  take(buf);
+  if (!done) {
+    if (!text.trim()) throw new Error("The answer stopped early. Please try again.");
+    done = { answer: text, sources: [], kind: "answer" };
+  }
+  return done;
+};
+
 // PDF links open in a new tab, which cannot send headers, so the token goes in the link
 const fileUrl = (name) => `/files/${encodeURIComponent(name)}?token=${encodeURIComponent(AUTH?.token || "")}`;
 
@@ -324,6 +360,7 @@ export function ChatApp({ auth, onLogout }) {
   const [listening, setListening] = useState(false);
   const [toast, setToast] = useState("");
   const [status, setStatus] = useState("Searching documents…");
+  const [live, setLive] = useState("");
   const [selectedDoc, setSelectedDoc] = useState(() => load("documind.doc", ""));
   const [docOpen, setDocOpen] = useState(false);
   const [shareInfo, setShareInfo] = useState(null);
@@ -353,7 +390,7 @@ export function ChatApp({ auth, onLogout }) {
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages.length, loading]);
+  }, [messages.length, loading, live.length > 0]);
 
   useEffect(() => {
     const el = areaRef.current;
@@ -484,13 +521,14 @@ export function ChatApp({ auth, onLogout }) {
     const phase = setTimeout(() => setStatus("Writing the answer…"), 1800);
     let reply;
     try {
-      const r = await apiFetch(opts?.summarise ? "/summarise" : "/query", {
+      const r = await apiFetch(opts?.summarise ? "/summarise" : "/query/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: q, model, doc: (opts?.doc ?? activeDoc) || null, history: historyOf(prior) }),
       });
       if (!r.ok) throw new Error(await failMessage(r));
-      reply = toReply(await r.json(), q, opts?.doc ?? activeDoc);
+      const data = opts?.summarise ? await r.json() : await readStream(r, setLive);
+      reply = toReply(data, q, opts?.doc ?? activeDoc);
       if (reply.text && !reply.error) {
         reply.tid = uid();
         freshIds.add(reply.tid);
@@ -499,6 +537,7 @@ export function ChatApp({ auth, onLogout }) {
       reply = { role: "ai", text: `Something went wrong: ${e.message}`, cites: [], error: true };
     }
     clearTimeout(phase);
+    setLive("");
     setChats((cs) =>
       cs.map((c) => (c.id === id ? { ...c, messages: [...c.messages, reply] } : c)),
     );
@@ -1181,7 +1220,13 @@ export function ChatApp({ auth, onLogout }) {
                 {loading && (
                   <div className="msg ai">
                     <div className="avatar">D</div>
-                    <div className="bubble"><div className="text muted status"><span className="spinner" /> {status}</div></div>
+                    <div className="bubble">
+                      {live ? (
+                        <div className="text md"><ReactMarkdown>{live}</ReactMarkdown></div>
+                      ) : (
+                        <div className="text muted status"><span className="spinner" /> {status}</div>
+                      )}
+                    </div>
                   </div>
                 )}
                 <div ref={endRef} />
