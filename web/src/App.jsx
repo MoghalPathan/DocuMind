@@ -334,6 +334,8 @@ export function ChatApp({ auth, onLogout }) {
   const recRef = useRef(null);
 
   const activeDoc = docs.find((d) => d.name === selectedDoc)?.name || "";
+  const summaryTarget = activeDoc || (docs.length === 1 ? docs[0].name : "");
+  const summarise = () => send(`Summarise ${summaryTarget}`, { summarise: true, doc: summaryTarget });
   const active = chats.find((c) => c.id === activeId) || null;
   const messages = active ? active.messages : [];
 
@@ -430,7 +432,7 @@ export function ChatApp({ auth, onLogout }) {
     setStatus("Writing another answer…");
     let reply;
     try {
-      const r = await apiFetch("/query", {
+      const r = await apiFetch(old.question.startsWith("Summarise ") ? "/summarise" : "/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -454,7 +456,7 @@ export function ChatApp({ auth, onLogout }) {
     setLoading(false);
   };
 
-  const send = async (text) => {
+  const send = async (text, opts) => {
     const q = (text ?? input).trim();
     if (!q || loading) return;
     setInput("");
@@ -482,13 +484,13 @@ export function ChatApp({ auth, onLogout }) {
     const phase = setTimeout(() => setStatus("Writing the answer…"), 1800);
     let reply;
     try {
-      const r = await apiFetch("/query", {
+      const r = await apiFetch(opts?.summarise ? "/summarise" : "/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q, model, doc: activeDoc || null, history: historyOf(prior) }),
+        body: JSON.stringify({ question: q, model, doc: (opts?.doc ?? activeDoc) || null, history: historyOf(prior) }),
       });
       if (!r.ok) throw new Error(await failMessage(r));
-      reply = toReply(await r.json(), q, activeDoc);
+      reply = toReply(await r.json(), q, opts?.doc ?? activeDoc);
       if (reply.text && !reply.error) {
         reply.tid = uid();
         freshIds.add(reply.tid);
@@ -812,6 +814,14 @@ export function ChatApp({ auth, onLogout }) {
             </div>
           )}
         </div>
+        <button
+          className="doc-pill"
+          disabled={!summaryTarget || loading}
+          title={summaryTarget ? `Summarise ${summaryTarget}` : docs.length ? "Choose one PDF first" : "Upload a PDF first"}
+          onClick={summarise}
+        >
+          Summarise
+        </button>
         <div className="spacer" />
         <div className="model-wrap" onClick={(e) => e.stopPropagation()}>
           <button
