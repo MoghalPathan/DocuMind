@@ -5,6 +5,8 @@ Ask questions about your PDFs and get answers with page citations. If the answer
 **Live demo:** https://documindai.duckdns.org (click "Try demo", no sign-up needed)
 
 ![Home](docs/home.png)
+![Answer with citations](docs/answer.png)
+![I don't know](docs/idk.png)
 
 ## Features
 - Upload PDFs and chat with them (answers cite the document and page)
@@ -18,8 +20,6 @@ Ask questions about your PDFs and get answers with page citations. If the answer
 - Sign up, sign in, forgot password by email, and delete my account
 - Demo accounts and their files are cleaned up automatically after 48 hours
 
-![Answer with citations](docs/answer.png)
-![I don't know](docs/idk.png)
 
 ## How it works
 ```
