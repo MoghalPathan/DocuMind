@@ -307,4 +307,12 @@
 :root[data-theme="light"] .st-stat b { color: #4338ca; }
 
 
+.st-changelog { max-width: 760px; }
+.st-change { display: grid; grid-template-columns: 150px 1fr; gap: 24px; padding: 28px 0; border-top: 1px solid rgba(127,127,127,.25); }
+.st-change:first-child { border-top: 0; padding-top: 0; }
+.st-change time { font-size: 14px; opacity: .7; padding-top: 6px; }
+.st-change h2 { font-size: 20px; margin: 0 0 12px; }
+.st-change ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; line-height: 1.55; }
+@media (max-width: 640px) { .st-change { grid-template-columns: 1fr; gap: 8px; } }
+
 

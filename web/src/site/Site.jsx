@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Home, Features, HowItWorks, Results, Pricing, About, Contact } from "./Pages.jsx";
 import { A, GITHUB } from "./shared.jsx";
 import { Privacy, Terms, NotFound } from "./Legal.jsx";
+import { Changelog } from "./Changelog.jsx";
 import "./Site.css";
 
 const ROUTES = {
@@ -14,6 +15,7 @@ const ROUTES = {
   "/contact": Contact,
   "/privacy": Privacy,
   "/terms": Terms,
+  "/changelog": Changelog,
 };
 
 const PRODUCT = [
@@ -57,7 +59,7 @@ export default function Site({ route, go, onAuth }) {
   useEffect(() => {
     setMenu(false);
     setDd(false);
-    const names = { "/": "", "/features": "Features", "/how-it-works": "How it works", "/results": "Results", "/pricing": "Pricing", "/about": "About", "/contact": "Contact", "/privacy": "Privacy", "/terms": "Terms" };
+    const names = { "/": "", "/features": "Features", "/how-it-works": "How it works", "/results": "Results", "/pricing": "Pricing", "/about": "About", "/contact": "Contact", "/privacy": "Privacy", "/terms": "Terms", "/terms": "Terms", "/changelog": "Changelog" };
     const n = names[route];
     document.title = route in names ? (n ? `${n} · DocuMind` : "DocuMind: ask your PDF, get cited answers") : "Page not found · DocuMind";
   }, [route]);
@@ -164,6 +166,7 @@ export default function Site({ route, go, onAuth }) {
             <h4>Project</h4>
             <A to="/about" go={go}>About</A>
             <A to="/contact" go={go}>Contact</A>
+            <A to="/changelog" go={go}>Changelog</A>
           </div>
           <div>
             <h4>Legal</h4>
