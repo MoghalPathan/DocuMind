@@ -877,7 +877,7 @@ export function ChatApp({ auth, onLogout }) {
         <div className="model-wrap" onClick={(e) => e.stopPropagation()}>
           <button
             className="doc-pill"
-            title="Choose which PDF to search"
+            title="Choose which file to search"
             onClick={() => { setDocOpen((v) => !v); setModelOpen(false); }}
           >
             <Icon name="file" size={15} />
@@ -903,7 +903,7 @@ export function ChatApp({ auth, onLogout }) {
         <button
           className="doc-pill"
           disabled={!summaryTarget || loading}
-          title={summaryTarget ? `Summarise ${summaryTarget}` : docs.length ? "Choose one PDF first" : "Upload a PDF first"}
+          title={summaryTarget ? `Summarise ${summaryTarget}` : docs.length ? "Choose one file first" : "Upload a file first"}
           onClick={summarise}
         >
           Summarise
@@ -984,13 +984,13 @@ export function ChatApp({ auth, onLogout }) {
                   <div className="doc-card pending">
                     <span className="spinner" />
                     <div>
-                      <div className="doc-name">Processing PDF…</div>
+                      <div className="doc-name">Processing file…</div>
                       <div className="doc-meta">Reading, splitting and indexing</div>
                     </div>
                   </div>
                 )}
                 {docs.length === 0 && !uploading && (
-                  <div className="empty-note">No documents yet. Use Attach PDF in the message box.</div>
+                  <div className="empty-note">No documents yet. Use Attach file in the message box.</div>
                 )}
           {docs.map((d) => (
             <div className={`doc-card ${activeDoc === d.name ? "selected" : ""}`} key={d.name}>
@@ -1014,7 +1014,7 @@ export function ChatApp({ auth, onLogout }) {
                     </button>
                   )}
                   <button onClick={() => { setSelectedDoc(d.name); setDocMenu(null); }}>
-                    <Icon name="search" /> Ask only this PDF
+                    <Icon name="search" /> Ask only this file
                   </button>
                   {!d.shared && (
                     <button className="danger" onClick={() => { deleteDoc(d.name); setDocMenu(null); }}>
@@ -1141,7 +1141,7 @@ export function ChatApp({ auth, onLogout }) {
                           <div className="tips">
                             Try asking in different words, or add a detail such as the week, section or
                             program name.
-                            {docs.length > 1 && " You can also pick a different PDF."}
+                            {docs.length > 1 && " You can also pick a different file."}
                           </div>
                           <div className="tip-actions">
                             {m.scope && (
@@ -1155,7 +1155,7 @@ export function ChatApp({ auth, onLogout }) {
                               <button
                                 onClick={(e) => { e.stopPropagation(); setDocOpen(true); }}
                               >
-                                Choose another PDF
+                                Choose another file
                               </button>
                             )}
                           </div>
