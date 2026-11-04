@@ -15,7 +15,7 @@ from answer import answer_full, page_key
 from stream import answer_stream
 from chitchat import small_talk
 from sections import tag_chunks
-from ingest import load_pdf, split_docs
+from ingest import load_file, split_docs, is_supported
 from scope import SHARED, visible_filter
 from store import store_chunks, COLLECTION
 
@@ -124,8 +124,11 @@ def health():
 def ingest(file: UploadFile = File(...), user=Depends(auth.current_user)):
     uid = user["id"]
     name = os.path.basename(file.filename or "")
-    if not name.lower().endswith(".pdf"):
-        raise HTTPException(status_code=400, detail="Only PDF files are supported.")
+    if not is_supported(name):
+        raise HTTPException(
+            status_code=400,
+            detail="This file type is not supported. Try PDF, Word, PowerPoint, text, HTML, EPUB, email, JSON or XML.",
+        )
     path = f"data/{uid}/{name}"
     mine = own_sources(uid)
     if path not in mine and len(mine) >= auth.user_limits(user)["docs"]:
@@ -140,20 +143,24 @@ def ingest(file: UploadFile = File(...), user=Depends(auth.current_user)):
         shutil.copyfileobj(file.file, f)
     if os.path.getsize(part) > auth.MAX_PDF_MB * 1024 * 1024:
         os.remove(part)
-        raise HTTPException(status_code=413, detail=f"PDF is too large (max {auth.MAX_PDF_MB} MB).")
+        raise HTTPException(status_code=413, detail=f"File is too large (max {auth.MAX_PDF_MB} MB).")
     try:
-        pages = load_pdf(part)
+        pages = load_file(part, name)
     except Exception:
         os.remove(part)
-        raise HTTPException(status_code=400, detail="This file could not be read. Is it a valid PDF?")
+        raise HTTPException(status_code=400, detail="This file could not be read. Is it a valid file?")
     if len(pages) > auth.MAX_PAGES:
         os.remove(part)
-        raise HTTPException(status_code=413, detail=f"PDF has too many pages (max {auth.MAX_PAGES}).")
+        raise HTTPException(status_code=413, detail=f"File is too long (max {auth.MAX_PAGES} pages or parts).")
     if sum(len(p.page_content.strip()) for p in pages) < 50:
         os.remove(part)
         raise HTTPException(
             status_code=422,
-            detail="No readable text found. This PDF looks like scanned images. Please upload a PDF with selectable text.",
+            detail=(
+                "No readable text found. This PDF looks like scanned images. Please upload a PDF with selectable text."
+                if name.lower().endswith(".pdf")
+                else "No readable text found in this file."
+            ),
         )
     for p in pages:
         p.metadata["source"] = path
@@ -201,7 +208,7 @@ def query(body: Question, user=Depends(auth.current_user)):
     auth.limit_question(user)
     if not small_talk(body.question) and not has_chunks(uid):
         return {
-            "answer": "No documents yet. Use Attach PDF to upload one, then ask your question.",
+            "answer": "No documents yet. Use Attach file to upload one, then ask your question.",
             "sources": [],
             "pages": [],
             "kind": "chat",
@@ -253,7 +260,7 @@ def query_stream(body: Question, user=Depends(auth.current_user)):
     if not small_talk(body.question) and not has_chunks(uid):
         return one({
             "t": "done",
-            "answer": "No documents yet. Use Attach PDF to upload one, then ask your question.",
+            "answer": "No documents yet. Use Attach file to upload one, then ask your question.",
             "sources": [],
             "pages": [],
             "kind": "chat",

@@ -30,7 +30,14 @@ const EXAMPLES = [
   "Which callbacks does the Week-12 VGG16 program use?",
 ];
 
-const NOTE = "Answers are based on your uploaded PDFs. Always check the cited pages.";
+const NOTE = "Answers are based on your uploaded files. Always check the cited pages.";
+// file types the server can read; PDFs have real pages, the rest are split into parts (slides for PowerPoint)
+const FILE_TYPES =
+  ".pdf,.txt,.md,.markdown,.rst,.log,.docx,.odt,.rtf,.pptx,.epub,.eml,.srt,.vtt,.html,.htm,.json,.xml," +
+  ".py,.js,.jsx,.ts,.tsx,.java,.c,.h,.cpp,.hpp,.cs,.go,.rs,.rb,.php,.swift,.kt,.sql,.sh,.bat,.ps1,.css,.scss,.yml,.yaml,.toml,.ini,.cfg,.r,.m,.lua,.dart";
+const isPdf = (name) => /\.pdf$/i.test(name || "");
+const canUpload = (name) => FILE_TYPES.split(",").some((e) => String(name).toLowerCase().endsWith(e));
+const spotWord = (name) => (isPdf(name) ? "Page" : /\.pptx$/i.test(name || "") ? "Slide" : "Part");
 
 const STORE_KEY = "documind.chats.v1";
 
@@ -126,20 +133,26 @@ function SourceChip({ c }) {
   const hide = () => setPos(null);
   return (
     <div className="cite-wrap" onMouseEnter={show} onMouseLeave={hide} onFocus={show} onBlur={hide}>
-      <a
-        className="cite"
-        href={`${fileUrl(c.doc)}#page=${c.pdf_page}`}
-        target="_blank"
-        rel="noreferrer"
-        title={c.text ? undefined : `Open page ${c.page} of ${c.doc}`}
-      >
-        <Icon name="file" size={13} /> {shortName(c.doc, 20)} · p.{c.page}
-      </a>
+      {isPdf(c.doc) ? (
+        <a
+          className="cite"
+          href={`${fileUrl(c.doc)}#page=${c.pdf_page}`}
+          target="_blank"
+          rel="noreferrer"
+          title={c.text ? undefined : `Open page ${c.page} of ${c.doc}`}
+        >
+          <Icon name="file" size={13} /> {shortName(c.doc, 20)} · p.{c.page}
+        </a>
+      ) : (
+        <span className="cite" tabIndex={0}>
+          <Icon name="file" size={13} /> {shortName(c.doc, 20)} · {spotWord(c.doc).toLowerCase()} {c.page}
+        </span>
+      )}
       {c.text && pos && (
         <div className="cite-tip" role="tooltip" style={pos}>
-          <b>Page {c.page}</b>
+          <b>{spotWord(c.doc)} {c.page}</b>
           <p>{c.text}</p>
-          <i>Click to open the page</i>
+          {isPdf(c.doc) && <i>Click to open the page</i>}
         </div>
       )}
     </div>
@@ -580,8 +593,8 @@ export function ChatApp({ auth, onLogout }) {
 
   const uploadFile = async (file) => {
     if (!file) return;
-    if (!file.name.toLowerCase().endsWith(".pdf")) {
-      setToast("Only PDF files are supported");
+    if (!canUpload(file.name)) {
+      setToast("This file type is not supported. Try PDF, Word, PowerPoint, text, HTML and more.");
       return;
     }
     setUploading(true);
@@ -858,8 +871,8 @@ export function ChatApp({ auth, onLogout }) {
         }}
       />
       <div className="composer-row">
-        <button className="attach" aria-label="Attach PDF" title="Attach a PDF" onClick={() => fileRef.current?.click()}>
-          <Icon name="clip" /> <span className="attach-label">Attach PDF</span>
+        <button className="attach" aria-label="Attach file" title="Attach a file" onClick={() => fileRef.current?.click()}>
+          <Icon name="clip" /> <span className="attach-label">Attach file</span>
         </button>
         <div className="model-wrap" onClick={(e) => e.stopPropagation()}>
           <button
@@ -995,9 +1008,11 @@ export function ChatApp({ auth, onLogout }) {
               </button>
               {docMenu === d.name && (
                 <div className="menu" onClick={(e) => e.stopPropagation()}>
-                  <button onClick={() => { window.open(fileUrl(d.name), "_blank"); setDocMenu(null); }}>
-                    <Icon name="external" /> Preview PDF
-                  </button>
+                  {isPdf(d.name) && (
+                    <button onClick={() => { window.open(fileUrl(d.name), "_blank"); setDocMenu(null); }}>
+                      <Icon name="external" /> Preview PDF
+                    </button>
+                  )}
                   <button onClick={() => { setSelectedDoc(d.name); setDocMenu(null); }}>
                     <Icon name="search" /> Ask only this PDF
                   </button>
@@ -1268,7 +1283,7 @@ export function ChatApp({ auth, onLogout }) {
       <input
         ref={fileRef}
         type="file"
-        accept="application/pdf"
+        accept={FILE_TYPES}
         hidden
         onChange={(e) => uploadFile(e.target.files[0])}
       />
