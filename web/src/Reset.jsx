@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Logo from "./Logo.jsx";
 
 export default function Reset({ go }) {
   const token = new URLSearchParams(window.location.search).get("token") || "";
@@ -34,7 +35,7 @@ export default function Reset({ go }) {
     <div className="login-page">
       <div className="login-card">
         <div className="login-brand">
-          <div className="logo big">D</div>
+          <Logo className="logo big" />
           <h1>DocuMind</h1>
         </div>
         {!token ? (

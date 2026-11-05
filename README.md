@@ -1,3 +1,5 @@
+<img src="docs/logo.png" alt="DocuMind logo" width="72" />
+
 # DocuMind
 
 Ask questions about your PDFs and get answers with page citations. If the answer is not in the document, DocuMind says "I don't know" instead of guessing.

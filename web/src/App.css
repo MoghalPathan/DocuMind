@@ -1580,3 +1580,8 @@
 /* accessibility */
 .st-btn.solid, .login-primary, .dlg-primary { background: #4a56e2; border-color: #4a56e2; }
 h1.top-title { margin: 0; font-size: inherit; line-height: inherit; }
+
+/* logo */
+svg.logo, svg.st-logo { background: none; border-radius: 0; display: block; }
+svg.st-logo { width: 28px; height: 28px; }
+.avatar-logo { width: 28px; height: 28px; flex-shrink: 0; margin-top: 2px; display: block; }

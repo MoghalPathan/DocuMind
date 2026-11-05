@@ -4,6 +4,7 @@ import Login from "./Login.jsx";
 import Reset from "./Reset.jsx";
 import DeleteAccount from "./DeleteAccount.jsx";
 import AddLink from "./AddLink.jsx";
+import Logo from "./Logo.jsx";
 import Shared from "./Shared.jsx";
 import Site from "./site/Site.jsx";
 import "./App.css";
@@ -980,7 +981,7 @@ export function ChatApp({ auth, onLogout }) {
       <aside className={`sidebar ${sidebarOpen ? "" : "closed"}`}>
         <div className="side-top">
           <div className="brand">
-            <div className="logo">D</div>
+            <Logo className="logo" />
             <span>DocuMind</span>
           </div>
           <button className="icon-btn" aria-label="Close sidebar" onClick={() => setSidebarOpen(false)}>
@@ -1134,7 +1135,7 @@ export function ChatApp({ auth, onLogout }) {
           <section className="chat welcome-mode">
             <div className="welcome">
               <div className="greet">
-                <div className="logo big">D</div>
+                <Logo className="logo big" />
                 <h1>Chat with your PDFs</h1>
               </div>
               <p className="sub">Upload a PDF, ask questions, and get answers with page references.</p>
@@ -1154,7 +1155,7 @@ export function ChatApp({ auth, onLogout }) {
               <div className="thread">
                 {messages.map((m, i) => (
                   <div className={`msg ${m.role}`} key={i}>
-                    {m.role === "ai" && <div className="avatar">D</div>}
+                    {m.role === "ai" && <Logo className="avatar-logo" />}
                     <div className="bubble">
                       {m.noAnswer && (
                         <div className="noanswer-box">
@@ -1282,7 +1283,7 @@ export function ChatApp({ auth, onLogout }) {
                 ))}
                 {loading && (
                   <div className="msg ai">
-                    <div className="avatar">D</div>
+                    <Logo className="avatar-logo" />
                     <div className="bubble">
                       {live ? (
                         <div className="text md"><ReactMarkdown>{live}</ReactMarkdown></div>

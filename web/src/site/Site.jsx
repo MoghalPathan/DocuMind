@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Home, Features, HowItWorks, Results, Pricing, About, Contact } from "./Pages.jsx";
 import { A, GITHUB } from "./shared.jsx";
+import Logo from "../Logo.jsx";
 import { Privacy, Terms, NotFound } from "./Legal.jsx";
 import { Changelog } from "./Changelog.jsx";
 import "./Site.css";
@@ -98,7 +99,7 @@ export default function Site({ route, go, onAuth }) {
       <header className={`st-head ${stuck ? "stuck" : ""}`}>
         <div className="st-wrap st-head-in">
           <A to="/" go={go} className="st-brand">
-            <span className="st-logo">D</span> DocuMind
+            <Logo className="st-logo" /> DocuMind
           </A>
 
           <nav className="st-nav">
@@ -154,7 +155,7 @@ export default function Site({ route, go, onAuth }) {
       <footer className="st-foot">
         <div className="st-wrap st-foot-grid">
           <div>
-            <A to="/" go={go} className="st-brand"><span className="st-logo">D</span> DocuMind</A>
+            <A to="/" go={go} className="st-brand"><Logo className="st-logo" /> DocuMind</A>
             <p>Ask your PDF. Get the answer and the page it came from. A portfolio project by Naved Korabu.</p>
           </div>
           <div>

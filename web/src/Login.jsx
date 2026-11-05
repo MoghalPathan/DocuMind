@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Logo from "./Logo.jsx";
 
 export default function Login({ onAuth, go, start }) {
   const [mode, setMode] = useState(start === "signup" ? "signup" : "login"); // "login", "signup" or "forgot"
@@ -66,7 +67,7 @@ export default function Login({ onAuth, go, start }) {
     <main className="login-page">
       <div className="login-card">
         <div className="login-brand">
-          <div className="logo big">D</div>
+          <Logo className="logo big" />
           <h1>DocuMind</h1>
         </div>
         <p className="login-sub">
