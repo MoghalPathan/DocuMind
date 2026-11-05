@@ -11,6 +11,7 @@ import shares
 import reset
 import account
 import summary
+import weblink
 from answer import answer_full, page_key
 from stream import answer_stream
 from chitchat import small_talk
@@ -166,6 +167,41 @@ def ingest(file: UploadFile = File(...), user=Depends(auth.current_user)):
         p.metadata["source"] = path
         p.metadata["owner"] = uid
     os.replace(part, path)
+    chunks = tag_chunks(split_docs(pages))
+    remove_old(path)
+    store_chunks(chunks)
+    return {"file": name, "chunks": len(chunks)}
+
+class LinkBody(BaseModel):
+    url: str
+
+
+@app.post("/ingest-url")
+def ingest_url(body: LinkBody, user=Depends(auth.current_user)):
+    uid = user["id"]
+    auth.hit(("link", uid), 10, 3600, "Too many links. Please wait a while and try again.")
+    try:
+        name, pages = weblink.read_link(body.url)
+    except weblink.LinkError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    path = f"data/{uid}/{name}"
+    mine = own_sources(uid)
+    if path not in mine and len(mine) >= auth.user_limits(user)["docs"]:
+        raise HTTPException(
+            status_code=403,
+            detail=f"Document limit reached ({auth.user_limits(user)['docs']}). Delete one first.",
+        )
+    auth.limit_upload(user)
+    if len(pages) > auth.MAX_PAGES:
+        raise HTTPException(status_code=413, detail=f"That page is too long (max {auth.MAX_PAGES} parts).")
+    if sum(len(p.page_content.strip()) for p in pages) < 50:
+        raise HTTPException(
+            status_code=422,
+            detail="No readable text found on that page. It may need JavaScript or a login.",
+        )
+    for p in pages:
+        p.metadata["source"] = path
+        p.metadata["owner"] = uid
     chunks = tag_chunks(split_docs(pages))
     remove_old(path)
     store_chunks(chunks)

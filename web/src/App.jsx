@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import Login from "./Login.jsx";
 import Reset from "./Reset.jsx";
 import DeleteAccount from "./DeleteAccount.jsx";
+import AddLink from "./AddLink.jsx";
 import Shared from "./Shared.jsx";
 import Site from "./site/Site.jsx";
 import "./App.css";
@@ -373,6 +374,7 @@ export function ChatApp({ auth, onLogout }) {
   const [activeId, setActiveId] = useState(null); // always start on a new chat
   const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth > 800);
   const [showDelete, setShowDelete] = useState(false);
+  const [showLink, setShowLink] = useState(false);
 
   const deleteAccount = async (password) => {
     const r = await apiFetch("/account/delete", {
@@ -590,6 +592,24 @@ export function ChatApp({ auth, onLogout }) {
     );
     setLoading(false);
   };
+
+  const addLink = async (url) => {
+    setUploading(true);
+    try {
+      const r = await apiFetch("/ingest-url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url }),
+      });
+      if (!r.ok) throw new Error(await failMessage(r));
+      const data = await r.json();
+      setDocs((d) => [...d.filter((x) => x.name !== data.file), { name: data.file, chunks: data.chunks }]);
+      setToast(`Added ${data.file}`);
+    } finally {
+      setUploading(false);
+    }
+  };
+
 
   const uploadFile = async (file) => {
     if (!file) return;
@@ -873,6 +893,9 @@ export function ChatApp({ auth, onLogout }) {
       <div className="composer-row">
         <button className="attach" aria-label="Attach file" title="Attach a file" onClick={() => fileRef.current?.click()}>
           <Icon name="clip" /> <span className="attach-label">Attach file</span>
+        </button>
+        <button className="attach" aria-label="Add a web page link" title="Add a web page by its link" onClick={() => setShowLink(true)}>
+          <Icon name="external" /> <span className="attach-label">Add link</span>
         </button>
         <div className="model-wrap" onClick={(e) => e.stopPropagation()}>
           <button
@@ -1316,6 +1339,7 @@ export function ChatApp({ auth, onLogout }) {
       )}
 
       {toast && <div className="toast">{toast}</div>}
+      {showLink && <AddLink onAdd={addLink} onClose={() => setShowLink(false)} />}
       {showDelete && <DeleteAccount guest={auth.user.guest} onConfirm={deleteAccount} onClose={() => setShowDelete(false)} />}
     </div>
   );
