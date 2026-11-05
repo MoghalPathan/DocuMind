@@ -158,18 +158,18 @@ export default function Site({ route, go, onAuth }) {
             <p>Ask your PDF. Get the answer and the page it came from. A portfolio project by Naved Korabu.</p>
           </div>
           <div>
-            <h4>Product</h4>
+            <h3>Product</h3>
             {PRODUCT.map(([p, t]) => <A key={p} to={p} go={go}>{t}</A>)}
             <A to="/pricing" go={go}>Pricing</A>
           </div>
           <div>
-            <h4>Project</h4>
+            <h3>Project</h3>
             <A to="/about" go={go}>About</A>
             <A to="/contact" go={go}>Contact</A>
             <A to="/changelog" go={go}>Changelog</A>
           </div>
           <div>
-            <h4>Legal</h4>
+            <h3>Legal</h3>
             <A to="/privacy" go={go}>Privacy</A>
             <A to="/terms" go={go}>Terms</A>
           </div>

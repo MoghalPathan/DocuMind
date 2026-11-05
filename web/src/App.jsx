@@ -1096,7 +1096,7 @@ export function ChatApp({ auth, onLogout }) {
               <Icon name="panel" />
             </button>
           )}
-          <div className="top-title">{active ? active.title : ""}</div>
+          {active ? <h1 className="top-title">{active.title}</h1> : <div className="top-title" />}
           <button
             className="icon-btn"
             aria-label="Switch theme"

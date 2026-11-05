@@ -63,7 +63,7 @@ export default function Login({ onAuth, go, start }) {
   const forgot = mode === "forgot";
 
   return (
-    <div className="login-page">
+    <main className="login-page">
       <div className="login-card">
         <div className="login-brand">
           <div className="logo big">D</div>
@@ -158,6 +158,6 @@ export default function Login({ onAuth, go, start }) {
           <a href="/privacy" onClick={(e) => { if (go) { e.preventDefault(); go("/privacy"); } }}>Privacy</a>.
         </p>
       </div>
-    </div>
+    </main>
   );
 }

@@ -1575,3 +1575,8 @@
 .dlg-primary { border-radius: 10px; padding: 9px 16px; font: 600 14px Inter, system-ui, sans-serif; cursor: pointer; background: var(--accent); color: #fff; border: 1px solid var(--accent); }
 .dlg-primary:hover { filter: brightness(1.08); }
 .dlg-primary:disabled { opacity: 0.6; cursor: default; }
+
+
+/* accessibility */
+.st-btn.solid, .login-primary, .dlg-primary { background: #4a56e2; border-color: #4a56e2; }
+h1.top-title { margin: 0; font-size: inherit; line-height: inherit; }

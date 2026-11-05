@@ -316,3 +316,8 @@
 @media (max-width: 640px) { .st-change { grid-template-columns: 1fr; gap: 8px; } }
 
 
+/* accessibility */
+.st-foot-grid h3 { margin: 0 0 12px; font: 600 13px Inter, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.st-legal-main a, .st-legal-contact a { text-decoration: underline; text-underline-offset: 2px; }
+
+
