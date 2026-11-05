@@ -133,7 +133,7 @@ export function Home({ go, demo, busy }) {
           <div>
             <p className="st-eyebrow">Your own document</p>
             <h2>Try it with your own PDF</h2>
-            <p className="st-own-text">Sign up free, upload a PDF with selectable text and ask it anything. See the limits under What works best on the <A to="/features" go={go}>Features page</A>.</p>
+            <p className="st-own-text">Sign up free, upload a PDF, Word or PowerPoint file (or add a web page link) and ask it anything.</p>
           </div>
           <div className="st-cta">
             <button className="st-btn solid big" onClick={() => go("/signup")}>Sign up free</button>
@@ -262,7 +262,7 @@ export function Features({ go, demo, busy }) {
               ["Light and dark themes", "Switch any time. Your choice is remembered."],
               ["Works on phones", "A layout designed for small screens."],
               ["Voice input", "Ask with your microphone on a secure connection."],
-              ["Scanned PDFs detected", "Image-only PDFs are rejected with a clear message."],
+              ["Many file types", "PDF, Word, PowerPoint, text, web pages by link and more."],
               ["Example questions", "Click a suggested question to see how it works in one tap."],
               ["Chat history", "Pin, rename, search and archive your chats."],
             ].map(([t, d]) => (

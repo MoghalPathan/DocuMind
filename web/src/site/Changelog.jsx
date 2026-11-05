@@ -3,6 +3,10 @@ const RELEASES = [
     when: "November 2026",
     title: "Summarise and account tools",
     items: [
+      "Answers appear word by word as they are written",
+      "Hover a page chip to see the exact passage the answer used",
+      "More file types: Word, ODT, RTF, PowerPoint, EPUB, email, subtitles, HTML, JSON, XML, text, Markdown and code",
+      "Add a public web page by its link",
       "Summarise button: a short summary of a whole PDF with page references",
       "Forgot password by email",
       "Delete my account, with all your files removed",

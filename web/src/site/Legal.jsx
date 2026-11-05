@@ -168,15 +168,15 @@ export function WorksBest() {
         <div className="st-grid2" style={{ marginTop: 20, maxWidth: "none" }}>
           <article className="st-card hl">
             <h3>Works well</h3>
-            <p>PDFs with real, selectable text: manuals, reports, papers, notes, textbooks. Ask about a specific fact, a definition or a section.</p>
+            <p>Files with real text: PDF, Word, PowerPoint, text and Markdown, web pages (by link), EPUB, email, HTML, JSON, XML and code. Ask about a specific fact, a definition or a section.</p>
           </article>
           <article className="st-card">
             <h3>Not supported</h3>
-            <p>Scanned PDFs or photos of pages (no selectable text) are rejected. Other file types such as Word or images are not supported yet.</p>
+            <p>Scanned PDFs and photos of pages (no selectable text), Excel and CSV tables, and audio or video are not supported yet. Pages that need a login are not supported either.</p>
           </article>
           <article className="st-card">
             <h3>Limits</h3>
-            <p>Up to 15 MB and 300 pages per PDF. Demo users can upload 1 document; signed-up users up to 5.</p>
+            <p>Up to 15 MB per file, and 300 pages (or parts) per document. Web pages up to 5 MB. Demo users can add 1 document; signed-up users up to 5.</p>
           </article>
           <article className="st-card">
             <h3>Known weak spots</h3>

@@ -16,6 +16,8 @@ Ask questions about your PDFs and get answers with page citations. If the answer
 - Two LLMs to choose from (Groq or Gemini), with automatic backup if one is busy
 - Light and dark theme, works on mobile, voice input on https
 - Scanned (image-only) PDFs are detected and rejected with a clear message
+- Many file types: PDF, Word, ODT, RTF, PowerPoint, EPUB, email, subtitles, HTML, JSON, XML, text, Markdown and code, plus public web pages by link
+- Answers stream word by word, and hovering a source shows the exact passage
 - One-click Summarise: a short summary of a whole PDF with page references
 - Sign up, sign in, forgot password by email, and delete my account
 - Demo accounts and their files are cleaned up automatically after 48 hours
@@ -69,16 +71,15 @@ docker compose ps
 Put the same `.env` keys on the server. For password reset emails also add `SMTP_USER` and `SMTP_PASS` (a Gmail app password). If the `Caddyfile` changes, run `docker compose restart caddy`.
 
 ## Known limits
-- Text PDFs only (no OCR for scans)
+- No OCR (scanned PDFs and images are rejected), no Excel/CSV tables, no audio or video
+- Word, PowerPoint and text files have no real pages, so citations show "part N" or "slide N"
 - Free-tier LLM limits mean very busy days may show a "busy" message
 - Long lists and counting questions can be incomplete
 
 ## Roadmap
-- Real streaming (answers appear word by word)
-- Source text shown on hover
-- Word and text file support
-- Public status page (UptimeRobot)
-- Changelog page
+- OCR for scanned PDFs and images
+- Excel and CSV tables
+- Audio, video and YouTube links (speech to text)
 
 ## Author
 Korabu Naved Arif — [LinkedIn](https://www.linkedin.com/in/naved-korabu-2b8221434/) · [GitHub](https://github.com/MoghalPathan)
