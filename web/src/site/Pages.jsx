@@ -61,9 +61,10 @@ export function Home({ go, demo, busy }) {
         <div className="st-wrap st-hero-in">
           <div>
             <p className="st-eyebrow">Document Q&amp;A you can check</p>
-            <h1>Ask your PDF. Get the answer, <em>and the page it came from.</em></h1>
+            <h1>Ask your documents. Get the answer, <em>and where it came from.</em></h1>
             <p className="st-lead">
-              DocuMind reads your document and answers only from it. If the answer is not there, it says
+              DocuMind reads your files and answers only from them: PDF, Word, PowerPoint, text, web pages and more.
+              If the answer is not there, it says
               {" “"}I don{"’"}t know{"”"} instead of guessing.
             </p>
             <div className="st-cta">
