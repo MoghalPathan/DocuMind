@@ -188,7 +188,7 @@ export function Features({ go, demo, busy }) {
 
       <FeatureRow
         title="Answers with page citations"
-        text="Every answer comes with the document and page it was taken from. Click a citation to open the PDF."
+        text="Every answer comes with the document and the page, slide or part it was taken from. Hover a citation to read the exact passage, or click it to open a PDF page."
         points={["Citations only list passages the answer actually used", "Works across several documents at once", "Shows which document each answer came from"]}
         visual={<Chat q="Who publishes this lab manual?" chip="sample · p.1"><p>It is published by Malla Reddy College of Engineering &amp; Technology.</p></Chat>}
       />
@@ -244,7 +244,7 @@ export function Features({ go, demo, busy }) {
       <FeatureRow
         flip
         title="Private uploads and shareable chats"
-        text="Each account sees only its own PDFs plus a shared sample. Share any conversation as a read-only link, and remove the link whenever you like."
+        text="Each account sees only its own files plus a shared sample. Share any conversation as a read-only link, and remove the link whenever you like."
         points={["Login, or try the one-click demo", "Your files are never shared, only the messages you choose", "Stop sharing at any time"]}
         visual={
           <div className="st-mock">
@@ -299,14 +299,14 @@ export function HowItWorks({ go, demo, busy }) {
     <>
       <PageHead
         eyebrow="How it works"
-        title="From PDF to cited answer"
+        title="From file to cited answer"
         intro="This system is a retrieval-augmented generation (RAG) pipeline: first find the right passages, then let the AI answer from them only."
       />
       <section className="st-sec">
         <div className="st-wrap">
           <Flow
-            title="When you upload a PDF"
-            steps={[["Read", "Extract text page by page"], ["Split", "1000-character passages, 150 overlap"], ["Tag", "Label Week / Chapter sections"], ["Embed", "Turn each passage into a vector"], ["Store", "Save in the Qdrant database"]]}
+            title="When you upload a File"
+            steps={[["Read", "Extract the text by page, slide or part"], ["Split", "1000-character passages, 150 overlap"], ["Tag", "Label Week / Chapter sections"], ["Embed", "Turn each passage into a vector"], ["Store", "Save in the Qdrant database"]]}
           />
           <Flow
             title="When you ask a question"
@@ -323,7 +323,7 @@ export function HowItWorks({ go, demo, busy }) {
               <thead><tr><th>Part</th><th>Choice</th><th>Why</th></tr></thead>
               <tbody>
                 {[
-                  ["PDF reading", "PyPDFLoader", "Keeps page numbers for citations"],
+                  ["File reading", "PyPDFLoader and built-in readers", "PDF pages, slides and parts for citations"],
                   ["Splitting", "1000 characters, 150 overlap", "Passages small enough to be precise"],
                   ["Embeddings", "all-MiniLM-L6-v2", "Small, fast, runs on a CPU"],
                   ["Vector database", "Qdrant", "Fast search with filters per user"],
