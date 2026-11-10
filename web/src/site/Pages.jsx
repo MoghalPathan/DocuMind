@@ -417,7 +417,7 @@ export function Results({ go, demo, busy }) {
 export function Pricing({ go, demo, busy }) {
   const faq = [
     ["Is it really free?", "Yes. DocuMind is a portfolio project that runs on free tiers, so there are no paid plans. The limits exist to keep it available for everyone."],
-    ["Are my documents private?", "Your uploaded PDFs are visible only to your account. Only the shared sample is visible to everyone. Please still avoid uploading confidential documents."],
+    ["Are my documents private?", "Your uploaded files are visible only to your account. Only the shared sample is visible to everyone. Please still avoid uploading confidential documents."],
     ["Which AI sees my text?", "The passages relevant to your question are sent to the AI model you choose (Groq or Gemini). Gemini’s free tier may use content to improve Google products, so choose Groq for anything sensitive."],
     ["Why do I see a limit message?", "Free AI tiers have daily limits. Per-user limits and a site-wide daily cap keep the demo working for everyone. Try again later, or use the cached example questions."],
   ];
