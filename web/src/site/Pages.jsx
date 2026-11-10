@@ -111,7 +111,7 @@ export function Home({ go, demo, busy }) {
           <div className="st-grid3">
             <A to="/features" go={go} className="st-card st-tile">
               <h3>Features</h3>
-              <p>Page citations, honest {"\u201C"}I don{"\u2019"}t know{"\u201D"}, follow-up questions and shareable chats.</p>
+              <p>Cited answers, honest {"\u201C"}I don{"\u2019"}t know{"\u201D"}, Summarise, many file types and shareable chats.</p>
               <span className="st-tile-link">See what it can do </span>
             </A>
             <A to="/how-it-works" go={go} className="st-card st-tile">
@@ -133,8 +133,8 @@ export function Home({ go, demo, busy }) {
         <div className="st-wrap st-own">
           <div>
             <p className="st-eyebrow">Your own document</p>
-            <h2>Try it with your own PDF</h2>
-            <p className="st-own-text">Sign up free, upload a PDF, Word or PowerPoint file (or add a web page link) and ask it anything.</p>
+            <h2>Try it with your own file</h2>
+                        <p className="st-own-text">Sign up free, upload a file or add a web page link, and ask it anything. See the limits under What works best on the <A to="/features" go={go}>Features page</A>.</p>
           </div>
           <div className="st-cta">
             <button className="st-btn solid big" onClick={() => go("/signup")}>Sign up free</button>
