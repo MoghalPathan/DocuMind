@@ -1596,3 +1596,8 @@ svg.st-logo { width: 28px; height: 28px; }
   .composer-row > .send { order: 8; flex: none; }
   .doc-pill { max-width: 150px; }
 }
+
+
+@media (max-width: 800px) {
+  .chips-row button:nth-child(n+3) { display: none; }
+}
