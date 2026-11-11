@@ -62,7 +62,7 @@ export function Privacy({ go }) {
             <thead><tr><th>Data</th><th>Why we use it</th></tr></thead>
             <tbody>
               <tr><td>Email and password (stored only as a salted hash)</td><td>To sign you in. Demo guests get a temporary account with no email.</td></tr>
-              <tr><td>PDF files you upload and the text extracted from them</td><td>To search the document and answer your questions.</td></tr>
+              <tr><td>Files you upload (and web pages you add) and the text extracted from them</td><td>To search the document and answer your questions.</td></tr>
               <tr><td>Your questions and the answers</td><td>To produce answers. Your chat history is kept in your own browser.</td></tr>
               <tr><td>Ratings you give to answers</td><td>To measure and improve answer quality.</td></tr>
               <tr><td>Chats you choose to share</td><td>To show the chat to anyone who has the link.</td></tr>
@@ -138,7 +138,7 @@ export function Privacy({ go }) {
 
 export function Terms({ go }) {
   const sections = [
-    { id: "service", title: "The service", body: <p>DocuMind is a free portfolio and learning project that answers questions about PDF files you upload. It runs on limited infrastructure and may be slow, restricted or unavailable at any time. Features, limits and availability can change or end without notice.</p> },
+    { id: "service", title: "The service", body: <p>DocuMind is a free portfolio and learning project that answers questions about files and web pages you add. It runs on limited infrastructure and may be slow, restricted or unavailable at any time. Features, limits and availability can change or end without notice.</p> },
     { id: "accuracy", title: "Accuracy of answers", body: <p>DocuMind answers only from your document and says &ldquo;I don&rsquo;t know&rdquo; when it cannot find an answer, but it can still be wrong. The published test results show errors, especially when counting items in long lists. Check important answers against the cited page. Do not rely on DocuMind for medical, legal, financial or safety decisions.</p> },
     { id: "content", title: "Your content", body: <p>You keep ownership of the files you upload. You confirm that you have the right to upload them and that they are not illegal, confidential or private. You allow DocuMind to process them only to provide the service, including sending excerpts to the AI providers named in the <A to="/privacy" go={go}>Privacy Policy</A>.</p> },
     { id: "use", title: "Acceptable use", body: <p>Do not try to bypass usage limits, probe or attack the service, overload it, or use it for unlawful content. Accounts or files that break these rules may be removed without notice.</p> },

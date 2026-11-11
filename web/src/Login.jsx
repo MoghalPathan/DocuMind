@@ -73,7 +73,7 @@ export default function Login({ onAuth, go, start }) {
         <p className="login-sub">
           {forgot
             ? "Enter your email and we will send you a link to choose a new password."
-            : "Chat with your PDFs. Every answer shows the pages it came from."}
+            : "Chat with your documents. Every answer shows where it came from."}
         </p>
 
         {!forgot && (

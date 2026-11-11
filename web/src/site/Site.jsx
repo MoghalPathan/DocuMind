@@ -21,7 +21,7 @@ const ROUTES = {
 
 const PRODUCT = [
   ["/features", "Features", "What DocuMind can do"],
-  ["/how-it-works", "How it works", "From PDF to cited answer"],
+  ["/how-it-works", "How it works", "From file to cited answer"],
   ["/results", "Results", "Every test question, graded"],
 ];
 
@@ -62,7 +62,7 @@ export default function Site({ route, go, onAuth }) {
     setDd(false);
     const names = { "/": "", "/features": "Features", "/how-it-works": "How it works", "/results": "Results", "/pricing": "Pricing", "/about": "About", "/contact": "Contact", "/privacy": "Privacy", "/terms": "Terms", "/terms": "Terms", "/changelog": "Changelog" };
     const n = names[route];
-    document.title = route in names ? (n ? `${n} · DocuMind` : "DocuMind: ask your PDF, get cited answers") : "Page not found · DocuMind";
+    document.title = route in names ? (n ? `${n} · DocuMind` : "DocuMind: ask your files, get cited answers") : "Page not found · DocuMind";
   }, [route]);
 
   useEffect(() => {
@@ -156,7 +156,7 @@ export default function Site({ route, go, onAuth }) {
         <div className="st-wrap st-foot-grid">
           <div>
             <A to="/" go={go} className="st-brand"><Logo className="st-logo" /> DocuMind</A>
-            <p>Ask your PDF. Get the answer and the page it came from. A portfolio project by Naved Korabu.</p>
+            <p>Ask your documents. Get the answer and where it came from. A portfolio project by Naved Korabu.</p>
           </div>
           <div>
             <h3>Product</h3>

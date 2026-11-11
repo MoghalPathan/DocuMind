@@ -1136,9 +1136,9 @@ export function ChatApp({ auth, onLogout }) {
             <div className="welcome">
               <div className="greet">
                 <Logo className="logo big" />
-                <h1>Chat with your PDFs</h1>
+                <h1>Chat with your documents</h1>
               </div>
-              <p className="sub">Upload a PDF, ask questions, and get answers with page references.</p>
+              <p className="sub">Upload a file or add a link, ask questions, and get answers with references.</p>
               {composer}
               <div className="try-label">Try asking</div>
               <div className="chips-row">
@@ -1215,7 +1215,7 @@ export function ChatApp({ auth, onLogout }) {
                       {m.role === "ai" && !m.error && m.kind !== "chat" && m.kind !== "busy" && (
                         <div className="meta">
                           {m.cites && m.cites.length > 0
-                            ? `Based on ${[...new Set(m.cites.map((c) => shortName(c.doc, 28)).filter(Boolean))].join(", ") || "your PDF"}`
+                            ? `Based on ${[...new Set(m.cites.map((c) => shortName(c.doc, 28)).filter(Boolean))].join(", ") || "your file"}`
                             : `Searched ${m.scope ? shortName(m.scope, 28) : "all documents"}`}
                           {m.model ? ` · ${m.model}` : ""}
                           {m.asked && <div className="asked">Searched for: “{m.asked}”</div>}
@@ -1320,7 +1320,7 @@ export function ChatApp({ auth, onLogout }) {
             ) : (
               <>
                 <p>
-                  Anyone with this link can read the messages up to now. Your PDF files are not shared. Messages you
+                  Anyone with this link can read the messages up to now. Your files are not shared. Messages you
                   add later are not included until you share again.
                 </p>
                 <div className="share-row">
