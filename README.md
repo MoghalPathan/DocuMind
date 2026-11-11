@@ -2,7 +2,7 @@
 
 # DocuMind
 
-Ask questions about your PDFs and get answers with page citations. If the answer is not in the document, DocuMind says "I don't know" instead of guessing.
+Ask questions about your files and web pages and get answers with citations (page, slide or part). If the answer is not in the document, DocuMind says "I don't know" instead of guessing.
 
 **Live demo:** https://documindai.duckdns.org (click "Try demo", no sign-up needed)
 
@@ -11,7 +11,7 @@ Ask questions about your PDFs and get answers with page citations. If the answer
 ![I don't know](docs/idk.png)
 
 ## Features
-- Upload PDFs and chat with them (answers cite the document and page)
+- Upload files and chat with them (answers cite the document and the page, slide or part)
 - Strict answers: only from your documents, otherwise "I don't know"
 - Follow-up questions work (chat memory) and answers can be regenerated
 - Login, "Try demo" accounts, per-user documents, upload and rate limits
@@ -20,14 +20,14 @@ Ask questions about your PDFs and get answers with page citations. If the answer
 - Scanned (image-only) PDFs are detected and rejected with a clear message
 - Many file types: PDF, Word, ODT, RTF, PowerPoint, EPUB, email, subtitles, HTML, JSON, XML, text, Markdown and code, plus public web pages by link
 - Answers stream word by word, and hovering a source shows the exact passage
-- One-click Summarise: a short summary of a whole PDF with page references
+- One-click Summarise: a short summary of a whole document with references
 - Sign up, sign in, forgot password by email, and delete my account
 - Demo accounts and their files are cleaned up automatically after 48 hours
 
 
 ## How it works
 ```
-PDF -> split into chunks (1000 chars, 150 overlap) -> embeddings (all-MiniLM-L6-v2)
+File or web page -> read text -> split into chunks(1000 chars, 150 overlap) -> embeddings (all-MiniLM-L6-v2)
     -> Qdrant vector database
 Question -> vector search + cross-encoder re-ranking + neighbour chunks
          -> strict prompt -> LLM (Groq gpt-oss-20b / Gemini) -> answer + citations
