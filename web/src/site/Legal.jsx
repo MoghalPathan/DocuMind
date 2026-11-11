@@ -105,7 +105,7 @@ export function Privacy({ go }) {
       title: "Retention and deletion",
       body: (
         <>
-          <p>You can delete any document you uploaded from inside the app. To remove your whole account, use Delete account and data at the bottom of the sidebar. This permanently removes your uploaded PDFs, their searchable text, your shared links and the account itself.</p>
+          <p>You can delete any document you uploaded from inside the app. To remove your whole account, use Delete account and data at the bottom of the sidebar. This permanently removes your uploaded files, their searchable text, your shared links and the account itself.</p>
           <p>Demo sessions end after 24 hours. Demo accounts and their files are deleted automatically 48 hours after they are created.</p>
           <p>If you cannot log in, email <a href={"mailto:" + MAIL}>{MAIL}</a> and your data will be removed.</p>
         </>
@@ -129,7 +129,7 @@ export function Privacy({ go }) {
       summary={[
         ["We do not sell your data", "No ads and no third-party trackers."],
         ["AI providers see excerpts", "Your question and relevant passages go to Groq or Gemini."],
-        ["You can delete", "to Delete your account and files yourself from the app sidebar."],
+        ["You can delete", "Delete your account and files yourself from the app sidebar."],
       ]}
       sections={sections}
     />
