@@ -1585,3 +1585,14 @@ h1.top-title { margin: 0; font-size: inherit; line-height: inherit; }
 svg.logo, svg.st-logo { background: none; border-radius: 0; display: block; }
 svg.st-logo { width: 28px; height: 28px; }
 .avatar-logo { width: 28px; height: 28px; flex-shrink: 0; margin-top: 2px; display: block; }
+
+
+/* ---------- mobile composer: two tidy rows ---------- */
+@media (max-width: 800px) {
+  .composer-row { flex-wrap: wrap; row-gap: 8px; }
+  .composer-row .spacer { flex: 0 0 100%; height: 0; order: 5; }
+  .composer-row > .model-wrap:last-of-type { order: 6; margin-left: auto; }
+  .composer-row > .icon-btn { order: 7; }
+  .composer-row > .send { order: 8; flex: none; }
+  .doc-pill { max-width: 150px; }
+}

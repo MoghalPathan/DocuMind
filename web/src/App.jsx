@@ -657,7 +657,7 @@ export function ChatApp({ auth, onLogout }) {
   const toggleVoice = () => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) {
-      setToast("Voice input is not supported in this browser (try Chrome or Edge)");
+      setToast({ network: "Voice input did not work here. Some browsers (like Brave) block it. Try Chrome or Edge." });
       return;
     }
     if (listening) {
@@ -683,13 +683,13 @@ export function ChatApp({ auth, onLogout }) {
       await navigator.clipboard.writeText(text);
       setToast(msg);
     } catch {
-      setToast("Could not copy");
+      setToast({ network: "Could not copy" });
     }
   };
 
   const speak = (text, idx) => {
     const synth = window.speechSynthesis;
-    if (!synth) { setToast("Your browser cannot read aloud"); return; }
+    if (!synth) { setToast({ network: "Your browser cannot read aloud" }); return; }
     if (speaking === idx) { synth.cancel(); setSpeaking(null); return; }
     synth.cancel();
     const u = new SpeechSynthesisUtterance(text.replace(/[*_`#>]/g, ""));
