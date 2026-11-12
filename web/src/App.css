@@ -1601,3 +1601,19 @@ svg.st-logo { width: 28px; height: 28px; }
 @media (max-width: 800px) {
   .chips-row button:nth-child(n+3) { display: none; }
 }
+
+
+/* ---------- account menu, round mic, chat menu ---------- */
+.side-user { position: relative; padding: 8px 4px 4px; }
+.user-btn { display: flex; align-items: center; gap: 8px; width: 100%; background: none; border: 0; padding: 8px; border-radius: 10px; color: var(--muted); cursor: pointer; text-align: left; min-width: 0; }
+.user-btn:hover { background: var(--hover); color: var(--text); }
+.user-btn .who-name { flex: 1; min-width: 0; }
+.user-menu { top: auto; bottom: calc(100% + 4px); left: 4px; right: 4px; }
+.menu-sep { height: 1px; background: var(--border); margin: 6px 4px; }
+.mic-round { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); background: var(--panel-2); color: var(--text); }
+.mic-round:hover { background: var(--hover); }
+.mic-round.rec { background: var(--danger); color: #fff; border-color: var(--danger); }
+.top-menu { min-width: 190px; }
+@media (max-width: 800px) {
+  .welcome .note { display: none; }
+}

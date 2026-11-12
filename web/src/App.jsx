@@ -20,7 +20,7 @@ const MODELS = [
     id: "gemini",
     label: "Gemini",
     note: "Google",
-    desc: "Google Gemini. On the free plan, Google may use prompts to improve its products.",
+    desc: "Gemini flash-lite. Powerful and versatile.",
   },
 ];
 
@@ -295,6 +295,13 @@ const ICONS = {
       <line x1="12" y1="8" x2="12.01" y2="8" />
     </>
   ),
+  logout: (
+    <>
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      <polyline points="16 17 21 12 16 7" />
+      <line x1="21" y1="12" x2="9" y2="12" />
+    </>
+  ),
   eraser: (
     <>
       <path d="M20 20H9l-5-5a2 2 0 0 1 0-2.8l9.2-9.2a2 2 0 0 1 2.8 0l5.2 5.2a2 2 0 0 1 0 2.8L12 20" />
@@ -397,6 +404,7 @@ export function ChatApp({ auth, onLogout }) {
   );
   const [menuId, setMenuId] = useState(null);
   const [topMenu, setTopMenu] = useState(false);
+  const [userMenu, setUserMenu] = useState(false);
   const [regenMenu, setRegenMenu] = useState(null);
   const [speaking, setSpeaking] = useState(null);
   const [renamingId, setRenamingId] = useState(null);
@@ -455,6 +463,8 @@ export function ChatApp({ auth, onLogout }) {
       setModelOpen(false);
       setDocOpen(false);
       setDocMenu(null);
+      setTopMenu(false);
+      setUserMenu(false);
     };
     window.addEventListener("click", close);
     return () => window.removeEventListener("click", close);
@@ -793,6 +803,17 @@ export function ChatApp({ auth, onLogout }) {
     setRenamingId(null);
   };
 
+  const exportChat = () => {
+    if (!active) return;
+    const lines = (active.messages || []).map((m) => `${m.role === "user" ? "You" : "DocuMind"}: ${m.text}`);
+    const blob = new Blob([`${active.title}\n\n${lines.join("\n\n")}\n`], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `${active.title.replace(/[^\w\- ]+/g, "").trim() || "chat"}.txt`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
   const deleteChat = (id) => {
     if (!window.confirm("Delete this chat? This cannot be undone.")) return;
     setChats((cs) => cs.filter((c) => c.id !== id));
@@ -957,7 +978,7 @@ export function ChatApp({ auth, onLogout }) {
           )}
         </div>
         <button
-          className={`icon-btn ${listening ? "rec" : ""}`}
+          className={`icon-btn mic-round ${listening ? "rec" : ""}`}
           aria-label="Voice input"
           title={listening ? "Stop listening" : "Voice input"}
           onClick={toggleVoice}
@@ -1078,16 +1099,26 @@ export function ChatApp({ auth, onLogout }) {
           )}
         </div>
 
-        <div className="side-user">
-          <div className="who">
+        <div className="side-user" onClick={(e) => e.stopPropagation()}>
+          {userMenu && (
+            <div className="menu user-menu" role="menu">
+              <button onClick={() => window.open("/privacy", "_blank", "noopener")}><Icon name="file" size={15} /> Privacy policy</button>
+              <button onClick={() => window.open("/terms", "_blank", "noopener")}><Icon name="file" size={15} /> Terms of use</button>
+              <button onClick={() => window.open("/changelog", "_blank", "noopener")}><Icon name="info" size={15} /> What&rsquo;s new</button>
+              <button onClick={() => window.open("/", "_blank", "noopener")}><Icon name="external" size={15} /> About DocuMind</button>
+              <div className="menu-sep" />
+              <button className="danger" onClick={() => { setUserMenu(false); setShowDelete(true); }}><Icon name="trash" size={15} /> Delete account and data</button>
+              <button onClick={() => { setUserMenu(false); onLogout(); }}><Icon name="logout" size={15} /> Log out</button>
+            </div>
+          )}
+          <button className="user-btn" aria-haspopup="menu" aria-expanded={userMenu} onClick={() => setUserMenu((v) => !v)}>
             <span className="avatar-sm">{(auth.user.email || "G")[0].toUpperCase()}</span>
             <span className="who-name" title={auth.user.email}>
               {auth.user.guest ? "Guest session" : auth.user.email}
             </span>
-          </div>
-          <button className="ghost small" onClick={onLogout}>Log out</button>
+            <Icon name="more" size={16} />
+          </button>
         </div>
-        <button className="side-delete" onClick={() => setShowDelete(true)}>Delete account and data</button>
       </aside>
 
       <main className="main">
@@ -1115,14 +1146,33 @@ export function ChatApp({ auth, onLogout }) {
               >
                 <Icon name="share" size={16} /> Share
               </button>
-              <div className="top-more">
+              <div className="top-more" onClick={(e) => e.stopPropagation()}>
                 <button className="icon-btn" aria-label="More" onClick={() => setTopMenu((v) => !v)}>
                   <Icon name="more" />
                 </button>
                 {topMenu && (
                   <div className="menu top-menu">
+                    <button onClick={() => { setTopMenu(false); patchChat(active.id, { pinned: !active.pinned }); }}>
+                      <Icon name="pin" size={15} /> {active.pinned ? "Unpin" : "Pin"}
+                    </button>
+                    <button onClick={() => {
+                      setTopMenu(false);
+                      const t = window.prompt("Rename chat", active.title);
+                      if (t && t.trim()) patchChat(active.id, { title: t.trim() });
+                    }}>
+                      <Icon name="edit" size={15} /> Rename
+                    </button>
+                    <button onClick={() => { setTopMenu(false); exportChat(); }}>
+                      <Icon name="copy" size={15} /> Export as text
+                    </button>
+                    <button onClick={() => { setTopMenu(false); patchChat(active.id, { archived: !active.archived }); }}>
+                      <Icon name="archive" size={15} /> {active.archived ? "Unarchive" : "Archive"}
+                    </button>
                     <button onClick={() => { setTopMenu(false); clearChat(); }}>
                       <Icon name="eraser" size={15} /> Clear chat
+                    </button>
+                    <button className="danger" onClick={() => { setTopMenu(false); deleteChat(active.id); }}>
+                      <Icon name="trash" size={15} /> Delete chat
                     </button>
                   </div>
                 )}
