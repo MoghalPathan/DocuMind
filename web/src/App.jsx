@@ -7,6 +7,10 @@ import AddLink from "./AddLink.jsx";
 import Logo from "./Logo.jsx";
 import Shared from "./Shared.jsx";
 import Site from "./site/Site.jsx";
+import Settings from "./settings/Settings.jsx";
+import AccountMenu from "./settings/AccountMenu.jsx";
+import Shortcuts from "./settings/Shortcuts.jsx";
+import { TTS_RATE, getModel, resolveTheme, setPref, useApplyPrefs, usePrefs } from "./settings/prefs.js";
 import "./App.css";
 
 const MODELS = [
@@ -371,7 +375,7 @@ function Typed({ tid, text, className, onGrow }) {
 
 
 
-export function ChatApp({ auth, onLogout }) {
+export function ChatApp({ auth, onLogout, go }) {
   setAuthToken(auth);
   const storeKey = `${STORE_KEY}.${auth.user.id}`;
   useEffect(() => {
@@ -394,17 +398,15 @@ export function ChatApp({ auth, onLogout }) {
     onLogout();
   };
   const [search, setSearch] = useState("");
-  const [theme, setTheme] = useState(() => load("documind.theme", "dark"));
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    save("documind.theme", theme);
-  }, [theme]);
+  const prefs = usePrefs();
+  const theme = resolveTheme(prefs.theme);
+  const setTheme = (t) => setPref("theme", t);
+  const [showKeys, setShowKeys] = useState(false);
   const [collapsed, setCollapsed] = useState(() =>
     load("documind.collapsed", { docs: false, pinned: false, recent: false, archived: true }),
   );
   const [menuId, setMenuId] = useState(null);
   const [topMenu, setTopMenu] = useState(false);
-  const [userMenu, setUserMenu] = useState(false);
   const [regenMenu, setRegenMenu] = useState(null);
   const [speaking, setSpeaking] = useState(null);
   const [renamingId, setRenamingId] = useState(null);
@@ -427,6 +429,9 @@ export function ChatApp({ auth, onLogout }) {
   const endRef = useRef(null);
   const areaRef = useRef(null);
   const recRef = useRef(null);
+  const sendAfter = useRef(false);
+  const sendRef = useRef(null);
+  const searchRef = useRef(null);
 
   const activeDoc = docs.find((d) => d.name === selectedDoc)?.name || "";
   const summaryTarget = activeDoc || (docs.length === 1 ? docs[0].name : "");
@@ -436,6 +441,11 @@ export function ChatApp({ auth, onLogout }) {
 
   useEffect(() => save(storeKey, chats), [chats]);
   useEffect(() => save("documind.model", model), [model]);
+  useEffect(() => {
+    // Settings can change the default AI; follow it
+    const m = getModel(model);
+    if (m !== model) setModel(m);
+  }, [prefs]);
   useEffect(() => save("documind.doc", selectedDoc), [selectedDoc]);
   useEffect(() => save("documind.collapsed", collapsed), [collapsed]);
 
@@ -464,7 +474,6 @@ export function ChatApp({ auth, onLogout }) {
       setDocOpen(false);
       setDocMenu(null);
       setTopMenu(false);
-      setUserMenu(false);
     };
     window.addEventListener("click", close);
     return () => window.removeEventListener("click", close);
@@ -667,7 +676,11 @@ export function ChatApp({ auth, onLogout }) {
   const toggleVoice = () => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) {
-      setToast({ network: "Voice input did not work here. Some browsers (like Brave) block it. Try Chrome or Edge." });
+      setToast("Voice input is not supported in this browser (try Chrome or Edge)");
+      return;
+    }
+    if (!window.isSecureContext) {
+      setToast("The microphone only works on a secure (https) page.");
       return;
     }
     if (listening) {
@@ -675,17 +688,39 @@ export function ChatApp({ auth, onLogout }) {
       return;
     }
     const rec = new SR();
-    rec.lang = "en-IN";
+    rec.lang = prefs.voiceLang || "en-IN";
     rec.interimResults = false;
     rec.onresult = (ev) => {
       const said = ev.results[0][0].transcript;
       setInput((v) => (v ? v + " " : "") + said);
+      sendAfter.current = prefs.autoSend;
     };
-    rec.onend = () => setListening(false);
-    rec.onerror = () => setListening(false);
+    rec.onend = () => {
+      setListening(false);
+      if (sendAfter.current) {
+        sendAfter.current = false;
+        setTimeout(() => sendRef.current && sendRef.current(), 80);
+      }
+    };
+    rec.onerror = (ev) => {
+      setListening(false);
+      const why = {
+        "not-allowed": "Microphone access is blocked. Allow it in the browser's site settings.",
+        "service-not-allowed": "Microphone access is blocked. Allow it in the browser's site settings.",
+        "no-speech": "I did not hear anything. Tap the mic and try again.",
+        "audio-capture": "No microphone was found.",
+        network: "Voice input did not work here. Some browsers (like Brave) block it. Try Chrome or Edge.",
+      };
+      if (ev.error !== "aborted") setToast(why[ev.error] || "Voice input stopped. Please try again.");
+    };
     recRef.current = rec;
     setListening(true);
-    rec.start();
+    try {
+      rec.start();
+    } catch {
+      setListening(false);
+      setToast("Voice input could not start. Please try again.");
+    }
   };
 
   const copyText = async (text, msg = "Copied") => {
@@ -693,16 +728,19 @@ export function ChatApp({ auth, onLogout }) {
       await navigator.clipboard.writeText(text);
       setToast(msg);
     } catch {
-      setToast({ network: "Could not copy" });
+      setToast("Could not copy");
     }
   };
 
   const speak = (text, idx) => {
     const synth = window.speechSynthesis;
-    if (!synth) { setToast({ network: "Your browser cannot read aloud" }); return; }
+    if (!synth) { setToast("Your browser cannot read aloud"); return; }
     if (speaking === idx) { synth.cancel(); setSpeaking(null); return; }
     synth.cancel();
     const u = new SpeechSynthesisUtterance(text.replace(/[*_`#>]/g, ""));
+    u.rate = TTS_RATE[prefs.ttsRate] ?? 1;
+    const v = prefs.ttsVoice && synth.getVoices().find((x) => x.name === prefs.ttsVoice);
+    if (v) u.voice = v;
     u.onend = () => setSpeaking(null);
     u.onerror = () => setSpeaking(null);
     setSpeaking(idx);
@@ -814,6 +852,41 @@ export function ChatApp({ auth, onLogout }) {
     URL.revokeObjectURL(a.href);
   };
 
+  const exportAll = () => {
+    const parts = chats.map((c) => `${c.title}\n\n${(c.messages || []).map((m) => `${m.role === "user" ? "You" : "DocuMind"}: ${m.text}`).join("\n\n")}`);
+    if (!parts.length) { setToast("No chats to export"); return; }
+    const blob = new Blob([parts.join("\n\n-----\n\n") + "\n"], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "documind-chats.txt";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
+  const clearAll = () => {
+    setChats([]);
+    setActiveId(null);
+    setToast("All chats cleared");
+  };
+
+  const cmdRef = useRef({});
+  cmdRef.current = { export: exportAll, clear: clearAll, delete: () => setShowDelete(true), shortcuts: () => setShowKeys(true), newChat, toggleSide: () => setSidebarOpen((v) => !v) };
+  useEffect(() => {
+    const onCmd = (e) => cmdRef.current[e.detail.cmd] && cmdRef.current[e.detail.cmd]();
+    const onKey = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "/") { e.preventDefault(); setShowKeys((v) => !v); return; }
+      if (!e.altKey || e.ctrlKey || e.metaKey) return;
+      const k = e.key.toLowerCase();
+      if (k === "n") { e.preventDefault(); cmdRef.current.newChat(); }
+      else if (k === "b") { e.preventDefault(); cmdRef.current.toggleSide(); }
+      else if (k === "k") { e.preventDefault(); setSidebarOpen(true); setTimeout(() => searchRef.current && searchRef.current.focus(), 60); }
+      else if (k === "m") { e.preventDefault(); areaRef.current && areaRef.current.focus(); }
+    };
+    window.addEventListener("documind-cmd", onCmd);
+    window.addEventListener("keydown", onKey);
+    return () => { window.removeEventListener("documind-cmd", onCmd); window.removeEventListener("keydown", onKey); };
+  }, []);
+
   const deleteChat = (id) => {
     if (!window.confirm("Delete this chat? This cannot be undone.")) return;
     setChats((cs) => cs.filter((c) => c.id !== id));
@@ -829,6 +902,7 @@ export function ChatApp({ auth, onLogout }) {
   const recent = filtered.filter((c) => !c.pinned && !c.archived);
   const archived = filtered.filter((c) => c.archived);
 
+  sendRef.current = send;
   const currentModel = MODELS.find((m) => m.id === model) || MODELS[0];
 
   const head = (key, label, count) => (
@@ -906,7 +980,8 @@ export function ChatApp({ auth, onLogout }) {
         onChange={(e) => setInput(e.target.value)}
         onPaste={onPaste}
         onKeyDown={(e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
+          const fire = prefs.sendKey === "ctrl" ? e.key === "Enter" && (e.ctrlKey || e.metaKey) : e.key === "Enter" && !e.shiftKey;
+          if (fire) {
             e.preventDefault();
             send();
           }
@@ -978,7 +1053,7 @@ export function ChatApp({ auth, onLogout }) {
           )}
         </div>
         <button
-          className={`icon-btn mic-round ${listening ? "rec" : ""}`}
+          className={`icon-btn ${listening ? "rec" : ""}`}
           aria-label="Voice input"
           title={listening ? "Stop listening" : "Voice input"}
           onClick={toggleVoice}
@@ -1016,7 +1091,7 @@ export function ChatApp({ auth, onLogout }) {
           </button>
           <label className="nav search">
             <Icon name="search" />
-            <input placeholder="Search chats" value={search} onChange={(e) => setSearch(e.target.value)} />
+            <input ref={searchRef} placeholder="Search chats" value={search} onChange={(e) => setSearch(e.target.value)} />
           </label>
         </nav>
 
@@ -1099,26 +1174,7 @@ export function ChatApp({ auth, onLogout }) {
           )}
         </div>
 
-        <div className="side-user" onClick={(e) => e.stopPropagation()}>
-          {userMenu && (
-            <div className="menu user-menu" role="menu">
-              <button onClick={() => window.open("/privacy", "_blank", "noopener")}><Icon name="file" size={15} /> Privacy policy</button>
-              <button onClick={() => window.open("/terms", "_blank", "noopener")}><Icon name="file" size={15} /> Terms of use</button>
-              <button onClick={() => window.open("/changelog", "_blank", "noopener")}><Icon name="info" size={15} /> What&rsquo;s new</button>
-              <button onClick={() => window.open("/", "_blank", "noopener")}><Icon name="external" size={15} /> About DocuMind</button>
-              <div className="menu-sep" />
-              <button className="danger" onClick={() => { setUserMenu(false); setShowDelete(true); }}><Icon name="trash" size={15} /> Delete account and data</button>
-              <button onClick={() => { setUserMenu(false); onLogout(); }}><Icon name="logout" size={15} /> Log out</button>
-            </div>
-          )}
-          <button className="user-btn" aria-haspopup="menu" aria-expanded={userMenu} onClick={() => setUserMenu((v) => !v)}>
-            <span className="avatar-sm">{(auth.user.email || "G")[0].toUpperCase()}</span>
-            <span className="who-name" title={auth.user.email}>
-              {auth.user.guest ? "Guest session" : auth.user.email}
-            </span>
-            <Icon name="more" size={16} />
-          </button>
-        </div>
+        <AccountMenu auth={auth} onLogout={onLogout} go={go} onShortcuts={() => setShowKeys(true)} />
       </aside>
 
       <main className="main">
@@ -1190,12 +1246,16 @@ export function ChatApp({ auth, onLogout }) {
               </div>
               <p className="sub">Upload a file or add a link, ask questions, and get answers with references.</p>
               {composer}
-              <div className="try-label">Try asking</div>
-              <div className="chips-row">
-                {EXAMPLES.map((ex) => (
-                  <button key={ex} onClick={() => send(ex)}>{ex}</button>
-                ))}
-              </div>
+              {prefs.examples && (
+                <>
+                  <div className="try-label">Try asking</div>
+                  <div className="chips-row">
+                    {EXAMPLES.map((ex) => (
+                      <button key={ex} onClick={() => send(ex)}>{ex}</button>
+                    ))}
+                  </div>
+                </>
+              )}
               <div className="note">{NOTE}</div>
             </div>
           </section>
@@ -1390,6 +1450,7 @@ export function ChatApp({ auth, onLogout }) {
       )}
 
       {toast && <div className="toast">{toast}</div>}
+      {showKeys && <Shortcuts onClose={() => setShowKeys(false)} />}
       {showLink && <AddLink onAdd={addLink} onClose={() => setShowLink(false)} />}
       {showDelete && <DeleteAccount guest={auth.user.guest} onConfirm={deleteAccount} onClose={() => setShowDelete(false)} />}
     </div>
@@ -1397,6 +1458,7 @@ export function ChatApp({ auth, onLogout }) {
 }
 
 const AUTH_KEY = "documind.auth";
+const PUBLIC_PAGES = ["/features", "/how-it-works", "/results", "/pricing", "/about", "/contact", "/privacy", "/terms", "/changelog"];
 
 function readAuth() {
   try {
@@ -1409,6 +1471,7 @@ function readAuth() {
 
 // Shows the login page until someone is signed in, then the chat.
 export default function App() {
+  useApplyPrefs();
   const [auth, setAuth] = useState(readAuth);
 
   const [route, setRoute] = useState(() => window.location.pathname.replace(/\/+$/, "") || "/");
@@ -1459,7 +1522,15 @@ export default function App() {
   const shared = window.location.pathname.match(/^\/s\/([A-Za-z0-9_-]+)/);
   if (shared) return <Shared id={shared[1]} />;
   if (route === "/reset") return <Reset go={go} />;
-  if (auth) return <ChatApp key={auth.user.id} auth={auth} onLogout={onLogout} />;
+  if (auth && PUBLIC_PAGES.includes(route)) return <Site route={route} go={go} onAuth={onAuth} />;
+  if (auth) {
+    return (
+      <>
+        <ChatApp key={auth.user.id} auth={auth} onLogout={onLogout} go={go} />
+        {route.startsWith("/settings") && <Settings route={route} go={go} />}
+      </>
+    );
+  }
   if (route === "/login" || route === "/signup") return <Login key={route} start={route === "/signup" ? "signup" : "login"} onAuth={onAuth} go={go} />;
   return <Site route={route} go={go} onAuth={onAuth} />;
 }

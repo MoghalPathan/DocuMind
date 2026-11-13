@@ -434,7 +434,7 @@ if os.path.isdir(DIST):
     def _spa():
         return FileResponse(os.path.join(DIST, "index.html"))
 
-    for _p in ("features", "how-it-works", "results", "pricing", "about", "contact", "login", "signup", "reset", "privacy", "terms", "changelog"):
+    for _p in ("features", "how-it-works", "results", "pricing", "about", "contact", "login", "signup", "reset", "privacy", "terms", "changelog", "settings"):
         app.add_api_route("/" + _p, _spa, methods=["GET"], include_in_schema=False)
 
     for _f in ("favicon.svg", "og.png", "robots.txt", "sitemap.xml"):
