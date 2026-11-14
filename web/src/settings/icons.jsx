@@ -12,6 +12,11 @@ const P = {
   bug: <><rect x="8" y="8" width="8" height="12" rx="4" /><line x1="12" y1="8" x2="12" y2="20" /><path d="M8 12H4M16 12h4M8 17l-3 2M16 17l3 2M9 6l-2-2M15 6l2-2" /></>,
   key: <><rect x="2" y="6" width="20" height="12" rx="2" /><line x1="7" y1="14" x2="17" y2="14" /><line x1="6" y1="10" x2="6" y2="10.1" /><line x1="10" y1="10" x2="10" y2="10.1" /><line x1="14" y1="10" x2="14" y2="10.1" /><line x1="18" y1="10" x2="18" y2="10.1" /></>,
   trash: <><polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6" /></>,
+  user: <><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7" /></>,
+  archive: <><rect x="3" y="4" width="18" height="5" rx="1" /><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9" /><line x1="10" y1="13" x2="14" y2="13" /></>,
+  link: <><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" /><path d="M14 10a4 4 0 0 0-5.7 0l-3 3A4 4 0 0 0 11 18.7l1-1" /></>,
+  docs: <><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><polyline points="14 3 14 8 19 8" /><line x1="9" y1="13" x2="15" y2="13" /><line x1="9" y1="17" x2="15" y2="17" /></>,
+  sliders: <><line x1="4" y1="7" x2="20" y2="7" /><line x1="4" y1="17" x2="20" y2="17" /><circle cx="9" cy="7" r="2.3" fill="var(--panel)" /><circle cx="15" cy="17" r="2.3" fill="var(--panel)" /></>,
   chev: <polyline points="9 6 15 12 9 18" />,
 };
 

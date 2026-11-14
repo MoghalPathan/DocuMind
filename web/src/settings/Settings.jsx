@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import SIcon from "./icons.jsx";
 import { Appearance, DataControls, General, Voice } from "./sections.jsx";
+import { Archived, Documents, Personalization, Profile, Shared } from "./sections2.jsx";
 import "./settings.css";
 
 const GROUPS = [
@@ -9,7 +10,17 @@ const GROUPS = [
     items: [
       { id: "general", label: "General", icon: "gear", Page: General },
       { id: "appearance", label: "Appearance", icon: "sun", Page: Appearance },
+      { id: "personalization", label: "Personalization", icon: "sliders", Page: Personalization },
+      { id: "profile", label: "Profile", icon: "user", Page: Profile },
       { id: "voice", label: "Voice", icon: "mic", Page: Voice },
+    ],
+  },
+  {
+    title: "Library",
+    items: [
+      { id: "documents", label: "Documents", icon: "docs", Page: Documents },
+      { id: "archived", label: "Archived chats", icon: "archive", Page: Archived },
+      { id: "shared", label: "Shared links", icon: "link", Page: Shared },
     ],
   },
   {
@@ -20,7 +31,7 @@ const GROUPS = [
 
 const ALL = GROUPS.flatMap((g) => g.items);
 
-export default function Settings({ go }) {
+export default function Settings({ go, auth }) {
   const [id, setId] = useState(() => new URLSearchParams(window.location.search).get("s") || "general");
   const cur = ALL.find((x) => x.id === id) || ALL[0];
   const pick = (to) => {
@@ -67,7 +78,7 @@ export default function Settings({ go }) {
       <main className="sx-main">
         <div className="sx-content" key={cur.id}>
           <h1>{cur.label}</h1>
-          <cur.Page go={go} />
+          <cur.Page go={go} auth={auth} />
         </div>
       </main>
     </div>

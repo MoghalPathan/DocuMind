@@ -15,7 +15,14 @@ export const DEFAULTS = {
   autoSend: false,
   ttsRate: 1, // 0 slow, 1 normal, 2 fast
   ttsVoice: "",
+  stream: true,
+  hoverSource: true,
+  greetName: true,
+  displayName: "",
+  avatarColor: "#6d7cff",
 };
+
+export const AVATAR_COLORS = ["#6d7cff", "#0ea5e9", "#10b981", "#f59e0b", "#ef4444", "#ec4899"];
 
 export const TEXT_SCALE = [0.9, 1, 1.15];
 export const TTS_RATE = [0.8, 1, 1.25];
@@ -126,4 +133,72 @@ export function useApplyPrefs() {
 }
 
 // Commands that Settings sends to the chat screen (export, clear, delete account, open shortcuts).
-export const sendCommand = (cmd) => window.dispatchEvent(new CustomEvent("documind-cmd", { detail: { cmd } }));
+export const sendCommand = (cmd, arg) => window.dispatchEvent(new CustomEvent("documind-cmd", { detail: { cmd, arg } }));
+
+// ---- what ChatApp shares with the Settings pages (chats and documents) ----
+export const live = { docs: [], chats: [], userId: "", guest: false, limits: null };
+export function useLive() {
+  const [, tick] = useState(0);
+  useEffect(() => {
+    const f = () => tick((n) => n + 1);
+    window.addEventListener("documind-live", f);
+    return () => window.removeEventListener("documind-live", f);
+  }, []);
+  return live;
+}
+export function publishLive(patch) {
+  Object.assign(live, patch);
+  window.dispatchEvent(new Event("documind-live"));
+}
+
+// ---- small activity log, kept in this browser, for the Profile page ----
+const actKey = (id) => "documind.activity." + id;
+const today = (d = new Date()) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+
+export function readActivity(userId) {
+  try {
+    const a = JSON.parse(localStorage.getItem(actKey(userId)));
+    if (a && a.days) return a;
+  } catch {
+    /* ignore */
+  }
+  return { days: {}, models: {}, docs: {}, total: 0 };
+}
+
+export function logQuestion(userId, model, doc) {
+  const a = readActivity(userId);
+  const t = today();
+  a.days[t] = (a.days[t] || 0) + 1;
+  a.total = (a.total || 0) + 1;
+  if (model) a.models[model] = (a.models[model] || 0) + 1;
+  if (doc) a.docs[doc] = (a.docs[doc] || 0) + 1;
+  try {
+    localStorage.setItem(actKey(userId), JSON.stringify(a));
+  } catch {
+    /* ignore */
+  }
+  window.dispatchEvent(new Event("documind-live"));
+}
+
+export function streaks(days) {
+  const keys = Object.keys(days).sort();
+  const one = 86400000;
+  const ms = (k) => new Date(k + "T00:00:00").getTime();
+  let best = 0;
+  let run = 0;
+  let prev = null;
+  keys.forEach((k) => {
+    run = prev !== null && Math.round((ms(k) - prev) / one) === 1 ? run + 1 : 1;
+    prev = ms(k);
+    if (run > best) best = run;
+  });
+  // current streak counts back from today (or yesterday, if nothing asked yet today)
+  let cur = 0;
+  let d = new Date();
+  if (!days[today(d)]) d = new Date(d.getTime() - one);
+  while (days[today(d)]) {
+    cur += 1;
+    d = new Date(d.getTime() - one);
+  }
+  return { best, cur };
+}

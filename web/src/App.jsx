@@ -10,7 +10,7 @@ import Site from "./site/Site.jsx";
 import Settings from "./settings/Settings.jsx";
 import AccountMenu from "./settings/AccountMenu.jsx";
 import Shortcuts from "./settings/Shortcuts.jsx";
-import { TTS_RATE, getModel, resolveTheme, setPref, useApplyPrefs, usePrefs } from "./settings/prefs.js";
+import { TTS_RATE, getModel, getPrefs, logQuestion, publishLive, resolveTheme, setPref, useApplyPrefs, usePrefs } from "./settings/prefs.js";
 import "./App.css";
 
 const MODELS = [
@@ -129,6 +129,7 @@ const fileUrl = (name) => `/files/${encodeURIComponent(name)}?token=${encodeURIC
 function SourceChip({ c }) {
   const [pos, setPos] = useState(null);
   const show = (e) => {
+    if (!getPrefs().hoverSource) return;
     const r = e.currentTarget.getBoundingClientRect();
     const above = r.top > 230;
     setPos({
@@ -439,7 +440,11 @@ export function ChatApp({ auth, onLogout, go }) {
   const active = chats.find((c) => c.id === activeId) || null;
   const messages = active ? active.messages : [];
 
-  useEffect(() => save(storeKey, chats), [chats]);
+  useEffect(() => {
+    save(storeKey, chats);
+    publishLive({ chats, userId: auth.user.id, guest: !!auth.user.guest });
+  }, [chats]);
+  useEffect(() => publishLive({ docs }), [docs]);
   useEffect(() => save("documind.model", model), [model]);
   useEffect(() => {
     // Settings can change the default AI; follow it
@@ -448,6 +453,13 @@ export function ChatApp({ auth, onLogout, go }) {
   }, [prefs]);
   useEffect(() => save("documind.doc", selectedDoc), [selectedDoc]);
   useEffect(() => save("documind.collapsed", collapsed), [collapsed]);
+
+  useEffect(() => {
+    apiFetch("/auth/me")
+      .then((r) => r.json())
+      .then((d) => d && d.limits && publishLive({ limits: d.limits }))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     apiFetch("/documents")
@@ -586,6 +598,7 @@ export function ChatApp({ auth, onLogout, go }) {
       );
     }
     setLoading(true);
+    logQuestion(auth.user.id, model, (opts?.doc ?? activeDoc) || "");
     setStatus("Searching documents…");
     const phase = setTimeout(() => setStatus("Writing the answer…"), 1800);
     let reply;
@@ -596,7 +609,7 @@ export function ChatApp({ auth, onLogout, go }) {
         body: JSON.stringify({ question: q, model, doc: (opts?.doc ?? activeDoc) || null, history: historyOf(prior) }),
       });
       if (!r.ok) throw new Error(await failMessage(r));
-      const data = opts?.summarise ? await r.json() : await readStream(r, setLive);
+      const data = opts?.summarise ? await r.json() : await readStream(r, prefs.stream ? setLive : () => {});
       reply = toReply(data, q, opts?.doc ?? activeDoc);
       if (reply.text && !reply.error) {
         reply.tid = uid();
@@ -869,10 +882,23 @@ export function ChatApp({ auth, onLogout, go }) {
     setToast("All chats cleared");
   };
 
+  const unshareById = async (id) => {
+    const c = chats.find((x) => x.id === id);
+    if (!c || !c.shareId) return;
+    try {
+      const r = await apiFetch(`/share/${c.shareId}`, { method: "DELETE" });
+      if (!r.ok) throw new Error(await failMessage(r));
+      patchChat(id, { shareId: null });
+      setToast("Link removed");
+    } catch (e) {
+      setToast(`Could not remove the link: ${e.message}`);
+    }
+  };
+
   const cmdRef = useRef({});
-  cmdRef.current = { export: exportAll, clear: clearAll, delete: () => setShowDelete(true), shortcuts: () => setShowKeys(true), newChat, toggleSide: () => setSidebarOpen((v) => !v) };
+  cmdRef.current = { closeSideMobile: () => window.innerWidth <= 800 && setSidebarOpen(false), unshare: unshareById, unarchive: (id) => patchChat(id, { archived: false }), unarchiveAll: () => setChats((cs) => cs.map((c) => (c.archived ? { ...c, archived: false } : c))), openChat: (id) => { setActiveId(id); if (window.innerWidth <= 800) setSidebarOpen(false); }, deleteChat: (id) => deleteChat(id), deleteDoc: (name) => deleteDoc(name), askDoc: (name) => { setSelectedDoc(name); setActiveId(null); }, upload: () => fileRef.current && fileRef.current.click(), export: exportAll, clear: clearAll, delete: () => setShowDelete(true), shortcuts: () => setShowKeys(true), newChat, toggleSide: () => setSidebarOpen((v) => !v) };
   useEffect(() => {
-    const onCmd = (e) => cmdRef.current[e.detail.cmd] && cmdRef.current[e.detail.cmd]();
+    const onCmd = (e) => cmdRef.current[e.detail.cmd] && cmdRef.current[e.detail.cmd](e.detail.arg);
     const onKey = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === "/") { e.preventDefault(); setShowKeys((v) => !v); return; }
       if (!e.altKey || e.ctrlKey || e.metaKey) return;
@@ -1240,6 +1266,7 @@ export function ChatApp({ auth, onLogout, go }) {
         {empty ? (
           <section className="chat welcome-mode">
             <div className="welcome">
+              {prefs.greetName && (prefs.displayName || "").trim() && <div className="hello">Hello, {prefs.displayName.trim()}</div>}
               <div className="greet">
                 <Logo className="logo big" />
                 <h1>Chat with your documents</h1>
@@ -1527,7 +1554,7 @@ export default function App() {
     return (
       <>
         <ChatApp key={auth.user.id} auth={auth} onLogout={onLogout} go={go} />
-        {route.startsWith("/settings") && <Settings route={route} go={go} />}
+        {route.startsWith("/settings") && <Settings route={route} go={go} auth={auth} />}
       </>
     );
   }

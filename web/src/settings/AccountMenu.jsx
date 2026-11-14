@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import SIcon from "./icons.jsx";
+import { sendCommand, usePrefs } from "./prefs.js";
 
 const BUG = "https://github.com/MoghalPathan/DocuMind/issues/new";
 const open = (url) => window.open(url, "_blank", "noopener");
@@ -8,9 +9,12 @@ export default function AccountMenu({ auth, onLogout, go, onShortcuts }) {
   const [on, setOn] = useState(false);
   const [help, setHelp] = useState(false);
   const ref = useRef(null);
+  const p = usePrefs();
   const guest = !!auth.user.guest;
-  const name = guest ? "Guest session" : auth.user.email;
-  const letter = guest ? "G" : (auth.user.email || "G")[0].toUpperCase();
+  const own = (p.displayName || "").trim();
+  const name = own || (guest ? "Guest session" : auth.user.email);
+  const letter = own ? own[0].toUpperCase() : guest ? "G" : (auth.user.email || "G")[0].toUpperCase();
+  const av = { background: p.avatarColor };
 
   useEffect(() => {
     if (!on) return undefined;
@@ -51,14 +55,14 @@ export default function AccountMenu({ auth, onLogout, go, onShortcuts }) {
       {on && (
         <div className="am-menu" role="menu" aria-label="Account">
           <div className="am-who">
-            <span className="am-av">{letter}</span>
+            <span className="am-av" style={av}>{letter}</span>
             <div>
               <b title={auth.user.email}>{name}</b>
               <small>{guest ? "Demo account, deleted after 48 hours" : "Signed-up account"}</small>
             </div>
           </div>
           <div className="am-line" />
-          {item("gear", "Settings", () => go("/settings"))}
+          {item("gear", "Settings", () => { sendCommand("closeSideMobile"); go("/settings"); })}
           <div className="am-line" />
           <div className="am-helpwrap" onMouseEnter={() => window.matchMedia("(hover: hover)").matches && setHelp(true)}>
             <button type="button" role="menuitem" aria-haspopup="menu" aria-expanded={help} className={"am-item" + (help ? " hot" : "")} onClick={() => setHelp((v) => !v)}>
@@ -83,7 +87,7 @@ export default function AccountMenu({ auth, onLogout, go, onShortcuts }) {
         </div>
       )}
       <button type="button" className={"am-btn" + (on ? " on" : "")} aria-haspopup="menu" aria-expanded={on} onClick={() => { setOn((v) => !v); setHelp(false); }}>
-        <span className="am-av">{letter}</span>
+        <span className="am-av" style={av}>{letter}</span>
         <span className="am-name" title={auth.user.email}>{name}</span>
       </button>
     </div>
