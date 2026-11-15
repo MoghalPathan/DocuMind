@@ -65,6 +65,10 @@ def _db():
         "create table if not exists users "
         "(id text primary key, email text unique, pw text, guest integer, created real)"
     )
+    # "ver" is the login version: raising it logs the user out of every device
+    if "ver" not in [r[1] for r in con.execute("pragma table_info(users)")]:
+        con.execute("alter table users add column ver integer not null default 0")
+        con.commit()
     return con
 
 
@@ -91,22 +95,28 @@ def _unb64(text):
     return base64.urlsafe_b64decode(text + "=" * (-len(text) % 4))
 
 
-def make_token(uid, hours=TOKEN_HOURS):
-    body = _b64(json.dumps({"u": uid, "e": int(time.time() + hours * 3600)}).encode())
+def make_token(uid, hours=TOKEN_HOURS, ver=0):
+    body = _b64(json.dumps({"u": uid, "e": int(time.time() + hours * 3600), "v": ver}).encode())
     sig = _b64(hmac.new(secret(), body.encode(), hashlib.sha256).digest())
     return body + "." + sig
 
 
-def read_token(token):
+def token_data(token):
+    """The checked contents of a token, or None when it is wrong or expired."""
     try:
         body, sig = token.split(".")
         good = _b64(hmac.new(secret(), body.encode(), hashlib.sha256).digest())
         if not hmac.compare_digest(sig, good):
             return None
         data = json.loads(_unb64(body))
-        return data["u"] if data["e"] > time.time() else None
+        return data if data["e"] > time.time() else None
     except Exception:
         return None
+
+
+def read_token(token):
+    data = token_data(token)
+    return data["u"] if data else None
 
 
 # ---- simple in-memory limits (they reset when the server restarts)
@@ -155,7 +165,7 @@ EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
 
 def _user_row(row):
-    return {"id": row[0], "email": row[1], "guest": bool(row[3])}
+    return {"id": row[0], "email": row[1], "guest": bool(row[3]), "ver": row[5] if len(row) > 5 else 0}
 
 
 def signup(creds, request):
@@ -169,7 +179,8 @@ def signup(creds, request):
     con = _db()
     try:
         con.execute(
-            "insert into users values (?,?,?,?,?)", (uid, email, hash_pw(creds.password), 0, time.time())
+            "insert into users (id, email, pw, guest, created) values (?,?,?,?,?)",
+            (uid, email, hash_pw(creds.password), 0, time.time()),
         )
         con.commit()
     except sqlite3.IntegrityError:
@@ -188,27 +199,72 @@ def login(creds, request):
     ok = check_pw(creds.password, row[2]) if row else check_pw(creds.password, hash_pw("x"))
     if not row or not ok or row[3]:
         raise HTTPException(status_code=401, detail="Wrong email or password.")
-    return {"token": make_token(row[0]), "user": {"id": row[0], "email": row[1], "guest": False}}
+    return {"token": make_token(row[0], ver=_user_row(row)["ver"]), "user": {"id": row[0], "email": row[1], "guest": False}}
+
+
+def _raise_version(uid):
+    con = _db()
+    con.execute("update users set ver = ver + 1 where id=?", (uid,))
+    con.commit()
+    ver = con.execute("select ver from users where id=?", (uid,)).fetchone()[0]
+    con.close()
+    return ver
+
+
+def change_password(user, current, new):
+    """Check the current password, save the new one, and log out every other device. Returns a fresh token."""
+    if user["guest"]:
+        raise HTTPException(status_code=400, detail="Demo sessions have no password.")
+    hit(("pw", user["id"]), 5, 3600, "Too many attempts. Please try again later.")
+    if not 8 <= len(new) <= 128:
+        raise HTTPException(status_code=400, detail="New password must be 8 to 128 characters.")
+    con = _db()
+    row = con.execute("select pw from users where id=?", (user["id"],)).fetchone()
+    if not row or not check_pw(current, row[0]):
+        con.close()
+        raise HTTPException(status_code=403, detail="Current password is wrong.")
+    if hmac.compare_digest(current, new):
+        con.close()
+        raise HTTPException(status_code=400, detail="New password must be different.")
+    con.execute("update users set pw=? where id=?", (hash_pw(new), user["id"]))
+    con.commit()
+    con.close()
+    return {"token": make_token(user["id"], ver=_raise_version(user["id"]))}
+
+
+def logout_everywhere(user):
+    """Every saved login for this account stops working, on every device."""
+    if user["guest"]:
+        raise HTTPException(status_code=400, detail="Demo sessions cannot do this.")
+    _raise_version(user["id"])
+    return {"ok": True}
 
 
 def demo(request):
     hit(("a", client_ip(request)), AUTH_PER_MINUTE, 60, "Too many attempts. Please wait a minute.")
     uid = "g" + secrets.token_hex(6)
     con = _db()
-    con.execute("insert into users values (?,?,?,?,?)", (uid, f"{uid}@guest", "", 1, time.time()))
+    con.execute(
+        "insert into users (id, email, pw, guest, created) values (?,?,?,?,?)", (uid, f"{uid}@guest", "", 1, time.time())
+    )
     con.commit()
     con.close()
     return {"token": make_token(uid, GUEST_HOURS), "user": {"id": uid, "email": "Guest", "guest": True}}
 
 
 def _lookup(token):
-    uid = read_token(token) if token else None
-    if not uid:
+    data = token_data(token) if token else None
+    if not data:
         return None
     con = _db()
-    row = con.execute("select * from users where id=?", (uid,)).fetchone()
+    row = con.execute("select * from users where id=?", (data["u"],)).fetchone()
     con.close()
-    return _user_row(row) if row else None
+    if not row:
+        return None
+    user = _user_row(row)
+    if data.get("v", 0) != user["ver"]:  # the user logged out of all devices
+        return None
+    return user
 
 
 def current_user(authorization: str | None = Header(None)):

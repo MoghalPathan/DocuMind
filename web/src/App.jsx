@@ -1536,6 +1536,24 @@ export default function App() {
     setAuth(a);
   }, []);
 
+  // a new token after a password change: keep the page, swap the token
+  useEffect(() => {
+    const on = (e) => {
+      setAuth((a) => {
+        if (!a || !e.detail) return a;
+        const n = { ...a, token: e.detail };
+        try {
+          localStorage.setItem(AUTH_KEY, JSON.stringify(n));
+        } catch {
+          /* ignore */
+        }
+        return n;
+      });
+    };
+    window.addEventListener("documind-newtoken", on);
+    return () => window.removeEventListener("documind-newtoken", on);
+  }, []);
+
   const onLogout = useCallback(() => {
     try {
       localStorage.removeItem(AUTH_KEY);

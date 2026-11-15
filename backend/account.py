@@ -71,6 +71,21 @@ def delete_account(body: DeleteBody, request: Request, user=Depends(auth.current
     return {"deleted": True}
 
 
+class PasswordBody(BaseModel):
+    current: str
+    new: str
+
+
+@router.post("/account/password")
+def change_password(body: PasswordBody, user=Depends(auth.current_user)):
+    return auth.change_password(user, body.current, body.new)
+
+
+@router.post("/account/logout-all")
+def logout_all(user=Depends(auth.current_user)):
+    return auth.logout_everywhere(user)
+
+
 def clean_guests():
     """Delete demo accounts (and their files) older than GUEST_KEEP_HOURS. Returns how many were removed."""
     cutoff = time.time() - GUEST_KEEP_HOURS * 3600

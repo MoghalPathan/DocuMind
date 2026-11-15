@@ -201,3 +201,14 @@ html[data-motion="reduce"] .sx-stat, html[data-motion="reduce"] .sx-item, html[d
 .sx-use:first-child { border-top: 0; }
 .sx-use-top { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 15px; }
 .sx-use-top span { color: var(--muted); }
+
+/* ---------- account and security ---------- */
+.sx-form { display: flex; flex-direction: column; gap: 14px; padding: 20px; max-width: 100%; }
+.sx-form label { display: flex; flex-direction: column; gap: 6px; font-size: 13.5px; color: var(--muted); }
+.sx-form .sx-input { max-width: 380px; }
+.sx-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+.sx-msg { padding: 10px 14px; border-radius: 12px; font-size: 14px; animation: sx-fade 0.25s ease; max-width: 460px; }
+.sx-msg.ok { background: color-mix(in srgb, #10b981 16%, transparent); color: #34d399; }
+.sx-msg.bad { background: color-mix(in srgb, var(--danger) 14%, transparent); color: var(--danger); }
+:root[data-theme="light"] .sx-msg.ok { color: #047857; }
+.sx-form .sx-note { border: 0; background: none; padding: 0; margin: 0; }

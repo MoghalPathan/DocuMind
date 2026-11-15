@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import SIcon from "./icons.jsx";
 import { Appearance, DataControls, General, Voice } from "./sections.jsx";
+import { Security } from "./sections3.jsx";
 import { Archived, Documents, Personalization, Profile, Shared } from "./sections2.jsx";
 import "./settings.css";
 
@@ -22,6 +23,10 @@ const GROUPS = [
       { id: "archived", label: "Archived chats", icon: "archive", Page: Archived },
       { id: "shared", label: "Shared links", icon: "link", Page: Shared },
     ],
+  },
+  {
+    title: "Account",
+    items: [{ id: "security", label: "Account and security", icon: "lock", Page: Security }],
   },
   {
     title: "Data",
