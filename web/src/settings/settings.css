@@ -192,3 +192,12 @@ html[data-motion="reduce"] .sx-stat, html[data-motion="reduce"] .sx-item, html[d
 
 /* greeting line on the start screen */
 .hello { color: var(--muted); font-size: 15px; margin-bottom: 6px; text-align: center; animation: sx-fade 0.35s ease; }
+
+/* custom instructions and usage */
+.sx-custom { padding: 16px 20px; }
+.sx-area { max-width: none; margin-top: 12px; resize: vertical; min-height: 84px; line-height: 1.45; display: block; }
+.sx-count { text-align: right; color: var(--muted); font-size: 12.5px; margin-top: 6px; }
+.sx-use { padding: 16px 20px; border-top: 1px solid var(--border); }
+.sx-use:first-child { border-top: 0; }
+.sx-use-top { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 15px; }
+.sx-use-top span { color: var(--muted); }

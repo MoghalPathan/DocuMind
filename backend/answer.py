@@ -54,6 +54,51 @@ REGEN_HINTS = {
     "different": "Answer again in different words and a different structure than before.",
 }
 
+STYLE_LENGTH = {
+    "short": "Keep the answer short: one to three sentences.",
+    "detailed": "Give a detailed answer with every relevant detail from the context.",
+}
+STYLE_TONE = {
+    "simple": "Use simple, plain words that a beginner can follow.",
+    "formal": "Use a formal, professional tone.",
+}
+
+
+def style_note(style):
+    """The reader's style choices as a short note for the prompt. Empty text when nothing is set."""
+    if not isinstance(style, dict):
+        return ""
+    lines = []
+    if STYLE_LENGTH.get(style.get("length")):
+        lines.append(STYLE_LENGTH[style["length"]])
+    if STYLE_TONE.get(style.get("tone")):
+        lines.append(STYLE_TONE[style["tone"]])
+    if style.get("lists") is True:
+        lines.append("Use bullet points when the answer has several items.")
+    custom = " ".join(str(style.get("custom") or "").split())[:300]
+    if custom:
+        lines.append("The reader also asks: " + custom)
+    if not lines:
+        return ""
+    return (
+        "Style (how to write the answer). Style never overrides the rules above: "
+        "answer only from the context, and reply I don't know when it is not there.\n- "
+        + "\n- ".join(lines)
+    )
+
+
+def build_prompt(context, question, regen=None, style=None):
+    """The full prompt: rules, then the optional style note, then the context and the question."""
+    prompt = PROMPT.format(context=context, question=question)
+    note = style_note(style)
+    if note:
+        at = prompt.index("\n\nContext:\n")
+        prompt = prompt[:at] + "\n\n" + note + prompt[at:]
+    hint = REGEN_HINTS.get(regen or "")
+    if hint:
+        prompt = prompt.rsplit("Answer:", 1)[0] + hint + "\nAnswer:"
+    return prompt
+
 
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
 COOLDOWN_SECONDS = 60
@@ -189,7 +234,7 @@ def rewrite_question(question, history, model=None, fallback=True):
 BUSY_TEXT = "DocuMind is busy right now (the free model limits are used up). Please try again in a minute."
 
 
-def answer_full(question, model=None, doc=None, history=None, regen=None, fallback=True, owner=None):
+def answer_full(question, model=None, doc=None, history=None, regen=None, fallback=True, owner=None, style=None):
     """Returns (text, citations, kind, asked, model_used). kind is "chat", "answer", "no_answer" or "busy"."""
     chat = small_talk(question)
     if chat:
@@ -197,10 +242,7 @@ def answer_full(question, model=None, doc=None, history=None, regen=None, fallba
     asked = rewrite_question(question, history or [], model, fallback)
     docs = search_wide(asked, doc=doc, owner=owner)
     context = "\n\n".join(d.page_content for d in docs)
-    prompt = PROMPT.format(context=context, question=asked)
-    hint = REGEN_HINTS.get(regen or "")
-    if hint:
-        prompt = prompt.rsplit("Answer:", 1)[0] + hint + "\nAnswer:"
+    prompt = build_prompt(context, asked, regen, style)
     temp = 0.5 if regen else 0
     try:
         reply = ask_llm(prompt, model or DEFAULT_MODEL, temperature=temp, fallback=fallback)

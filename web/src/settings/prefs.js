@@ -18,6 +18,10 @@ export const DEFAULTS = {
   stream: true,
   hoverSource: true,
   greetName: true,
+  styleCustom: "",
+  styleLength: "",
+  styleTone: "",
+  styleLists: false,
   displayName: "",
   avatarColor: "#6d7cff",
 };
@@ -135,8 +139,19 @@ export function useApplyPrefs() {
 // Commands that Settings sends to the chat screen (export, clear, delete account, open shortcuts).
 export const sendCommand = (cmd, arg) => window.dispatchEvent(new CustomEvent("documind-cmd", { detail: { cmd, arg } }));
 
+// the answer style sent with each question (empty choices are left out)
+export function styleOf() {
+  const p = cache;
+  const o = {};
+  if (p.styleCustom && p.styleCustom.trim()) o.custom = p.styleCustom.trim().slice(0, 300);
+  if (p.styleLength) o.length = p.styleLength;
+  if (p.styleTone) o.tone = p.styleTone;
+  if (p.styleLists) o.lists = true;
+  return Object.keys(o).length ? o : null;
+}
+
 // ---- what ChatApp shares with the Settings pages (chats and documents) ----
-export const live = { docs: [], chats: [], userId: "", guest: false, limits: null };
+export const live = { docs: [], chats: [], userId: "", guest: false, limits: null, usage: null };
 export function useLive() {
   const [, tick] = useState(0);
   useEffect(() => {

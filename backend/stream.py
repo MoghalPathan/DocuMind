@@ -75,7 +75,7 @@ def _cites(text, docs):
     return cites
 
 
-def answer_stream(question, model=None, doc=None, history=None, regen=None, owner=None):
+def answer_stream(question, model=None, doc=None, history=None, regen=None, owner=None, style=None):
     """Yields {"t": "delta", "text"} pieces and finally one {"t": "done", ...} with the full result."""
     chat = small_talk(question)
     if chat:
@@ -84,10 +84,7 @@ def answer_stream(question, model=None, doc=None, history=None, regen=None, owne
     asked = base.rewrite_question(question, history or [], model, True)
     docs = search_wide(asked, doc=doc, owner=owner)
     context = "\n\n".join(d.page_content for d in docs)
-    prompt = base.PROMPT.format(context=context, question=asked)
-    hint = base.REGEN_HINTS.get(regen or "")
-    if hint:
-        prompt = prompt.rsplit("Answer:", 1)[0] + hint + "\nAnswer:"
+    prompt = base.build_prompt(context, asked, regen, style)
     temp = 0.5 if regen else 0
     parts, used = [], None
     try:

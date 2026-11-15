@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import SIcon from "./icons.jsx";
-import { Btn, Card, Row, Toggle } from "./controls.jsx";
+import { Btn, Card, Row, Segmented, Toggle } from "./controls.jsx";
 import { AVATAR_COLORS, readActivity, sendCommand, setPref, streaks, useLive, usePrefs } from "./prefs.js";
 
 // numbers count up when a page opens (skipped when motion is reduced)
@@ -51,6 +51,7 @@ export function Profile({ auth }) {
   const top = (o) => Object.entries(o).sort((a, b) => b[1] - a[1])[0];
   const topModel = top(act.models);
   const topDoc = top(act.docs);
+  useEffect(() => { sendCommand("refreshUsage"); }, []);
   const helpful = lv.chats.reduce((n, c) => n + (c.messages || []).filter((m) => m.rating === "up").length, 0);
   return (
     <>
@@ -94,6 +95,22 @@ export function Profile({ auth }) {
         <Stat label="Longest streak" value={sk.best} unit={sk.best === 1 ? "day" : "days"} />
         <Stat label="Current streak" value={sk.cur} unit={sk.cur === 1 ? "day" : "days"} />
       </div>
+      {lv.usage && (
+        <>
+          <h2 className="sx-sub">Usage</h2>
+          <Card>
+            {[["Questions", lv.usage.questions, "this hour"], ["Uploads", lv.usage.uploads, "today"]].map(([name, u, when]) => (
+              <div className="sx-use" key={name}>
+                <div className="sx-use-top">
+                  <b>{name} {when}</b>
+                  <span>{u.used} of {u.limit}</span>
+                </div>
+                <div className="sx-bar"><i style={{ width: Math.min(100, (u.used / Math.max(1, u.limit)) * 100) + "%" }} /></div>
+              </div>
+            ))}
+          </Card>
+        </>
+      )}
       <h2 className="sx-sub">Insights</h2>
       <Card>
         <Row title="Most used AI" hint="The model you picked for most questions.">
@@ -114,17 +131,64 @@ export function Profile({ auth }) {
 export function Personalization() {
   const p = usePrefs();
   return (
-    <Card>
-      <Row title="Stream answers" hint="Show the answer as it is written. Off shows it once, when it is ready.">
-        <Toggle label="Stream answers" checked={p.stream} onChange={(v) => setPref("stream", v)} />
-      </Row>
-      <Row title="Show source text on hover" hint="Hover a page chip to read the exact passage the answer used.">
-        <Toggle label="Show source text on hover" checked={p.hoverSource} onChange={(v) => setPref("hoverSource", v)} />
-      </Row>
-      <Row title="Use my name in the greeting" hint="Say hello by name on the start screen. Set your name in Profile.">
-        <Toggle label="Use my name in the greeting" checked={p.greetName} onChange={(v) => setPref("greetName", v)} />
-      </Row>
-    </Card>
+    <>
+      <Card>
+        <div className="sx-custom">
+          <div className="sx-row-text">
+            <b>Custom instructions</b>
+            <small>Tell DocuMind how to write answers, for example: explain like I am new to this. Answers still come only from your documents.</small>
+          </div>
+          <textarea
+            className="sx-input sx-area"
+            rows={3}
+            maxLength={300}
+            placeholder="Optional"
+            aria-label="Custom instructions"
+            value={p.styleCustom}
+            onChange={(e) => setPref("styleCustom", e.target.value)}
+          />
+          <div className="sx-count">{p.styleCustom.length} / 300</div>
+        </div>
+        <Row title="Answer length" hint="Default lets DocuMind decide.">
+          <Segmented
+            label="Answer length"
+            value={p.styleLength}
+            onChange={(v) => setPref("styleLength", v)}
+            options={[
+              { value: "", label: "Default" },
+              { value: "short", label: "Short" },
+              { value: "detailed", label: "Detailed" },
+            ]}
+          />
+        </Row>
+        <Row title="Tone" hint="The words DocuMind uses.">
+          <Segmented
+            label="Tone"
+            value={p.styleTone}
+            onChange={(v) => setPref("styleTone", v)}
+            options={[
+              { value: "", label: "Default" },
+              { value: "simple", label: "Simple" },
+              { value: "formal", label: "Formal" },
+            ]}
+          />
+        </Row>
+        <Row title="Use bullet points" hint="Use lists when an answer has several items.">
+          <Toggle label="Use bullet points" checked={p.styleLists} onChange={(v) => setPref("styleLists", v)} />
+        </Row>
+      </Card>
+      <Card>
+        <Row title="Stream answers" hint="Show the answer as it is written. Off shows it once, when it is ready.">
+          <Toggle label="Stream answers" checked={p.stream} onChange={(v) => setPref("stream", v)} />
+        </Row>
+        <Row title="Show source text on hover" hint="Hover a page chip to read the exact passage the answer used.">
+          <Toggle label="Show source text on hover" checked={p.hoverSource} onChange={(v) => setPref("hoverSource", v)} />
+        </Row>
+        <Row title="Use my name in the greeting" hint="Say hello by name on the start screen. Set your name in Profile.">
+          <Toggle label="Use my name in the greeting" checked={p.greetName} onChange={(v) => setPref("greetName", v)} />
+        </Row>
+      </Card>
+    </>
   );
 }
 

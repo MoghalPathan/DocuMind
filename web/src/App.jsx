@@ -10,7 +10,7 @@ import Site from "./site/Site.jsx";
 import Settings from "./settings/Settings.jsx";
 import AccountMenu from "./settings/AccountMenu.jsx";
 import Shortcuts from "./settings/Shortcuts.jsx";
-import { TTS_RATE, getModel, getPrefs, logQuestion, publishLive, resolveTheme, setPref, useApplyPrefs, usePrefs } from "./settings/prefs.js";
+import { TTS_RATE, getModel, getPrefs, styleOf, logQuestion, publishLive, resolveTheme, setPref, useApplyPrefs, usePrefs } from "./settings/prefs.js";
 import "./App.css";
 
 const MODELS = [
@@ -558,6 +558,7 @@ export function ChatApp({ auth, onLogout, go }) {
           model,
           doc: old.scope || null,
           history: historyOf(before),
+          style: styleOf(),
           regen: style,
         }),
       });
@@ -606,7 +607,7 @@ export function ChatApp({ auth, onLogout, go }) {
       const r = await apiFetch(opts?.summarise ? "/summarise" : "/query/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q, model, doc: (opts?.doc ?? activeDoc) || null, history: historyOf(prior) }),
+        body: JSON.stringify({ question: q, model, doc: (opts?.doc ?? activeDoc) || null, history: historyOf(prior), style: styleOf() }),
       });
       if (!r.ok) throw new Error(await failMessage(r));
       const data = opts?.summarise ? await r.json() : await readStream(r, prefs.stream ? setLive : () => {});
@@ -896,7 +897,7 @@ export function ChatApp({ auth, onLogout, go }) {
   };
 
   const cmdRef = useRef({});
-  cmdRef.current = { closeSideMobile: () => window.innerWidth <= 800 && setSidebarOpen(false), unshare: unshareById, unarchive: (id) => patchChat(id, { archived: false }), unarchiveAll: () => setChats((cs) => cs.map((c) => (c.archived ? { ...c, archived: false } : c))), openChat: (id) => { setActiveId(id); if (window.innerWidth <= 800) setSidebarOpen(false); }, deleteChat: (id) => deleteChat(id), deleteDoc: (name) => deleteDoc(name), askDoc: (name) => { setSelectedDoc(name); setActiveId(null); }, upload: () => fileRef.current && fileRef.current.click(), export: exportAll, clear: clearAll, delete: () => setShowDelete(true), shortcuts: () => setShowKeys(true), newChat, toggleSide: () => setSidebarOpen((v) => !v) };
+  cmdRef.current = { refreshUsage: () => apiFetch("/usage").then((r) => r.json()).then((d) => d && d.questions && publishLive({ usage: d })).catch(() => {}), closeSideMobile: () => window.innerWidth <= 800 && setSidebarOpen(false), unshare: unshareById, unarchive: (id) => patchChat(id, { archived: false }), unarchiveAll: () => setChats((cs) => cs.map((c) => (c.archived ? { ...c, archived: false } : c))), openChat: (id) => { setActiveId(id); if (window.innerWidth <= 800) setSidebarOpen(false); }, deleteChat: (id) => deleteChat(id), deleteDoc: (name) => deleteDoc(name), askDoc: (name) => { setSelectedDoc(name); setActiveId(null); }, upload: () => fileRef.current && fileRef.current.click(), export: exportAll, clear: clearAll, delete: () => setShowDelete(true), shortcuts: () => setShowKeys(true), newChat, toggleSide: () => setSidebarOpen((v) => !v) };
   useEffect(() => {
     const onCmd = (e) => cmdRef.current[e.detail.cmd] && cmdRef.current[e.detail.cmd](e.detail.arg);
     const onKey = (e) => {

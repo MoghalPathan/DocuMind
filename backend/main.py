@@ -12,7 +12,7 @@ import reset
 import account
 import summary
 import weblink
-from answer import answer_full, page_key
+from answer import answer_full, page_key, style_note
 from stream import answer_stream
 from chitchat import small_talk
 from sections import tag_chunks
@@ -38,6 +38,7 @@ class Question(BaseModel):
     doc: str | None = None
     history: list[dict] | None = None  # earlier messages: {"role", "text"}
     regen: str | None = None  # "detailed", "shorter" or "different"
+    style: dict | None = None  # reader choices: length, tone, lists, custom
 
 
 class ShareBody(BaseModel):
@@ -114,6 +115,23 @@ def demo(request: Request):
 @app.get("/auth/me")
 def me(user=Depends(auth.current_user)):
     return {"id": user["id"], "email": user["email"], "guest": user["guest"], "limits": auth.user_limits(user)}
+
+
+def _used(key, seconds):
+    q = getattr(auth, "_hits", {}).get(key)
+    if not q:
+        return 0
+    now = time.time()
+    return sum(1 for t in q if t > now - seconds)
+
+
+@app.get("/usage")
+def usage(user=Depends(auth.current_user)):
+    lim = auth.user_limits(user)
+    return {
+        "questions": {"used": min(_used(("q", user["id"]), 3600), lim["questions"]), "limit": lim["questions"]},
+        "uploads": {"used": min(_used(("u", user["id"]), 86400), lim["uploads"]), "limit": lim["uploads"]},
+    }
 
 
 @app.get("/health")
@@ -250,7 +268,7 @@ def query(body: Question, user=Depends(auth.current_user)):
             "kind": "chat",
         }
     # cache only plain questions from users who have no uploads (they only see the shared documents)
-    plain = not body.history and not body.regen and not small_talk(body.question) and not own_sources(uid)
+    plain = not body.history and not body.regen and not style_note(body.style) and not small_talk(body.question) and not own_sources(uid)
     key = _cache_key(body.question, body.doc)
     if plain:
         saved = _load_cache().get(key)
@@ -269,6 +287,7 @@ def query(body: Question, user=Depends(auth.current_user)):
         history=(body.history or [])[-6:],
         regen=body.regen,
         owner=uid,
+        style=body.style,
     )
     pages = sorted({c["page"] for c in cites}, key=page_key)
     result = {
@@ -301,7 +320,7 @@ def query_stream(body: Question, user=Depends(auth.current_user)):
             "pages": [],
             "kind": "chat",
         })
-    plain = not body.history and not body.regen and not small_talk(body.question) and not own_sources(uid)
+    plain = not body.history and not body.regen and not style_note(body.style) and not small_talk(body.question) and not own_sources(uid)
     key = _cache_key(body.question, body.doc)
     if plain:
         saved = _load_cache().get(key)
@@ -323,6 +342,7 @@ def query_stream(body: Question, user=Depends(auth.current_user)):
                 history=(body.history or [])[-6:],
                 regen=body.regen,
                 owner=uid,
+                style=body.style,
             ):
                 if ev["t"] == "done" and plain and ev["kind"] in ("answer", "no_answer") and len(_load_cache()) < 500:
                     _load_cache()[key] = {k: v for k, v in ev.items() if k != "t"}
