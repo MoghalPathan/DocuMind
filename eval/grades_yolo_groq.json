@@ -1,0 +1,157 @@
+{
+ "results_file": "results_yolo_groq.json",
+ "model": "openai/gpt-oss-20b",
+ "grader": "Claude, against ground_truth and the paper text",
+ "grades": [
+  {
+   "id": "q01",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q02",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q03",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q04",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q05",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q06",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q07",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q08",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q09",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q10",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q11",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q12",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q13",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q14",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q15",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q16",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q17",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q18",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q19",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q20",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q21",
+   "grade": "p",
+   "note": "FPS numbers right (27.64 vs 5.64, 40.61 vs 7.12). Says CPLID-2000 is 'more than five times faster'; the paper says 'nearly 5 times' (27.64/5.64 = 4.9)."
+  },
+  {
+   "id": "q22",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q23",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q24",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q25",
+   "grade": "p",
+   "note": "EMA part right. Second half wrong: the answer says the channel factor is not reduced below 50 percent; the Discussion (page 17) says channel reduction limits high-order global semantics. Page 17 was not retrieved."
+  },
+  {
+   "id": "u01",
+   "grade": "r",
+   "note": ""
+  },
+  {
+   "id": "u02",
+   "grade": "r",
+   "note": ""
+  },
+  {
+   "id": "u03",
+   "grade": "r",
+   "note": ""
+  },
+  {
+   "id": "u04",
+   "grade": "r",
+   "note": ""
+  },
+  {
+   "id": "u05",
+   "grade": "r",
+   "note": ""
+  }
+ ]
+}

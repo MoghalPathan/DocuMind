@@ -1,0 +1,432 @@
+{
+  "document": "s41598-026-77328-5_reference.pdf",
+  "title": "ECP-YOLO11n: a lightweight insulator defect detection algorithm (Scientific Reports, 2026)",
+  "page_numbers": "Physical PDF page numbers (same as the page_label PyPDFLoader returns for this file).",
+  "how_to_score": "q01-q25: hand-grade against ground_truth. u01-u05: pass only if the answer says I don't know.",
+  "questions": [
+    {
+      "id": "q01",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "By what percentage does ECP-YOLO11n cut the parameter count compared with the YOLO11n baseline?",
+      "ground_truth": "59.7%.",
+      "expected_pages": [
+        1
+      ],
+      "evidence": [
+        "59.7%"
+      ]
+    },
+    {
+      "id": "q02",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "By how much does ECP-YOLO11n cut the computational cost, and how much of the original mAP50 does it keep on CPLID-2000 and IDID?",
+      "ground_truth": "Computational cost is cut by 23.8%; it keeps 99.5% (CPLID-2000) and 95.1% (IDID) of the original mAP50.",
+      "expected_pages": [
+        1
+      ],
+      "evidence": [
+        "23.8%",
+        "99.5%",
+        "95.1%"
+      ]
+    },
+    {
+      "id": "q03",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "On what date did Ultralytics release YOLO11?",
+      "ground_truth": "September 10, 2024.",
+      "expected_pages": [
+        3
+      ],
+      "evidence": [
+        "September 10, 2024"
+      ]
+    },
+    {
+      "id": "q04",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "What are the three contributions listed for ECP-YOLO11n?",
+      "ground_truth": "(1) EMA attention in the Neck fusion layer; (2) the C3Ghost module replaces C3k2 in the Neck; (3) a Progressive Channel Compression strategy for the backbone.",
+      "expected_pages": [
+        2
+      ],
+      "evidence": [
+        "Efficient Multi-Scale Attention (EMA)",
+        "C3Ghost",
+        "Progressive Channel Compression (PCC)"
+      ]
+    },
+    {
+      "id": "q05",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "What channel reduction factors (lambda) are used for the P4 and P5 layers of the backbone?",
+      "ground_truth": "0.75 for P4 (layers 5 and 6) and 0.5 for P5 (layers 7 and 8).",
+      "expected_pages": [
+        4
+      ],
+      "evidence": [
+        "0.75",
+        "0.5"
+      ]
+    },
+    {
+      "id": "q06",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "How did the authors find out that the deep channels of the baseline are redundant?",
+      "ground_truth": "They ran sparse training with L1 regularization on the scaling factor gamma of Batch Normalization and saw that more than 45% of channels in P4, P5 and SPPF had similar gamma values.",
+      "expected_pages": [
+        4
+      ],
+      "evidence": [
+        "sparse training",
+        "more than 45%"
+      ]
+    },
+    {
+      "id": "q07",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "What is the overall channel scaling factor of YOLO11n, and what does it mean for the actual number of training channels?",
+      "ground_truth": "0.25, so the actual number of training channels is a quarter of the numbers in Table 1.",
+      "expected_pages": [
+        5
+      ],
+      "evidence": [
+        "scaling factor of YOLO11n is 0.25",
+        "a quarter"
+      ]
+    },
+    {
+      "id": "q08",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "What inference speedup does C3Ghost give over C3k2 for a single module and for the whole Neck?",
+      "ground_truth": "1.79 times for a single module and 1.63 times for the whole Neck.",
+      "expected_pages": [
+        8
+      ],
+      "evidence": [
+        "1.79 times",
+        "1.63 times"
+      ]
+    },
+    {
+      "id": "q09",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "In Table 2, what are the GFLOPs and real XPU time of C3k2 and C3Ghost for a 64x80x80 input?",
+      "ground_truth": "C3k2: 0.051 GFLOPs and 0.25 ms; C3Ghost: 0.027 GFLOPs and 0.14 ms.",
+      "expected_pages": [
+        8
+      ],
+      "evidence": [
+        "0.051",
+        "0.25",
+        "0.027",
+        "0.14"
+      ]
+    },
+    {
+      "id": "q10",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "At which layers is EMA inserted and what feature map sizes does it take (Table 3)?",
+      "ground_truth": "Layer 13 (P4/16, medium targets) with 96x40x40, and layer 17 (P3/8, small targets) with 64x80x80.",
+      "expected_pages": [
+        8
+      ],
+      "evidence": [
+        "Layer 13",
+        "96 × 40 × 40",
+        "Layer 17",
+        "64 × 80 × 80"
+      ]
+    },
+    {
+      "id": "q11",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "Why do the authors not put EMA on the P5 branch?",
+      "ground_truth": "The P5 resolution (20x20) is too low and small targets have nearly disappeared there; adding EMA there also raises the computational burden a lot.",
+      "expected_pages": [
+        8
+      ],
+      "evidence": [
+        "too low",
+        "small target has nearly disappeared"
+      ]
+    },
+    {
+      "id": "q12",
+      "answerable": true,
+      "type": "multi-page",
+      "question": "What batch size, number of epochs, optimizer and input image size are used for training?",
+      "ground_truth": "Batch size 16, 100 epochs, SGD optimizer, image size 640.",
+      "expected_pages": [
+        10,
+        11
+      ],
+      "evidence": [
+        "batch size is uniformly set to 16",
+        "100 epochs",
+        "SGD",
+        "640"
+      ]
+    },
+    {
+      "id": "q13",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "What computer hardware and software were the experiments run on?",
+      "ground_truth": "Windows 11, Intel Core Ultra 7 155 H CPU, 32 GB RAM, Intel Arc Graphics GPU with 18 GB video memory, PyTorch-triton-xpu 3.3.0 and Python 3.13.",
+      "expected_pages": [
+        10
+      ],
+      "evidence": [
+        "Windows 11",
+        "32 GB of RAM",
+        "18 GB",
+        "3.3.0",
+        "Python 3.13"
+      ]
+    },
+    {
+      "id": "q14",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "How many images does the original CPLID dataset have, how is it split, and how big is CPLID-2000 after expansion?",
+      "ground_truth": "848 images split 678 train, 85 validation, 85 test; expanded to 1600 train, 200 validation and 200 test images, 2000 in total.",
+      "expected_pages": [
+        11
+      ],
+      "evidence": [
+        "848 images",
+        "678 images",
+        "1600 training",
+        "totaling 2000"
+      ]
+    },
+    {
+      "id": "q15",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "How many images does the IDID dataset have, which three categories does it include, and what is its split?",
+      "ground_truth": "1600 images; categories pollution-flashover, broken and insulator; split 8:1:1.",
+      "expected_pages": [
+        11
+      ],
+      "evidence": [
+        "1600 images",
+        "pollution-flashover",
+        "8:1:1"
+      ]
+    },
+    {
+      "id": "q16",
+      "answerable": true,
+      "type": "multi-page",
+      "question": "Which datasets are used, and what FPS does the final model reach on each?",
+      "ground_truth": "CPLID-2000 and IDID; the final model reaches 27.64 FPS on CPLID-2000 and 40.61 FPS on IDID.",
+      "expected_pages": [
+        11,
+        13,
+        14
+      ],
+      "evidence": [
+        "CPLID-2000",
+        "IDID",
+        "27.64",
+        "40.61"
+      ]
+    },
+    {
+      "id": "q17",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "On CPLID-2000, what are the mAP50, parameters, GFLOPs and FPS of the final scheme 6 in Table 7?",
+      "ground_truth": "mAP50 97.3%, 1.04 M parameters, 4.8 GFLOPs and 27.64 FPS.",
+      "expected_pages": [
+        13
+      ],
+      "evidence": [
+        "97.3",
+        "75.5",
+        "1.04",
+        "4.8",
+        "27.64"
+      ]
+    },
+    {
+      "id": "q18",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "On IDID, how much does mAP50 fall with channel compression alone, and what does adding EMA to scheme 5 give?",
+      "ground_truth": "With channel compression alone mAP50 falls from 81.6% to 73.6% (a drop of 8.0%); adding EMA to scheme 5 raises mAP50 from 75.1% to 77.6%.",
+      "expected_pages": [
+        14
+      ],
+      "evidence": [
+        "81.6% to 73.6%",
+        "8.0%",
+        "75.1% to 77.6%"
+      ]
+    },
+    {
+      "id": "q19",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "How much do parameters drop when only channel compression is used, and by what percentage?",
+      "ground_truth": "From 2.58 M to 1.10 M, a reduction of 57.4%.",
+      "expected_pages": [
+        13
+      ],
+      "evidence": [
+        "2.58 M to 1.10 M",
+        "57.4%"
+      ]
+    },
+    {
+      "id": "q20",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "How is the final model checkpoint chosen?",
+      "ground_truth": "As the checkpoint with the highest fitness (0.1 x mAP50-95 plus 0.9 x mAP50) on the validation set.",
+      "expected_pages": [
+        14
+      ],
+      "evidence": [
+        "highest fitness"
+      ]
+    },
+    {
+      "id": "q21",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "How does the speed of the final model compare with Faster R-CNN on CPLID-2000 and IDID?",
+      "ground_truth": "On CPLID-2000 it runs 27.64 FPS versus 5.64 FPS (nearly 5 times faster); on IDID 40.61 FPS versus 7.12 FPS (more than 5 times faster).",
+      "expected_pages": [
+        16
+      ],
+      "evidence": [
+        "5.64",
+        "7.12",
+        "27.64",
+        "40.61"
+      ]
+    },
+    {
+      "id": "q22",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "What three typical failure modes of the model are named in the Discussion?",
+      "ground_truth": "Illumination and viewpoint change, image blur, and partial occlusion.",
+      "expected_pages": [
+        17
+      ],
+      "evidence": [
+        "illumination and viewpoint",
+        "image blur",
+        "partial occlusion"
+      ]
+    },
+    {
+      "id": "q23",
+      "answerable": true,
+      "type": "multi-page",
+      "question": "By how much are the P4 and P5 channel counts cut in the backbone and in the detection head?",
+      "ground_truth": "Backbone: P4 from 512 to 384 and P5 from 1024 to 512. Detection head: P4 from 512 to 384 channels and P5 from 1024 to 512 channels (P3 stays at 256).",
+      "expected_pages": [
+        4,
+        10
+      ],
+      "evidence": [
+        "384/384",
+        "512/512",
+        "512 channels to 384 channels",
+        "1024 channels to 512 channels"
+      ]
+    },
+    {
+      "id": "q24",
+      "answerable": true,
+      "type": "multi-page",
+      "question": "What fraction of the YOLO11n parameter count does the final model have, and what parameter reduction does the abstract report?",
+      "ground_truth": "The final model has 1.04 M parameters, 40.3% of YOLO11n; the abstract reports a 59.7% reduction in parameters.",
+      "expected_pages": [
+        1,
+        15
+      ],
+      "evidence": [
+        "59.7%",
+        "40.3%",
+        "1.04 M parameters"
+      ]
+    },
+    {
+      "id": "q25",
+      "answerable": true,
+      "type": "multi-page",
+      "question": "Which attention module is added to the Neck, and what limit of the channel reduction do the authors admit in the Discussion?",
+      "ground_truth": "The Efficient Multi-Scale Attention (EMA) module; the channel reduction limits the ability of the network to represent high-order global semantics, so the model leans on shallow texture features against cluttered backgrounds.",
+      "expected_pages": [
+        2,
+        17
+      ],
+      "evidence": [
+        "Efficient Multi-Scale Attention (EMA)",
+        "limits the ability of the network"
+      ]
+    },
+    {
+      "id": "u01",
+      "answerable": false,
+      "type": "unanswerable",
+      "question": "What mAP50 does ECP-YOLO11n reach on the COCO dataset?",
+      "ground_truth": "I don't know.",
+      "expected_pages": [],
+      "note": "The paper only mentions COCO as the dataset YOLO11n was designed for; it reports no COCO result."
+    },
+    {
+      "id": "u02",
+      "answerable": false,
+      "type": "unanswerable",
+      "question": "Which drone model was used for the real flight tests of ECP-YOLO11n?",
+      "ground_truth": "I don't know.",
+      "expected_pages": [],
+      "note": "No drone model is named; the model was only tested on a laptop-class Intel platform."
+    },
+    {
+      "id": "u03",
+      "answerable": false,
+      "type": "unanswerable",
+      "question": "What is the file size in megabytes of the trained ECP-YOLO11n weights?",
+      "ground_truth": "I don't know.",
+      "expected_pages": [],
+      "note": "The weight file size is never given."
+    },
+    {
+      "id": "u04",
+      "answerable": false,
+      "type": "unanswerable",
+      "question": "What mAP50 does YOLOv9n reach on the IDID dataset?",
+      "ground_truth": "I don't know.",
+      "expected_pages": [],
+      "note": "YOLOv9n is not in the comparison table."
+    },
+    {
+      "id": "u05",
+      "answerable": false,
+      "type": "unanswerable",
+      "question": "What is the capital city of Australia?",
+      "ground_truth": "I don't know.",
+      "expected_pages": [],
+      "note": "Out-of-domain question."
+    }
+  ]
+}

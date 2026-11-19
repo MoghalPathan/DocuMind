@@ -1,0 +1,159 @@
+{
+ "document": "s41598-026-78674-0_reference_1.pdf",
+ "results_file": "results_uav_groq.json",
+ "model": "openai/gpt-oss-20b",
+ "grader": "Claude, against ground_truth and the document text",
+ "scale": "c correct, p partly correct, w wrong, r correctly refused",
+ "grades": [
+  {
+   "id": "q01",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q02",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q03",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q04",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q05",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q06",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q07",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q08",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q09",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q10",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q11",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q12",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q13",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q14",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q15",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q16",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q17",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q18",
+   "grade": "w",
+   "note": "Said only two future-work tracks are named and gave A/B recovery and TPM/TEE/RATS; the paper names three tracks in one sentence on page 20: asymmetric signed manifests; hardware-backed evidence and monotonic state; recovery and remote attestation. Evidence chunk was not retrieved."
+  },
+  {
+   "id": "q19",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q20",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q21",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q22",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q23",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q24",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q25",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "u01",
+   "grade": "r",
+   "note": ""
+  },
+  {
+   "id": "u02",
+   "grade": "r",
+   "note": ""
+  },
+  {
+   "id": "u03",
+   "grade": "r",
+   "note": ""
+  },
+  {
+   "id": "u04",
+   "grade": "r",
+   "note": ""
+  },
+  {
+   "id": "u05",
+   "grade": "r",
+   "note": ""
+  }
+ ]
+}

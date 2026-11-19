@@ -4,7 +4,7 @@ import shotHome from "./img/home.webp";
 import shotIdk from "./img/idk.webp";
 import { useState } from "react";
 import { A, LINKEDIN, GITHUB } from "./shared.jsx";
-import { EVAL_ROWS } from "./evalData.js";
+import { EVAL_ROWS, EVAL_DOCS } from "./evalData.js";
 
 /* ---------- small shared pieces ---------- */
 function PageHead({ eyebrow, title, intro }) {
@@ -53,6 +53,27 @@ const Stat = ({ n, l }) => (
   <div className="st-stat"><b>{n}</b><span>{l}</span></div>
 );
 
+/* ---------- test numbers: always counted from the graded rows in evalData.js ---------- */
+function tally(rows) {
+  const ans = rows.filter((r) => r.answerable);
+  const count = (g) => ans.filter((r) => r.grade === g).length;
+  return {
+    asked: rows.length,
+    answerable: ans.length,
+    c: count("c"),
+    p: count("p"),
+    w: count("w"),
+    unanswerable: rows.length - ans.length,
+    refused: rows.filter((r) => !r.answerable && r.grade === "r").length,
+    found: ans.filter((r) => r.found).length,
+  };
+}
+const pct = (a, b) => Math.round((a / b) * 100);
+const isNew = (r) => !EVAL_DOCS.find((d) => d.key === r.doc).tuned;
+const ALL = tally(EVAL_ROWS);
+const NEW_PAPERS = tally(EVAL_ROWS.filter(isNew));
+const N_NEW = EVAL_DOCS.filter((d) => !d.tuned).length;
+
 /* ---------- HOME ---------- */
 export function Home({ go, demo, busy }) {
   return (
@@ -81,9 +102,9 @@ export function Home({ go, demo, busy }) {
 
       <section className="st-strip">
         <div className="st-wrap st-strip-in">
-          <Stat n="25 / 25" l="right page found in testing" />
-          <Stat n="5 / 5" l="unanswerable questions refused" />
-          <Stat n="80%" l="answers fully correct (hand-graded)" />
+          <Stat n={`${ALL.found} / ${ALL.answerable}`} l="right passage retrieved in testing" />
+          <Stat n={`${ALL.refused} / ${ALL.unanswerable}`} l="unanswerable questions refused" />
+          <Stat n={`${pct(ALL.c, ALL.answerable)}%`} l={`answers fully correct on ${EVAL_DOCS.length} test documents`} />
         </div>
       </section>
 
@@ -121,7 +142,7 @@ export function Home({ go, demo, busy }) {
             </A>
             <A to="/results" go={go} className="st-card st-tile">
               <h3>Results</h3>
-              <p>30 real questions, graded by hand. Every answer is listed, including the wrong ones.</p>
+              <p>{`${ALL.asked} real questions on ${EVAL_DOCS.length} documents. Every answer is listed, including the wrong ones.`}</p>
               <span className="st-tile-link">See every question </span>
             </A>
           </div>
@@ -196,7 +217,7 @@ export function Features({ go, demo, busy }) {
         flip
         title={"An honest “I don’t know”"}
         text="If your document does not contain the answer, DocuMind says so plainly. It does not fill the gap with a guess."
-        points={["Strict prompt: answer only from the retrieved text", "Partial answers are allowed when only part is found", "Tested on questions that have no answer: 5 out of 5 refused"]}
+        points={["Strict prompt: answer only from the retrieved text", "Partial answers are allowed when only part is found", `Tested on questions that have no answer: ${ALL.refused} out of ${ALL.unanswerable} refused`]}
         visual={<Chat q="Who won the 2018 FIFA World Cup?"><p className="muted">I don{"’"}t know. This is not in the document.</p></Chat>}
       />
       <FeatureRow
@@ -347,27 +368,55 @@ export function HowItWorks({ go, demo, busy }) {
 const GRADE = { c: ["Correct", "ok"], p: ["Partly", "mid"], w: ["Wrong", "bad"], r: ["Refused", "ok"] };
 
 export function Results({ go, demo, busy }) {
-  const [filter, setFilter] = useState("all");
-  const rows = EVAL_ROWS.filter((r) => filter === "all" || r.gemini === filter || (filter === "c" && r.gemini === "r"));
+  const [doc, setDoc] = useState("all");
+  const [grade, setGrade] = useState("all");
+  const inDoc = EVAL_ROWS.filter((r) => doc === "all" || r.doc === doc);
+  const rows = inDoc.filter((r) => grade === "all" || r.grade === grade || (grade === "c" && r.grade === "r"));
+  const perDoc = [
+    ...EVAL_DOCS.map((d) => [d.name + (d.tuned ? " (used while building)" : " (new)"), tally(EVAL_ROWS.filter((r) => r.doc === d.key))]),
+    [`The ${N_NEW} new papers together`, NEW_PAPERS],
+    ["All documents", ALL],
+  ];
   return (
     <>
       <PageHead
         eyebrow="Results"
-        title="Tested on real questions. Graded by hand."
-        intro="25 answerable and 5 unanswerable questions on a real 16-week Deep Learning lab manual. Every question and every grade is listed below, including the mistakes."
+        title="Tested on real documents. Every answer is listed."
+        intro={`${ALL.asked} questions on ${EVAL_DOCS.length} documents: a Deep Learning lab manual and two research papers. ${ALL.answerable} can be answered from the document and ${ALL.unanswerable} cannot. Every question, answer and grade is listed below, including the mistakes.`}
       />
       <section className="st-sec">
         <div className="st-wrap">
           <div className="st-stats">
-            <Stat n="25 / 25" l="right page retrieved (both AI models)" />
-            <Stat n="5 / 5" l="unanswerable questions correctly refused" />
-            <Stat n="19 / 25" l="fully correct with Groq (76%)" />
-            <Stat n="20 / 25" l="fully correct with Gemini (80%)" />
+            <Stat n={`${ALL.c} / ${ALL.answerable}`} l={`fully correct (${pct(ALL.c, ALL.answerable)}%)`} />
+            <Stat n={`${NEW_PAPERS.c} / ${NEW_PAPERS.answerable}`} l={`fully correct on the ${N_NEW} new papers (${pct(NEW_PAPERS.c, NEW_PAPERS.answerable)}%)`} />
+            <Stat n={`${ALL.refused} / ${ALL.unanswerable}`} l="unanswerable questions correctly refused" />
+            <Stat n={`${ALL.found} / ${ALL.answerable}`} l="right passage retrieved (it held the answer text)" />
           </div>
           <p className="st-note">
-            Counting partly correct answers, Groq reaches 22 of 25 and Gemini 23 of 25. This is one document and a small
-            set of questions, so treat the numbers as a rough guide, not a benchmark.
+            {`Counting partly correct answers, ${ALL.c + ALL.p} of ${ALL.answerable} are at least partly right. `}
+            The lab manual questions were used while building DocuMind, so that row is not a fair test. The two papers were new to
+            the system. Each question was asked once with Groq gpt-oss-20b and no backup model. Gemini was graded on the lab manual
+            only, in an earlier round (20 of 25 fully correct), and was not run again.
           </p>
+          <div className="st-tablewrap">
+            <table className="st-table">
+              <thead>
+                <tr><th>Document</th><th>Fully correct</th><th>Partly</th><th>Wrong</th><th>Refused correctly</th><th>Right passage retrieved</th></tr>
+              </thead>
+              <tbody>
+                {perDoc.map(([name, t]) => (
+                  <tr key={name}>
+                    <td><b>{name}</b></td>
+                    <td>{t.c} / {t.answerable} ({pct(t.c, t.answerable)}%)</td>
+                    <td>{t.p}</td>
+                    <td>{t.w}</td>
+                    <td>{t.refused} / {t.unanswerable}</td>
+                    <td>{t.found} / {t.answerable}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -375,20 +424,28 @@ export function Results({ go, demo, busy }) {
         <div className="st-wrap">
           <h2>Every question</h2>
           <div className="st-filters">
-            {[["all", "All 30"], ["c", "Correct"], ["p", "Partly"], ["w", "Wrong"]].map(([k, t]) => (
-              <button key={k} className={filter === k ? "on" : ""} onClick={() => setFilter(k)}>{t}</button>
+            {[["all", "All documents"], ...EVAL_DOCS.map((d) => [d.key, d.name])].map(([k, t]) => (
+              <button key={k} className={doc === k ? "on" : ""} onClick={() => setDoc(k)}>{t}</button>
             ))}
-            <span className="st-small">Answers shown are from the Gemini run.</span>
+          </div>
+          <div className="st-filters">
+            {[["all", `All ${inDoc.length}`], ["c", "Correct"], ["p", "Partly"], ["w", "Wrong"]].map(([k, t]) => (
+              <button key={k} className={grade === k ? "on" : ""} onClick={() => setGrade(k)}>{t}</button>
+            ))}
+            <span className="st-small">Every answer shown is from the Groq run.</span>
           </div>
           <div className="st-tablewrap">
             <table className="st-table st-eval">
-              <thead><tr><th>#</th><th>Question</th><th>Expected</th><th>DocuMind said</th><th>Groq</th><th>Gemini</th></tr></thead>
+              <thead><tr><th>#</th><th>Question</th><th>Expected</th><th>DocuMind said</th><th>Grade</th></tr></thead>
               <tbody>
                 {rows.map((r) => (
                   <tr key={r.id}>
-                    <td>{r.id}</td><td>{r.q}</td><td>{r.expected}</td><td>{r.said}</td>
-                    <td><span className={`st-badge ${GRADE[r.groq][1]}`}>{GRADE[r.groq][0]}</span></td>
-                    <td><span className={`st-badge ${GRADE[r.gemini][1]}`}>{GRADE[r.gemini][0]}</span></td>
+                    <td>{r.id}</td><td>{r.q}</td><td>{r.expected}</td>
+                    <td>
+                      <div style={{ whiteSpace: "pre-line" }}>{r.said}</div>
+                      {r.note && <div className="st-small">{r.note}</div>}
+                    </td>
+                    <td><span className={`st-badge ${GRADE[r.grade][1]}`}>{GRADE[r.grade][0]}</span></td>
                   </tr>
                 ))}
               </tbody>
@@ -401,9 +458,9 @@ export function Results({ go, demo, busy }) {
         <div className="st-wrap">
           <h2>Where it still fails</h2>
           <div className="st-grid3">
-            <article className="st-card"><h3>Counting long lists</h3><p>{"“"}How many programs are listed?{"”"} came back as 10 instead of 16, because only part of the list was retrieved.</p></article>
-            <article className="st-card"><h3>Exact values inside code</h3><p>Some values, like epoch counts hidden in long code sections, were missed even though the right page was found.</p></article>
-            <article className="st-card"><h3>Small test set</h3><p>One document, 30 questions, graded by one person. Good for finding weaknesses, not a formal benchmark.</p></article>
+            <article className="st-card"><h3>Facts found but not used</h3><p>In 4 lab manual answers the right text was among the retrieved passages, yet the answer said the fact was not given. Examples are the epoch counts and the final layers of the VGG16 program.</p></article>
+            <article className="st-card"><h3>Passage not retrieved</h3><p>For 3 of {ALL.answerable} questions the passage with the answer was not retrieved: the full lab index (16 programs), a Discussion paragraph in the YOLO paper and the future-work sentence in the UAV paper. Those answers were wrong or half wrong.</p></article>
+            <article className="st-card"><h3>Small test</h3><p>{`${EVAL_DOCS.length} documents and ${ALL.asked} questions, each asked once. The questions were written once from the document text. Good for finding weaknesses, not a formal benchmark. Grading is a judgement call, which is why every answer and note is listed.`}</p></article>
           </div>
           <p className="st-more"><a href={GITHUB} target="_blank" rel="noreferrer">Run the evaluation yourself on GitHub </a></p>
         </div>
@@ -470,7 +527,7 @@ export function About({ go, demo, busy }) {
             <h2>What it shows</h2>
             <ul className="st-checks">
               <li>Retrieval and re-ranking for better answers</li>
-              <li>Honest evaluation with hand-graded questions</li>
+              <li>{`Honest evaluation: ${ALL.asked} questions, every answer published`}</li>
               <li>Authentication, rate limits and per-user data separation</li>
               <li>Deployment on AWS with Docker, https and automatic restarts</li>
             </ul>

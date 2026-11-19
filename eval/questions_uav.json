@@ -1,0 +1,410 @@
+{
+  "document": "s41598-026-78674-0_reference_1.pdf",
+  "title": "Policy-gated firmware trust and anti-rollback resilience for autonomous UAV edge platforms (Scientific Reports, 2026)",
+  "page_numbers": "Physical PDF page numbers (same as the page_label PyPDFLoader returns for this file).",
+  "how_to_score": "q01-q25: hand-grade against ground_truth. u01-u05: pass only if the answer says I don't know.",
+  "questions": [
+    {
+      "id": "q01",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "Which standard does the paper cite as separating protection, detection and recovery of platform firmware?",
+      "ground_truth": "NIST SP 800-193.",
+      "expected_pages": [
+        2
+      ],
+      "evidence": [
+        "NIST SP 800-193",
+        "protection, detection and recovery"
+      ]
+    },
+    {
+      "id": "q02",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "What two critical weaknesses did the study find in the original firmware-admission mechanism?",
+      "ground_truth": "It accepted inadequately verified integrity metadata when a required secret was absent, and it accepted a candidate even when preserving the previously trusted state failed.",
+      "expected_pages": [
+        1
+      ],
+      "evidence": [
+        "required secret is absent",
+        "previously trusted state"
+      ]
+    },
+    {
+      "id": "q03",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "Which language, compiler and test framework were used for the experiments?",
+      "ground_truth": "A native C++20 build using GCC on Linux and the CTest framework.",
+      "expected_pages": [
+        16
+      ],
+      "evidence": [
+        "C++20",
+        "GCC on Linux",
+        "CTest"
+      ]
+    },
+    {
+      "id": "q04",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "What stored record, and what version-only and counter-only candidates, does the test plan use?",
+      "ground_truth": "Accepted record with version 2.1.0 and rollback counter 4; the version-only candidate uses 2.0.5 with the counter unchanged; the counter-only candidate uses counter 3 with the version unchanged.",
+      "expected_pages": [
+        15
+      ],
+      "evidence": [
+        "version 2.1.0 and rollback counter 4",
+        "2.0.5",
+        "counter 3"
+      ]
+    },
+    {
+      "id": "q05",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "Which fields of the candidate firmware manifest are listed in Table 1?",
+      "ground_truth": "Firmware version, measurement, signer, integrity field, secure-boot claim, bootloader-lock claim and rollback counter.",
+      "expected_pages": [
+        5
+      ],
+      "evidence": [
+        "Firmware version",
+        "Measurement",
+        "Integrity field",
+        "Secure-boot claim",
+        "Bootloader-lock claim",
+        "Rollback counter"
+      ]
+    },
+    {
+      "id": "q06",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "How is the manifest integrity field computed, and is it an HMAC?",
+      "ground_truth": "SHA3-256 over a newline-delimited concatenation of the secret and selected manifest fields; it is not an HMAC, a digital signature or verified secure-boot evidence.",
+      "expected_pages": [
+        9
+      ],
+      "evidence": [
+        "SHA3-256",
+        "not an HMAC"
+      ]
+    },
+    {
+      "id": "q07",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "Which status does the hardened implementation return when the accepted-state record cannot be written?",
+      "ground_truth": "STATE_PERSISTENCE_FAILED.",
+      "expected_pages": [
+        10
+      ],
+      "evidence": [
+        "STATE_PERSISTENCE_FAILED"
+      ]
+    },
+    {
+      "id": "q08",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "What does the maintenance gate actually check?",
+      "ground_truth": "Only whether the maintenance token is non-empty when maintenance mode is on; an empty token gives MAINTENANCE_UNAUTHORIZED and any non-empty token passes the presence check.",
+      "expected_pages": [
+        10
+      ],
+      "evidence": [
+        "non-empty",
+        "MAINTENANCE_UNAUTHORIZED"
+      ]
+    },
+    {
+      "id": "q09",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "Which measurement strings does the measurement predicate reject?",
+      "ground_truth": "Empty measurements and development-marked strings such as unsigned and lab-local.",
+      "expected_pages": [
+        10
+      ],
+      "evidence": [
+        "unsigned",
+        "lab-local"
+      ]
+    },
+    {
+      "id": "q10",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "Which signer identifiers does the application supply by default, and are they proof of a certificate chain?",
+      "ground_truth": "release-ca and maint-ca; they are only textual policy entries and not evidence of a certificate chain or protected signing key.",
+      "expected_pages": [
+        8
+      ],
+      "evidence": [
+        "release-ca and maint-ca",
+        "textual"
+      ]
+    },
+    {
+      "id": "q11",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "How does the version comparator work, and is it a full Semantic Versioning implementation?",
+      "ground_truth": "It compares dot-separated integer components in order, so 2.1.0 is newer than 2.0.5 and equal versions are allowed; it is not a complete Semantic Versioning implementation.",
+      "expected_pages": [
+        7
+      ],
+      "evidence": [
+        "dot-separated integer",
+        "2.1.0 is newer than 2.0.5",
+        "not a complete implementation"
+      ]
+    },
+    {
+      "id": "q12",
+      "answerable": true,
+      "type": "multi-page",
+      "question": "When is a candidate rejected by the anti-rollback gate, and are the two checks independent?",
+      "ground_truth": "It is rejected when either the version or the rollback counter regresses, irrespective of the other; the two checks are independent.",
+      "expected_pages": [
+        7,
+        8
+      ],
+      "evidence": [
+        "c_c>=c_s",
+        "irrespective of the"
+      ]
+    },
+    {
+      "id": "q13",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "What are the three trusted computing assumptions A1, A2 and A3?",
+      "ground_truth": "A1: the startup executable and validator are not modified or bypassed (secret stays non-empty); A2: the profile, signer list, secret, manifest source and prior record are protected; A3: boot claims come from a separately trusted source.",
+      "expected_pages": [
+        6
+      ],
+      "evidence": [
+        "(A1)",
+        "(A2)",
+        "(A3)"
+      ]
+    },
+    {
+      "id": "q14",
+      "answerable": true,
+      "type": "multi-page",
+      "question": "What happens if an attacker restores an older state file?",
+      "ground_truth": "An obsolete firmware image can pass the local comparisons against the restored file, so software file storage alone does not give durable rollback resistance.",
+      "expected_pages": [
+        12,
+        13
+      ],
+      "evidence": [
+        "restores a",
+        "older state file"
+      ]
+    },
+    {
+      "id": "q15",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "What measurement value does the application set in hardened profiles when none is supplied?",
+      "ground_truth": "The marker unsigned-local-build, which the hardened measurement predicate denies.",
+      "expected_pages": [
+        13
+      ],
+      "evidence": [
+        "unsigned"
+      ]
+    },
+    {
+      "id": "q16",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "After each rejection, what does the test fixture compare, and what must be true?",
+      "ground_truth": "It compares the complete stored acceptance record byte-for-byte with its baseline; the state file must remain unchanged.",
+      "expected_pages": [
+        15
+      ],
+      "evidence": [
+        "byte-for-byte"
+      ]
+    },
+    {
+      "id": "q17",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "What recovery design does the paper suggest for future work?",
+      "ground_truth": "An A/B firmware layout with a known-good recovery image, where recovery itself must satisfy an authenticated manifest policy.",
+      "expected_pages": [
+        19
+      ],
+      "evidence": [
+        "A/B firmware layout"
+      ]
+    },
+    {
+      "id": "q18",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "What three tracks of future work are named?",
+      "ground_truth": "(i) move integrity verification to asymmetric signed manifests; (ii) replace external boot claims and file-based counters with hardware-backed evidence and monotonic state; (iii) integrate recovery and remote attestation.",
+      "expected_pages": [
+        20
+      ],
+      "evidence": [
+        "asymmetric signed",
+        "hardware-backed evidence",
+        "remote attestation"
+      ]
+    },
+    {
+      "id": "q19",
+      "answerable": true,
+      "type": "multi-part",
+      "question": "Which generative AI tool was used and for what tasks?",
+      "ground_truth": "ChatGPT, to assist with language drafting, mathematical presentation and document formatting.",
+      "expected_pages": [
+        20
+      ],
+      "evidence": [
+        "ChatGPT",
+        "language drafting"
+      ]
+    },
+    {
+      "id": "q20",
+      "answerable": true,
+      "type": "multi-page",
+      "question": "What was the first weakness found in the original admission code, and which status does the hardened version now return for it?",
+      "ground_truth": "The original code accepted a nonempty integrity field when no signing secret was set; hardened profiles now return TRUST_CONFIGURATION_INVALID.",
+      "expected_pages": [
+        1,
+        6
+      ],
+      "evidence": [
+        "required secret is absent",
+        "TRUST_CONFIGURATION_INVALID"
+      ]
+    },
+    {
+      "id": "q21",
+      "answerable": true,
+      "type": "multi-page",
+      "question": "Does a non-empty maintenance token switch off the other firmware checks, and is the token itself authenticated?",
+      "ground_truth": "No: boot, rollback, signer, digest and measurement checks still apply; the token is not authenticated and any non-empty token passes the presence check.",
+      "expected_pages": [
+        12,
+        17
+      ],
+      "evidence": [
+        "does not disable boot, rollback",
+        "does not bypass the other predicates"
+      ]
+    },
+    {
+      "id": "q22",
+      "answerable": true,
+      "type": "multi-page",
+      "question": "How many firmware-specific tests were there, and does the count of 273 mean 273 separate attack experiments?",
+      "ground_truth": "The firmware-specific results are 3 original tests plus 17 added cases; the 273 count is the whole native suite, not 273 separate firmware-attack experiments.",
+      "expected_pages": [
+        14,
+        16
+      ],
+      "evidence": [
+        "not 273 separate",
+        "three original direct tests"
+      ]
+    },
+    {
+      "id": "q23",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "How many original firmware trust tests existed before the 17 added cases?",
+      "ground_truth": "Three: a trusted production configuration, a combined version/counter rollback and maintenance without a token.",
+      "expected_pages": [
+        15
+      ],
+      "evidence": [
+        "three original firmware trust tests"
+      ]
+    },
+    {
+      "id": "q24",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "Which status is returned in hardened profiles when secure_boot_attested is false?",
+      "ground_truth": "SECURE_BOOT_FAILED.",
+      "expected_pages": [
+        9
+      ],
+      "evidence": [
+        "SECURE_BOOT_FAILED"
+      ]
+    },
+    {
+      "id": "q25",
+      "answerable": true,
+      "type": "single-fact",
+      "question": "Which status does a candidate from a signer that is not on the allowlist get?",
+      "ground_truth": "SIGNER_REJECTED.",
+      "expected_pages": [
+        7
+      ],
+      "evidence": [
+        "SIGNER_REJECTED"
+      ]
+    },
+    {
+      "id": "u01",
+      "answerable": false,
+      "type": "unanswerable",
+      "question": "Which GCC version number was used to build and run the tests?",
+      "ground_truth": "I don't know.",
+      "expected_pages": [],
+      "note": "Only 'GCC on Linux' is stated; no version number."
+    },
+    {
+      "id": "u02",
+      "answerable": false,
+      "type": "unanswerable",
+      "question": "Which Linux distribution and version ran the tests?",
+      "ground_truth": "I don't know.",
+      "expected_pages": [],
+      "note": "No distribution or version is named."
+    },
+    {
+      "id": "u03",
+      "answerable": false,
+      "type": "unanswerable",
+      "question": "Which company manufactures the UAV used in the paper?",
+      "ground_truth": "I don't know.",
+      "expected_pages": [],
+      "note": "No UAV manufacturer is named."
+    },
+    {
+      "id": "u04",
+      "answerable": false,
+      "type": "unanswerable",
+      "question": "What private key length is used for signing the firmware manifests?",
+      "ground_truth": "I don't know.",
+      "expected_pages": [],
+      "note": "Asymmetric signing is not implemented, so no key length exists."
+    },
+    {
+      "id": "u05",
+      "answerable": false,
+      "type": "unanswerable",
+      "question": "What is the boiling point of water at sea level in degrees Celsius?",
+      "ground_truth": "I don't know.",
+      "expected_pages": [],
+      "note": "Out-of-domain question."
+    }
+  ]
+}

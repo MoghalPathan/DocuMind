@@ -35,18 +35,35 @@ Question -> vector search + cross-encoder re-ranking + neighbour chunks
 Stack: Python, FastAPI, LangChain loaders, Qdrant, sentence-transformers, React (Vite), Docker Compose, AWS.
 
 ## Evaluation
-Tested on one real document (a 16-week Deep Learning lab manual) with 25 answerable and 5 unanswerable questions. Answers were graded by hand.
+Tested on 3 documents with 30 questions each (90 in total): a 16-week Deep Learning lab manual and two research papers published in Scientific Reports (ECP-YOLO11n insulator defect detection, doi 10.1038/s41598-026-77328-5, and policy-gated firmware trust for UAV platforms, doi 10.1038/s41598-026-78674-0). For each document, 25 questions can be answered from the text and 5 cannot (they test "I don't know"). The expected answers and page numbers come from the document text.
 
-| Result | Groq (gpt-oss-20b) | Gemini (flash-lite) |
-|---|---|---|
-| Fully correct | 19 / 25 (76%) | 20 / 25 (80%) |
-| Correct or partly correct | 22 / 25 (88%) | 23 / 25 (92%) |
-| Right page retrieved | 25 / 25 | 25 / 25 |
-| Correct "I don't know" (unanswerable) | 5 / 5 | 5 / 5 |
+Every question was asked once with Groq gpt-oss-20b: one fixed model, no backup model. Each answer was compared with the document text and graded as correct, partly correct, wrong or, for unanswerable questions, correctly refused. Every question, answer and grade is listed on the Results page of the site.
 
-Retrieval is strong (right page found every time). The remaining mistakes are in the answer step: counting long lists (e.g. "how many programs are in the index?") and picking exact values from long code sections. Small sample, one document: treat these as a rough guide, not a benchmark.
+| Document | Fully correct | Partly | Wrong | Correct "I don't know" | Right passage retrieved |
+|---|---|---|---|---|---|
+| Lab manual (used while building) | 19 / 25 (76%) | 3 | 3 | 5 / 5 | 24 / 25 |
+| YOLO paper (new) | 23 / 25 (92%) | 2 | 0 | 5 / 5 | 24 / 25 |
+| UAV paper (new) | 24 / 25 (96%) | 0 | 1 | 5 / 5 | 24 / 25 |
+| The 2 new papers together | 47 / 50 (94%) | 2 | 1 | 10 / 10 | 48 / 50 |
+| All documents | 66 / 75 (88%) | 5 | 4 | 15 / 15 | 72 / 75 |
 
-Run it yourself: `python eval/run_eval.py <tag>`
+"Right passage retrieved" means the text that holds the answer was among the passages given to the model (checked by exact text). The lab manual questions were used while building DocuMind, so that row is not a fair test. The two papers were new to the system.
+
+What still goes wrong:
+- In 4 lab manual answers the right text was retrieved, but the answer said the fact was not given (epoch counts, the final layers of the VGG16 program).
+- For 3 of 75 questions the passage with the answer was not retrieved: the full lab index, a Discussion paragraph in the YOLO paper and the future-work sentence in the UAV paper.
+- Small test: 90 questions, each asked once, written once from the document text. Good for finding weaknesses, not a formal benchmark. Grading is a judgement call, so every answer and note is published.
+
+Gemini flash-lite was graded on the lab manual only, in an earlier round (20 / 25 fully correct). It was not run again.
+
+Files in `eval/`: the questions (`questions.json` for the lab manual, `questions_yolo.json`, `questions_uav.json`), the raw outputs (`results_<doc>_groq.json`) and the grades (`grades_<doc>_groq.json`). The two papers are not stored in the repo; download them from the DOI links above.
+
+Run it yourself (Qdrant running, one fixed model, no backup model):
+```
+python backend/store.py data/<file>.pdf     # once per document
+python eval/run_eval_docs.py yolo_groq --questions eval/questions_yolo.json
+```
+Set `EVAL_MODEL=gemini` to evaluate Gemini instead of Groq.
 
 ## Run locally
 ```

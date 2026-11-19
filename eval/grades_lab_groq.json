@@ -1,0 +1,159 @@
+{
+ "document": "Lab_Manual_R20A6683_Deep_Learning_Year-IV_Semester-I.pdf",
+ "results_file": "results_lab_groq.json",
+ "model": "openai/gpt-oss-20b",
+ "grader": "Claude, against ground_truth and the document text",
+ "scale": "c correct, p partly correct, w wrong, r correctly refused",
+ "grades": [
+  {
+   "id": "q01",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q02",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q03",
+   "grade": "w",
+   "note": "Said 5 programs; the index lists 16. Evidence (page 14) was not retrieved."
+  },
+  {
+   "id": "q04",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q05",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q06",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q07",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q08",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q09",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q10",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q11",
+   "grade": "p",
+   "note": "OR, AND, XOR right. Said the exercise functions are not specified; the manual says NOT and XNOR. Evidence was retrieved."
+  },
+  {
+   "id": "q12",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q13",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q14",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q15",
+   "grade": "w",
+   "note": "Said one Conv2D layer and epochs not specified; the manual has two Conv2D(64) layers and epochs=10 (page 28). Evidence was retrieved."
+  },
+  {
+   "id": "q16",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q17",
+   "grade": "w",
+   "note": "Said the epoch values are not specified; the manual says 5, 25, 225 (page 35). Evidence was retrieved."
+  },
+  {
+   "id": "q18",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q19",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q20",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q21",
+   "grade": "p",
+   "note": "tanh, 6/16/120 filters, Dense 84, softmax 10 right; but lists a second 120-filter layer that is not in the manual (page 49)."
+  },
+  {
+   "id": "q22",
+   "grade": "p",
+   "note": "Input size 224x224x3 right; said the final layers are not listed; the manual has Dense 4096 x2 and Dense(2, softmax) on page 51. Evidence was retrieved."
+  },
+  {
+   "id": "q23",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q24",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "q25",
+   "grade": "c",
+   "note": ""
+  },
+  {
+   "id": "u01",
+   "grade": "r",
+   "note": ""
+  },
+  {
+   "id": "u02",
+   "grade": "r",
+   "note": ""
+  },
+  {
+   "id": "u03",
+   "grade": "r",
+   "note": ""
+  },
+  {
+   "id": "u04",
+   "grade": "r",
+   "note": ""
+  },
+  {
+   "id": "u05",
+   "grade": "r",
+   "note": ""
+  }
+ ]
+}
