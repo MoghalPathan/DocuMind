@@ -37,7 +37,7 @@ Stack: Python, FastAPI, LangChain loaders, Qdrant, sentence-transformers, React 
 ## Evaluation
 Tested on 3 documents with 30 questions each (90 in total): a 16-week Deep Learning lab manual and two research papers published in Scientific Reports (ECP-YOLO11n insulator defect detection, doi 10.1038/s41598-026-77328-5, and policy-gated firmware trust for UAV platforms, doi 10.1038/s41598-026-78674-0). For each document, 25 questions can be answered from the text and 5 cannot (they test "I don't know"). The expected answers and page numbers come from the document text.
 
-Every question was asked once with Groq gpt-oss-20b: one fixed model, no backup model. Each answer was compared with the document text and graded as correct, partly correct, wrong or, for unanswerable questions, correctly refused. Every question, answer and grade is listed on the Results page of the site.
+Every question was asked once with Groq gpt-oss-20b: one fixed model, no backup model. Each answer was compared with the document text and graded by hand as correct, partly correct, wrong or, for unanswerable questions, correctly refused. Every question, answer and grade is listed on the Results page of the site.
 
 | Document | Fully correct | Partly | Wrong | Correct "I don't know" | Right passage retrieved |
 |---|---|---|---|---|---|

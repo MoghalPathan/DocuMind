@@ -104,7 +104,7 @@ export function Home({ go, demo, busy }) {
         <div className="st-wrap st-strip-in">
           <Stat n={`${ALL.found} / ${ALL.answerable}`} l="right passage retrieved in testing" />
           <Stat n={`${ALL.refused} / ${ALL.unanswerable}`} l="unanswerable questions refused" />
-          <Stat n={`${pct(ALL.c, ALL.answerable)}%`} l={`answers fully correct on ${EVAL_DOCS.length} test documents`} />
+          <Stat n={`${pct(ALL.c, ALL.answerable)}%`} l="answers fully correct (hand-graded)" />
         </div>
       </section>
 
@@ -142,7 +142,7 @@ export function Home({ go, demo, busy }) {
             </A>
             <A to="/results" go={go} className="st-card st-tile">
               <h3>Results</h3>
-              <p>{`${ALL.asked} real questions on ${EVAL_DOCS.length} documents. Every answer is listed, including the wrong ones.`}</p>
+              <p>{`${ALL.asked} real questions on ${EVAL_DOCS.length} documents, graded by hand. Every answer is listed, including the wrong ones.`}</p>
               <span className="st-tile-link">See every question </span>
             </A>
           </div>
@@ -381,7 +381,7 @@ export function Results({ go, demo, busy }) {
     <>
       <PageHead
         eyebrow="Results"
-        title="Tested on real documents. Every answer is listed."
+        title="Tested on real documents. Graded by hand."
         intro={`${ALL.asked} questions on ${EVAL_DOCS.length} documents: a Deep Learning lab manual and two research papers. ${ALL.answerable} can be answered from the document and ${ALL.unanswerable} cannot. Every question, answer and grade is listed below, including the mistakes.`}
       />
       <section className="st-sec">
@@ -527,7 +527,7 @@ export function About({ go, demo, busy }) {
             <h2>What it shows</h2>
             <ul className="st-checks">
               <li>Retrieval and re-ranking for better answers</li>
-              <li>{`Honest evaluation: ${ALL.asked} questions, every answer published`}</li>
+              <li>{`Honest evaluation: ${ALL.asked} hand-graded questions, every answer published`}</li>
               <li>Authentication, rate limits and per-user data separation</li>
               <li>Deployment on AWS with Docker, https and automatic restarts</li>
             </ul>
