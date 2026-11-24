@@ -122,8 +122,14 @@
 .st-table th { text-align: left; font-weight: 600; color: var(--muted); font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase; padding: 12px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
 .st-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
 .st-table tr:last-child td { border-bottom: 0; }
+.st-eval { font-size: 13.5px; }
 .st-eval td:nth-child(1) { color: var(--muted); white-space: nowrap; }
-.st-eval td:nth-child(3), .st-eval td:nth-child(4) { color: var(--muted); min-width: 220px; }
+.st-eval td:nth-child(2) { min-width: 190px; }
+.st-eval td:nth-child(3) { color: var(--muted); min-width: 240px; }
+.st-eval td:nth-child(4) { color: var(--muted); min-width: 300px; }
+.st-eval td:nth-child(5) { width: 1%; }
+.st-eval td .st-small { margin: 10px 0 0; padding-left: 10px; border-left: 2px solid var(--border); font-size: 12.5px; line-height: 1.5; }
+.st-note + .st-tablewrap tr:nth-last-child(-n+2) td { background: color-mix(in srgb, var(--accent) 7%, transparent); }
 .st-badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
 .st-badge.ok { background: color-mix(in srgb, #2fbf71 20%, transparent); color: #2fbf71; }
 .st-badge.mid { background: color-mix(in srgb, #e6a817 20%, transparent); color: #e6a817; }
@@ -135,6 +141,7 @@
 .st-filters button { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 999px; padding: 6px 14px; font: 500 13.5px Inter, sans-serif; cursor: pointer; }
 .st-filters button.on { background: var(--accent); border-color: var(--accent); color: #fff; }
 .st-filters .st-small { margin: 0 0 0 auto; }
+.st-filters + .st-filters { margin-top: 10px; }
 
 /* pricing, faq, about */
 .st-plans { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 800px; }
@@ -186,6 +193,50 @@
   .st-strip-link { margin-left: 0; }
   .st-flow-item { flex: 1 1 100%; }
   .st-flow-item i { transform: rotate(90deg); }
+}
+
+/* results page: tables become cards on tablets and phones */
+@media (max-width: 900px) {
+  .st-eval, .st-eval tbody { display: block; }
+  .st-eval thead { display: none; }
+  .st-eval tr { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "id grade" "q q" "exp exp" "said said"; gap: 6px 12px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+  .st-eval tr:last-child { border-bottom: 0; }
+  .st-eval td, .st-eval td:nth-child(n) { display: block; padding: 0; border: 0; min-width: 0; width: auto; }
+  .st-eval td:nth-child(1) { grid-area: id; align-self: center; }
+  .st-eval td:nth-child(2) { grid-area: q; color: var(--text); font-weight: 500; }
+  .st-eval td:nth-child(3) { grid-area: exp; }
+  .st-eval td:nth-child(4) { grid-area: said; }
+  .st-eval td:nth-child(5) { grid-area: grade; }
+  .st-eval td:nth-child(3)::before, .st-eval td:nth-child(4)::before,
+  .st-note + .st-tablewrap td:nth-child(n+2)::before { display: block; margin-bottom: 2px; font-size: 11.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); opacity: .8; }
+  .st-eval td:nth-child(3)::before { content: "Expected"; }
+  .st-eval td:nth-child(4)::before { content: "DocuMind said"; }
+
+  .st-note + .st-tablewrap .st-table, .st-note + .st-tablewrap tbody { display: block; }
+  .st-note + .st-tablewrap thead { display: none; }
+  .st-note + .st-tablewrap tr { display: grid; grid-template-columns: 1.3fr 1fr 1fr; grid-template-areas: "name name name" "full part wrong" "ref ret ret"; gap: 10px 12px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+  .st-note + .st-tablewrap tr:last-child { border-bottom: 0; }
+  .st-note + .st-tablewrap tr:nth-last-child(-n+2) { background: color-mix(in srgb, var(--accent) 7%, transparent); }
+  .st-note + .st-tablewrap td { display: block; padding: 0; border: 0; background: none !important; }
+  .st-note + .st-tablewrap td:nth-child(1) { grid-area: name; }
+  .st-note + .st-tablewrap td:nth-child(2) { grid-area: full; }
+  .st-note + .st-tablewrap td:nth-child(3) { grid-area: part; }
+  .st-note + .st-tablewrap td:nth-child(4) { grid-area: wrong; }
+  .st-note + .st-tablewrap td:nth-child(5) { grid-area: ref; }
+  .st-note + .st-tablewrap td:nth-child(6) { grid-area: ret; }
+  .st-note + .st-tablewrap td:nth-child(2)::before { content: "Fully correct"; }
+  .st-note + .st-tablewrap td:nth-child(3)::before { content: "Partly"; }
+  .st-note + .st-tablewrap td:nth-child(4)::before { content: "Wrong"; }
+  .st-note + .st-tablewrap td:nth-child(5)::before { content: "Refused correctly"; }
+  .st-note + .st-tablewrap td:nth-child(6)::before { content: "Right passage retrieved"; }
+}
+@media (max-width: 600px) {
+  .st-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .st-stats .st-stat { padding: 14px; }
+  .st-stats .st-stat b { font-size: 24px; }
+  .st-filters .st-small { margin: 4px 0 0; flex-basis: 100%; }
+  .st-note + .st-tablewrap tr { grid-template-columns: 1.6fr 1fr 1fr; }
+  .st-note + .st-tablewrap td:nth-child(n+2)::before { font-size: 10.5px; letter-spacing: .03em; white-space: nowrap; }
 }
 
 .login-back { background: none; border: 0; color: var(--muted); font: 500 13.5px Inter, sans-serif; cursor: pointer; padding: 0 0 12px; }
@@ -320,4 +371,12 @@
 .st-foot-grid h3 { margin: 0 0 12px; font: 600 13px Inter, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .st-legal-main a, .st-legal-contact a { text-decoration: underline; text-underline-offset: 2px; }
 
+/* home: stats strip in equal columns, tile links on one line */
+.st-strip-in { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px 16px; }
+.st-tile { display: flex; flex-direction: column; }
+.st-tile p { flex: 1; }
 
+/* results badges: stronger colours on the light theme */
+:root[data-theme="light"] .st-badge.ok { background: #dcfce7; color: #15803d; }
+:root[data-theme="light"] .st-badge.mid { background: #fef3c7; color: #92400e; }
+:root[data-theme="light"] .st-badge.bad { background: #fee2e2; color: #b91c1c; }
